@@ -1,0 +1,73 @@
+{
+	"spo": 2021,
+	"study_course": 5,
+	"winter_semester": true,
+	"title": "M.Sc. Informatik - Start Wintersemester",
+	"semesters": [
+		[
+			{
+				"title": "Informatik 30-42 CP · Nebenfach 0-18 CP · Schlüssel- und Methodenkompetenzen 12-18 CP",
+				"identification": null,
+				"credit_points": 30,
+				"usability": [],
+				"groupId": null
+			}
+		],
+		[
+			{
+				"title": "Informatik 30-42 CP · Nebenfach 0-18 CP · Schlüssel- und Methodenkompetenzen 12-18 CP",
+				"identification": null,
+				"credit_points": 30,
+				"usability": [],
+				"groupId": null
+			}
+		],
+		[
+			{
+				"title": "Masterarbeit",
+				"identification": null,
+				"credit_points": 30,
+				"usability": [],
+				"groupId": null
+			}
+		]
+	],
+	"groups": [
+		{
+			"id": 1,
+			"graded_credits": 30
+		},
+		{
+			"id": 2,
+			"graded_credits": 20
+		},
+		{
+			"id": 3,
+			"graded_credits": 10
+		},
+		{
+			"id": 4,
+			"graded_credits": 5
+		},
+		{
+			"id": 5,
+			"graded_credits": 10
+		},
+		{
+			"id": 6,
+			"graded_credits": 5
+		},
+		{
+			"id": 7,
+			"graded_credits": 30
+		}
+	],
+	"source": {
+		"document": "Studien- und Prüfungsordnung Master (CV, INF, IngInf, WIF) vom 23.05.2016, Anlage 1 Regelstudienpläne",
+		"url": "https://www.fin.ovgu.de/inf_media/Studiendokumente/Studien_+und+Pr%C3%BCfungsordnung/Konsekutive+Masterstudieng%C3%A4nge/SPO_Master_2016_05_23_3Semester_2.pdf",
+		"page": 26,
+		"amended_by": "https://www.fin.ovgu.de/inf_media/Studiendokumente/Studien_+und+Pr%C3%BCfungsordnung/Konsekutive+Masterstudieng%C3%A4nge/SPO_Master_2020_06_29_Satzungs%C3%A4nderung.pdf",
+		"retrieved": "2026-09-17",
+		"note": "Das Nebenfach ist seit der Satzungsänderung vom 29.06.2020 optional, vorher 6-18 CP."
+	}
+}

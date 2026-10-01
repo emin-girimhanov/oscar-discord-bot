@@ -1,0 +1,107 @@
+# Forgejo Actions for OSCAR.
+#
+# The same four checks the GitLab pipeline runs, plus an image build that pushes to
+# the Forgejo container registry. Forgejo Actions speaks the GitHub Actions syntax,
+# so the steps below are ordinary `uses:` and `run:` blocks.
+#
+# What has to exist before this works:
+#
+#   1. A runner. `forgejo-runner register` against the instance, label `docker`.
+#   2. Actions enabled on the repository, Settings -> Units -> Actions.
+#   3. Nothing else. No secret is needed to build, only to deploy.
+#
+# The image lands at <instance>/<owner>/oscar:<tag>. Pulling it needs a token with
+# `read:package`, which the deploy host holds, not this workflow.
+#
+# See docs/developer/forgejo.md.
+
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+
+env:
+  # The base the Containerfile builds on. Keep both in step.
+  PYTHON_VERSION: "3.14"
+  # Below this the style has slipped far enough to stop a build.
+  PYLINT_FAIL_UNDER: "9.5"
+
+jobs:
+  lint:
+    runs-on: docker
+    container:
+      image: python:3.14-slim-trixie
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install the project
+        run: pip install --no-cache-dir .[dev,docs]
+      - name: pylint
+        run: pylint --recursive=y --fail-under ${{ env.PYLINT_FAIL_UNDER }} src
+
+  test:
+    runs-on: docker
+    container:
+      image: python:3.14-slim-trixie
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install the project
+        run: pip install --no-cache-dir .[dev,docs]
+      - name: pytest
+        # The suite never touches the network. The two values below only exist
+        # because `util.tables` reads them at import time.
+        env:
+          TABLES_URL: http://dummy/
+          TABLES_USERNAME: dummy
+          TABLES_PASSWORD: dummy
+        run: pytest -q --cov=src --cov-report=term
+      - name: Build the documentation
+        run: mkdocs build --strict
+
+  commitlint:
+    runs-on: docker
+    container:
+      image: node:alpine
+    steps:
+      - name: Install git
+        run: apk add --no-cache git
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install commitlint
+        run: npm install --no-save @commitlint/config-conventional @commitlint/cli
+      - name: Check the messages of this push
+        run: npx commitlint --from ${{ github.event.before }} --to ${{ github.sha }} --verbose
+
+  image:
+    # Only what is on a branch gets an image. A pull request is checked, not published.
+    if: github.event_name == 'push'
+    needs: [lint, test]
+    runs-on: docker
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to the Forgejo registry
+        # `GITHUB_TOKEN` is the automatic one Forgejo hands the job. It may write
+        # packages of this repository and nothing else.
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" \
+            | docker login "${{ github.server_url }}" \
+              --username "${{ github.actor }}" --password-stdin
+        # github.server_url arrives as https://host, docker wants the bare host
+        shell: bash
+
+      - name: Build and push
+        run: |
+          host=$(echo "${{ github.server_url }}" | sed 's|https\?://||')
+          image="$host/${{ github.repository }}"
+          docker build \
+            --file Containerfile.selfhost \
+            --build-arg OSCAR_REVISION="${{ github.sha }}" \
+            --tag "$image:${{ github.sha }}" \
+            --tag "$image:latest" \
+            .
+          docker push "$image:${{ github.sha }}"
+          docker push "$image:latest"
+        shell: bash

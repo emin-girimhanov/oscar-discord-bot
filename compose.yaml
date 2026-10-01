@@ -1,0 +1,37 @@
+# Self hosted OSCAR.
+#
+#   cp .env.example .env     and fill it in
+#   docker compose up -d --build
+#   docker compose logs -f
+#
+# The same file runs on a home server. See docs/developer/selfhost.md.
+
+services:
+  oscar:
+    build:
+      context: .
+      dockerfile: Containerfile.selfhost
+      args:
+        # stamps the build so `/version` and `!resync` can name it. Set the variable
+        # before building to get the real commit, otherwise it stays "selfhost".
+        OSCAR_REVISION: ${OSCAR_REVISION:-selfhost}
+    image: oscar-ovgu:selfhost
+    container_name: oscar
+    # the five values live in .env, never in this file
+    env_file: .env
+    volumes:
+      # the sqlite database, keeps user settings across a rebuild
+      - oscar-db:/database
+    restart: unless-stopped
+    # the bot only talks out to discord.com and cloud.ovgu.de, it needs no ports
+    stop_grace_period: 20s
+    # without a limit the log file grows until the disk is full, which matters
+    # on a home server that runs for months
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+
+volumes:
+  oscar-db:

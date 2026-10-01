@@ -1,0 +1,52 @@
+# GitHub Actions for OSCAR.
+#
+# The same checks the Forgejo and GitLab pipelines run: pylint, the test suite and a
+# strict build of the documentation. No secret is needed.
+
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  # The base the Containerfile builds on. Keep both in step.
+  PYTHON_VERSION: "3.14"
+  # Below this the style has slipped far enough to stop a build.
+  PYLINT_FAIL_UNDER: "9.5"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+      - name: Install the project
+        run: pip install .[dev,docs]
+      - name: pylint
+        run: pylint --recursive=y --fail-under ${{ env.PYLINT_FAIL_UNDER }} src
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: pip
+      - name: Install the project
+        run: pip install .[dev,docs]
+      - name: pytest
+        # The suite never touches the network. The three values below only exist
+        # because `util.tables` reads them at import time.
+        env:
+          TABLES_URL: http://dummy/
+          TABLES_USERNAME: dummy
+          TABLES_PASSWORD: dummy
+        run: pytest -q --cov=src --cov-report=term
+      - name: Build the documentation
+        run: mkdocs build --strict

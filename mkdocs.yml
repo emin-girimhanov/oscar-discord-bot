@@ -1,0 +1,170 @@
+site_name: "OSCAR Documentation"
+site_url: "https://emin-girimhanov.github.io/oscar-discord-bot/"
+repo_url: "https://github.com/emin-girimhanov/oscar-discord-bot"
+repo_name: "emin-girimhanov/oscar-discord-bot"
+
+# Copyright with dynamic year (handled by JS)
+copyright: |
+  &copy; 2025-<span id="year"></span> OSCAR Software Project –
+  Faculty of Computer Science, Otto von Guericke University Magdeburg.
+  <br>
+  <a href="/oscar-discord-bot/legal_notice/">Legal Notice</a> |
+  <a href="/oscar-discord-bot/privacy/">Privacy Policy</a>
+
+# CSS & JS
+extra_css:
+  - assets/stylesheets/oscar_theme.css
+extra_javascript:
+  - assets/javascripts/scroll_header.js
+  - assets/javascripts/email_protection.js
+
+# `extra.version` is deliberately absent. `docs/main.py` fills it from the `[project]` table of
+# pyproject.toml while MkDocs builds, so the version exists exactly once in the repository.
+
+# Theme Configuration
+theme:
+  name: material
+  language: en
+  font: false               # GDPR compliance (avoid loading Google Fonts)
+  logo: assets/images/oscar_logo.svg
+  favicon: assets/images/oscar_logo.svg
+  icon:
+    repo: fontawesome/brands/github
+
+  features:
+    - navigation.tabs
+    - navigation.tabs.sticky
+    - navigation.sections
+    - navigation.top
+    - navigation.footer
+    - navigation.header.sticky
+    - navigation.tracking   # Highlights active anchor in TOC
+    - content.code.copy
+    - content.tooltips
+    - content.tabs.link     # Makes tabs linkable via URL
+
+  palette:
+    # Light Mode
+    - scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Dark Mode
+    - scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - toc:
+      permalink: true      # Adds anchor links (§) next to headers
+
+  # Code Highlighting (CRITICAL for dev docs)
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+
+  # Tabs & Details
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+
+  # Emojis
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+
+  # Snippets (Embed code from actual source files)
+  - pymdownx.snippets:
+      base_path: "."
+      check_paths: true
+
+# Plugins
+plugins:
+  - macros:
+      module_name: docs/main
+  - search
+  - glightbox
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          paths: [.]
+          options:
+            docstring_style: google
+            show_source: true
+            show_root_heading: true
+            heading_level: 2
+            separate_signature: true
+            merge_init_into_class: true
+            show_signature_annotations: true  # Shows types in function signatures
+
+# Navigation (Structure optimized based on analysis)
+nav:
+  - Home: index.md
+  - About OSCAR: about_oscar.md
+
+  - Features:
+      - Commands: features/commands.md
+      - FAQ: features/faq.md
+      - Module Ratings & Exams: features/module_ratings_and_exams.md
+      - Cohort Statistics: features/cohort_statistics.md
+      - Learning Platforms (LMS): features/lms_guide.md
+      - Weekly Code Golf: features/code_golf.md
+      - LSF Integration Feasibility: features/lsf_integration_feasibility.md
+      - Future Ideas: features/future_ideas.md
+
+
+  - Developer Guide:
+      - Quick Start:
+          - Overview: developer/index.md
+          - Setup & Install: developer/setup.md
+          - Run It Yourself: developer/selfhost.md
+          - On a Forgejo Server: developer/forgejo.md
+          - Git Workflow: developer/workflow.md
+      - Testing: developer/testing_guide.md
+
+      - Architecture:
+          - System Overview: developer/core/bot.md
+          - Database Schema: developer/core/database.md
+          - Data Models: developer/core/models.md
+
+      - User Interface:
+          - Concept & Layers: developer/ui/architecture.md
+          - Components: developer/ui/components.md
+          - Feature Views: developer/ui/views.md
+
+      - Application Logic (Cogs):
+          - Module System: developer/cogs/module.md
+          - Administration: developer/cogs/admin.md
+          - System & Help: developer/cogs/system.md
+
+      - Utilities:
+          - Nextcloud API: developer/utils/api.md
+          - Module Handbook Links: developer/utils/bookstack_links.md
+          - Standard Study Plans: developer/utils/semesterplans.md
+          - Filters: developer/utils/filters.md
+          - Helpers: developer/utils/helpers.md
+
+  - Admin Guide:
+      - Overview: admin/index.md
+      - Feedback Review: admin/feedback_review.md
+
+  - Legal:
+      - Legal Notice: legal_notice.md
+      - Privacy Policy: privacy.md

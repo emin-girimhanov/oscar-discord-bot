@@ -1,0 +1,676 @@
+/* ==========================================================================
+   COLOR ADJUSTMENT: PURPLE TO BLUE (Complete: Footer, ToC, Search, Links)
+   /docs/assets/stylesheets/oscar_theme.cs
+   ========================================================================== */
+
+/* 1. Global Variables & Link Overrides */
+:root {
+    --md-primary-fg-color: #0068b4;
+    /* Primary color (Header, etc.) */
+    --md-accent-fg-color: #0068b4;
+    /* Accent color (Buttons, highlights) */
+    --md-typeset-a-color: #0068b4;
+    /* Links within body text */
+}
+
+/* 2. Back-to-Top Button (The upward arrow) */
+.md-top {
+    background-color: #0068b4 !important;
+    color: #ffffff !important;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.md-top:hover {
+    background-color: #00457a !important;
+    /* Darker blue on hover */
+}
+
+/* 3. Footer Navigation (Next/Previous links at the bottom) */
+.md-footer__link .md-footer__icon {
+    color: #0068b4 !important;
+}
+
+/* Apply dark blue color on hover */
+.md-footer__link:hover .md-footer__title,
+.md-footer__link:hover .md-footer__direction {
+    color: #00457a !important;
+}
+
+/* 4. Table of Contents (Right Sidebar) - Remove purple border */
+.md-sidebar--secondary .md-nav__link--active,
+.md-nav__item .md-nav__link--active {
+    border-left-color: #0068b4 !important;
+    /* Vertical active indicator bar */
+    color: #0068b4 !important;
+    /* Active text color */
+}
+
+/* Hover effect in Table of Contents */
+.md-sidebar--secondary .md-nav__link:hover,
+.md-nav__item .md-nav__link:hover {
+    color: #00457a !important;
+    /* Dark blue on hover */
+}
+
+/* 5. Search Results - Apply blue theme throughout */
+/* Highlighted search term */
+.md-search-result__teaser em {
+    color: #0068b4 !important;
+    font-weight: bold;
+    font-style: normal;
+}
+
+/* Search result hover state */
+.md-search-result__link:hover,
+.md-search-result__link:focus {
+    background-color: rgba(0, 104, 180, 0.05) !important;
+    /* Subtle blue background */
+}
+
+/* Result title color on hover */
+.md-search-result__link:hover .md-search-result__article {
+    color: #0068b4 !important;
+}
+
+/* ==========================================================================
+   1. GLOBAL & HEADER
+   ========================================================================== */
+.md-header,
+.md-tabs {
+    background-color: #0068b4 !important;
+    /* OVGU Blue */
+    color: #ffffff !important;
+    box-shadow: 0 0 .2rem rgba(0, 0, 0, .1), 0 .2rem .4rem rgba(0, 0, 0, .2);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Subpages: Standard header behavior with content padding */
+.md-content__inner {
+    margin-top: 0;
+    padding-top: 2rem;
+}
+
+/* ==========================================================================
+   LOGO ENLARGEMENT
+   ========================================================================== */
+.md-header__button.md-logo img,
+.md-header__logo img {
+    height: 3rem !important;
+    /* Approximately doubled from standard 1.5rem */
+    width: auto !important;
+    /* Maintain aspect ratio */
+    margin-right: 10px;
+}
+
+/* Adjust header height to accommodate larger logo */
+.md-header {
+    min-height: 4rem;
+}
+
+/* ==========================================================================
+   2. HOMEPAGE SPECIFIC RULES (via .oscar-homepage JS class)
+   ========================================================================== */
+/* Transparent header at the top of the homepage */
+body.oscar-homepage .md-header:not(.header-scrolled),
+body.oscar-homepage .md-tabs:not(.header-scrolled) {
+    background-color: transparent !important;
+    box-shadow: none !important;
+}
+
+body.oscar-homepage .md-tabs {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Apply blue header background when scrolling */
+body.oscar-homepage .md-header.header-scrolled,
+body.oscar-homepage .md-tabs.header-scrolled {
+    background-color: #0068b4 !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2) !important;
+    border-bottom: none;
+}
+
+/* Pull content up to overlap the hero section */
+body.oscar-homepage .md-content__inner {
+    margin-top: -9rem !important;
+    padding-top: 0 !important;
+    z-index: 1;
+}
+
+/* Hide the default H1 "Home" title on the homepage */
+body.oscar-homepage .md-content__inner>h1 {
+    display: none !important;
+}
+
+/* ==========================================================================
+   3. HERO SECTION & SPEECH BUBBLE
+   ========================================================================== */
+.oscar-hero {
+    background: linear-gradient(rgba(0, 104, 180, 0.2), rgba(0, 69, 122, 0.3)),
+        url('../images/gebäude_fin.jpg') no-repeat center center;
+    background-size: cover;
+    background-attachment: fixed;
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    padding: 10rem 1rem 6rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: #ffffff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+}
+
+.hero-logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    animation: float 6s ease-in-out infinite;
+}
+
+.hero-logo {
+    width: 160px;
+    height: auto;
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
+}
+
+/* Speech Bubble */
+.speech-bubble {
+    position: relative;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 20px 25px;
+    color: #333 !important;
+    max-width: 480px;
+    text-align: left;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.25));
+}
+
+/* Speech bubble arrow pointing left */
+.speech-bubble:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    width: 0;
+    height: 0;
+    border: 15px solid transparent;
+    border-right-color: rgba(255, 255, 255, 0.95);
+    border-left: 0;
+    margin-top: -15px;
+    margin-left: -15px;
+}
+
+.speech-bubble p {
+    margin: 0 !important;
+    line-height: 1.4 !important;
+    color: #333 !important;
+}
+
+.speech-bubble strong {
+    color: #0068b4;
+    font-size: 1.2rem;
+}
+
+.speech-sub {
+    margin-top: 10px !important;
+    font-size: 0.95rem;
+    opacity: 0.9;
+}
+
+/* ==========================================================================
+   4. INTRO SECTION
+   ========================================================================== */
+.oscar-intro {
+    max-width: 900px;
+    margin: 3rem auto 4rem auto;
+    padding: 0 1rem;
+    text-align: center;
+}
+
+.oscar-intro h2 {
+    color: #0068b4;
+    font-weight: 700;
+}
+
+.feature-list {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: var(--md-default-fg-color--light);
+}
+
+/* ==========================================================================
+   5. BUTTONS & BADGES
+   ========================================================================== */
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.hero-btn {
+    padding: 0.8rem 2rem;
+    border-radius: 4px;
+    font-weight: 700;
+    text-decoration: none !important;
+    transition: all 0.2s ease;
+    font-size: 1.1rem;
+}
+
+.btn-primary {
+    background-color: #0068b4;
+    color: white !important;
+    border: 2px solid #0068b4;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    background-color: #00457a;
+    border-color: #00457a;
+}
+
+.btn-secondary {
+    border: 2px solid rgba(255, 255, 255, 0.7);
+    color: white !important;
+    background: transparent;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #ffffff;
+    transform: translateY(-2px);
+}
+
+.hero-badges {
+    margin-top: 4rem;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+/* Floating animation for hero elements */
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+/* ========================================
+   SCROLL INDICATOR (animated bounce arrow)
+   ======================================== */
+.scroll-indicator {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    animation: bounce 2s ease-in-out infinite;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.scroll-indicator:hover {
+    opacity: 1;
+}
+
+.scroll-indicator span {
+    display: block;
+    width: 12px;
+    height: 12px;
+    border-right: 3px solid rgba(255, 255, 255, 0.9);
+    border-bottom: 3px solid rgba(255, 255, 255, 0.9);
+    transform: rotate(45deg);
+    animation: fade-chevron 2s ease-in-out infinite;
+}
+
+.scroll-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.scroll-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateX(-50%) translateY(0);
+    }
+
+    50% {
+        transform: translateX(-50%) translateY(6px);
+    }
+}
+
+@keyframes fade-chevron {
+
+    0%,
+    100% {
+        opacity: 0.3;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
+
+/* ==========================================================================
+   6. MOBILE RESPONSIVENESS
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+    .oscar-hero {
+        background-attachment: scroll;
+        padding-top: 8rem;
+    }
+
+    .hero-logo-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    /* Speech bubble arrow points upward on mobile */
+    .speech-bubble:after {
+        left: 50%;
+        top: -15px;
+        border-right-color: transparent;
+        border-bottom-color: rgba(255, 255, 255, 0.95);
+        margin-left: -15px;
+        margin-top: 0;
+    }
+
+    .scroll-indicator {
+        display: none;
+    }
+
+    body.oscar-homepage .md-content__inner {
+        margin-top: -4.5rem !important;
+    }
+}
+
+/* ==========================================================================
+   AUTHOR GRID
+   ========================================================================== */
+.author-grid ul {
+    list-style: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.author-grid li {
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    padding: 0.8rem 1rem;
+    padding-left: 1.2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    position: relative;
+    overflow: hidden;
+    font-size: 0.9rem;
+}
+
+/* Blue accent bar on the left side */
+.author-grid li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color: #0068b4;
+}
+
+.author-grid li:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.1);
+}
+
+.author-grid li strong {
+    display: block;
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.2;
+}
+
+.author-grid li em {
+    display: block;
+    font-size: 0.85rem;
+    color: #666;
+    font-style: normal;
+    font-weight: 500;
+}
+
+.author-grid li a {
+    color: #0068b4;
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.author-grid li a:hover {
+    text-decoration: underline;
+}
+
+/* Dark mode (Slate) adjustments */
+[data-md-color-scheme="slate"] .author-grid li {
+    background: #1e2129;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-md-color-scheme="slate"] .author-grid li strong {
+    color: #fff;
+}
+
+[data-md-color-scheme="slate"] .author-grid li em {
+    color: #aaa;
+}
+
+/* ==========================================================================
+   COMMAND LIST (Code blocks left, text right)
+   ========================================================================== */
+.cmd-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 0.8rem;
+}
+
+.cmd-row .highlight {
+    margin: 0 !important;
+    min-width: 180px;
+}
+
+@media screen and (max-width: 600px) {
+    .cmd-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .cmd-row .highlight {
+        min-width: 100%;
+    }
+}
+
+/* ==========================================================================
+   IMAGE STYLING (Centered with shadows)
+   ========================================================================== */
+.img-center {
+    display: block !important;
+    margin: 1.5rem auto !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+/* ==========================================================================
+   FIN-BLUE COLOR OVERRIDES
+   ========================================================================== */
+:root {
+    /* Primary brand colors */
+    --md-primary-fg-color: #0068b4 !important;
+    --md-primary-fg-color--dark: #00457a !important;
+    --md-accent-fg-color: #0068b4 !important;
+
+    /* Hover color (Dark Blue) */
+    --fin-hover-color: #00457a;
+}
+
+/* 1. Sidebar & ToC active indicator */
+.md-nav__item--active>.md-nav__link {
+    color: var(--md-primary-fg-color) !important;
+    font-weight: 700;
+}
+
+/* Vertical active bar (changed from purple to blue) */
+.md-nav__link--active {
+    border-left: 0.2rem solid #0068b4 !important;
+}
+
+/* 2. Hover effects for all navigation links */
+.md-nav__link:hover {
+    color: var(--fin-hover-color) !important;
+}
+
+/* 3. Search adjustments (Hover & Focus) */
+.md-search-result__link:hover,
+.md-search-result__link:focus {
+    background-color: rgba(0, 104, 180, 0.1) !important;
+}
+
+.md-search-result__article:hover {
+    color: var(--md-primary-fg-color) !important;
+}
+
+/* 4. Focus rings and checkboxes */
+.md-nav__toggle:checked~.md-nav__link {
+    color: var(--md-primary-fg-color);
+}
+
+/* ==========================================================================
+   OPTIMIZED FOOTER FIX (Enhanced Contrast)
+   ========================================================================== */
+
+/* Standard icon state */
+.md-footer__link .md-footer__icon {
+    color: #0068b4 !important;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Small labels ("Previous" / "Next") */
+.md-footer__direction {
+    color: rgba(255, 255, 255, 0.6) !important;
+    /* Lighter for dark mode visibility */
+}
+
+/* Page titles ("About OSCAR" / "Overview") */
+.md-footer__title {
+    color: #0068b4 !important;
+    font-weight: 700;
+}
+
+/* Hover state: Improved contrast */
+.md-footer__link:hover {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    /* Subtle glow effect */
+}
+
+.md-footer__link:hover .md-footer__title {
+    color: #58a6ff !important;
+    /* Lighter blue for better visibility on dark backgrounds */
+    text-decoration: underline;
+}
+
+.md-footer__link:hover .md-footer__direction {
+    color: #ffffff !important;
+    /* Pure white for direction labels on hover */
+}
+
+/* Arrow nudge animation on hover (moves right) */
+.md-footer__link:hover .md-footer__icon {
+    transform: translateX(5px);
+}
+
+/* Arrow nudge animation for previous link (moves left) */
+.md-footer__link--prev:hover .md-footer__icon {
+    transform: translateX(-5px);
+}
+
+/* ==========================================================================
+   GRID ADMONITIONS - LINKSBÜNDIG
+   ========================================================================== */
+
+/* Hauptcontainer linksbündig */
+.md-typeset .grid {
+    text-align: left;
+}
+
+/* Admonition-Inhalt linksbündig */
+.md-typeset .grid .admonition {
+    text-align: left;
+}
+
+
+.md-typeset .grid .admonition ul,
+.md-typeset .grid .admonition ol {
+    text-align: left !important;
+    padding-left: 1.5rem;
+    margin-left: 0;
+}
+
+
+.md-typeset .grid .admonition li {
+    text-align: left !important;
+    list-style-position: outside;
+}
+
+
+.md-typeset .grid .admonition li p,
+.md-typeset .grid .admonition li strong {
+    text-align: left !important;
+}
+
+/* Email Protection Styling */
+a[data-email] {
+    cursor: pointer;
+    position: relative;
+}
+
+/* Hover */
+a[data-email]:hover {
+    text-decoration: underline;
+}
+
+a[href^="mailto:"] {
+    word-break: break-all;
+}
+
+@supports not (selector(:has())) {
+    a[data-email] {
+        opacity: 0.9;
+    }
+}

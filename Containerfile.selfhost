@@ -1,0 +1,40 @@
+# Self hosted build.
+#
+# The plain Containerfile expects a wheel in dist/, which the CI build job produces.
+# This one compiles the wheel itself, so a single command is enough on any machine.
+#
+# It also bakes in no secrets. They arrive at runtime from an env file, which is the
+# safer way round. See compose.yaml.
+
+FROM python:3.14-slim-trixie AS builder
+WORKDIR /src
+COPY . .
+RUN pip install --no-cache-dir build \
+	&& python -m build --wheel --outdir /wheels
+
+FROM python:3.14-slim-trixie
+ARG OSCAR_REVISION=selfhost
+LABEL org.opencontainers.image.title=oscar-ovgu \
+	org.opencontainers.image.description="OSCAR discord bot, self hosted build" \
+	org.opencontainers.image.revision=${OSCAR_REVISION}
+
+# the wheel only contains python code, images and semesterplan json files live here
+ENV OSCAR_ASSETS_DIR=/assets
+ENV OSCAR_DB_PATH=/database/oscar.db
+ENV OSCAR_REVISION=${OSCAR_REVISION}
+# python writes nothing to disk that we want to keep, and unbuffered output
+# makes `docker compose logs -f` show a line the moment it happens
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+# matplotlib needs a writable config directory, otherwise it warns on every start
+ENV MPLCONFIGDIR=/tmp/matplotlib
+
+COPY --from=builder /wheels/oscar_ovgu-*.whl /tmp/
+COPY assets /assets
+RUN pip install --no-cache-dir /tmp/oscar_ovgu-*.whl \
+	&& rm -f /tmp/*.whl \
+	&& mkdir -p /database
+
+# the user database survives an image rebuild only if this stays a volume
+VOLUME [ "/database" ]
+ENTRYPOINT ["oscar_ovgu"]

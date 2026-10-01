@@ -1,0 +1,87 @@
+[build-system]
+requires = ["hatchling >= 1.27"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/oscar", "src/util"]
+
+# https://docs.basedpyright.com/latest/configuration/config-files/
+[tool.basedpyright]
+"typeCheckingMode" = "recommended"
+# "reportUnusedFunction" = false
+
+[tool.pylint]
+# disable = "unused-function"
+[tool.pylint.options]
+good-names-rgx = "(_[a-z_]*|command|group|listen)"
+
+[tool.pylint.messages_control]
+disable = [
+    "C0114", # missing-module-docstring
+    "C0115", # missing-class-docstring
+    "C0116", # missing-function-docstring
+    "R0903", # too-few-public-methods
+    "W0511", # fixme (TODOs)
+    "R0801", # duplicate-code
+]
+
+
+[project.scripts]
+oscar_ovgu = "oscar.main:main"
+
+[project]
+name = "oscar_ovgu"
+version = "0.2.0"
+authors = [
+  { name="ISG", email="jana.goers@ovgu.de" },
+]
+description = "Organized Study Choice & Academic Roadmapper"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+	"discord-py",
+	"python-dotenv",
+	"loguru",
+	"cyclopts",
+	"requests",
+	"rapidfuzz",
+	"translate",
+	"matplotlib>=3.9.4",
+	"numpy",
+	"toml"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+license = "Apache-2.0"
+license-files = ["./license"]
+
+[project.urls]
+Homepage = "https://www.fin.ovgu.de/"
+Issues = "https://www.fin.ovgu.de/Fakultaet.html"
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-mock>=3.12.0",
+    "pytest-cov>=4.0.0",
+    "pylint>=3.0.0",
+    "pytest-asyncio>=0.23.0",
+]
+docs = [
+    "mkdocs-material>=9.6.20",
+    "mkdocstrings[python]>=0.30.1",
+	"mkdocs-glightbox",
+	"mkdocs-macros-plugin",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --tb=short"
+asyncio_mode = "auto"
+filterwarnings = [
+    "ignore::DeprecationWarning:discord",
+]
+
+

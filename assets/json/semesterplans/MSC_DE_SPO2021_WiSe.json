@@ -1,0 +1,81 @@
+{
+	"spo": 2021,
+	"study_course": 9,
+	"winter_semester": true,
+	"title": "M.Sc. Digital Engineering - Start Wintersemester",
+	"semesters": [
+		[
+			{
+				"title": "Grundlagen Informatik 15 oder 5 CP · Grundlagen Ingenieurwesen 15 oder 5 CP · Human factors 5 CP · Methoden des Digital Engineering 10 CP · Methoden der Informatik 10 CP · Fachliche Spezialisierung 15 CP · Projekte 12-18 CP · frei wählbar 12 CP",
+				"identification": null,
+				"credit_points": 30,
+				"usability": [],
+				"groupId": null
+			}
+		],
+		[
+			{
+				"title": "Grundlagen Informatik 15 oder 5 CP · Grundlagen Ingenieurwesen 15 oder 5 CP · Human factors 5 CP · Methoden des Digital Engineering 10 CP · Methoden der Informatik 10 CP · Fachliche Spezialisierung 15 CP · Projekte 12-18 CP · frei wählbar 12 CP",
+				"identification": null,
+				"credit_points": 30,
+				"usability": [],
+				"groupId": null
+			}
+		],
+		[
+			{
+				"title": "Grundlagen Informatik 15 oder 5 CP · Grundlagen Ingenieurwesen 15 oder 5 CP · Human factors 5 CP · Methoden des Digital Engineering 10 CP · Methoden der Informatik 10 CP · Fachliche Spezialisierung 15 CP · Projekte 12-18 CP · frei wählbar 12 CP",
+				"identification": null,
+				"credit_points": 30,
+				"usability": [],
+				"groupId": null
+			}
+		],
+		[
+			{
+				"title": "Masterarbeit",
+				"identification": null,
+				"credit_points": 30,
+				"usability": [],
+				"groupId": null
+			}
+		]
+	],
+	"groups": [
+		{
+			"id": 1,
+			"graded_credits": 25
+		},
+		{
+			"id": 2,
+			"graded_credits": 15
+		},
+		{
+			"id": 3,
+			"graded_credits": 15
+		},
+		{
+			"id": 4,
+			"graded_credits": 10
+		},
+		{
+			"id": 5,
+			"graded_credits": 10
+		},
+		{
+			"id": 6,
+			"graded_credits": 5
+		},
+		{
+			"id": 7,
+			"graded_credits": 30
+		}
+	],
+	"source": {
+		"document": "Studien- und Prüfungsordnung Master (englischsprachig) vom 08.04.2021, Anlage B",
+		"url": "https://www.fin.ovgu.de/inf_media/Studiendokumente/Studien_+und+Pr%C3%BCfungsordnung/Englischsprachige+Masterstudieng%C3%A4nge/SPO_Master_2021_04_08.pdf",
+		"page": 28,
+		"retrieved": "2026-09-17",
+		"note": "Der Regelstudienplan ist laut Ordnung eine Empfehlung zur Anordnung der Bereiche. Welche Module in welchem Semester belegt werden, steht den Studierenden frei. Die Ordnung nennt keine Modulnamen pro Semester, nur Bereiche mit CP-Spannen."
+	}
+}

@@ -1,0 +1,359 @@
+{
+	"spo": 2024,
+	"study_course": 3,
+	"winter_semester": false,
+	"title": "Wirtschaftsinformatik - Start Sommersemester",
+	"semesters": [
+		[
+			{
+				"title": "Mathematik 2",
+				"identification": 501326,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 0
+			},
+			{
+				"title": "WPF Verstehen und Gestalten",
+				"identification": null,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 5
+			},
+			{
+				"title": "Usability und Ästhetik",
+				"identification": null,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 10
+			},
+			{
+				"title": "Anwendungssysteme",
+				"identification": null,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 13
+			},
+			{
+				"title": "Managementinformationssysteme",
+				"identification": null,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 13
+			},
+			{
+				"title": "Wiss. Seminar",
+				"identification": 120492,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 14
+			}
+		],
+		[
+			{
+				"title": "Mathematik 1",
+				"identification": 501325,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 0
+			},
+			{
+				"title": "Einführung in die Wirtschaftsinformatik",
+				"identification": null,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 4
+			},
+			{
+				"title": "Einführung in die BWL",
+				"identification": null,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 1
+			},
+			{
+				"title": "Einführung in die Informatik",
+				"identification": 110360,
+				"credit_points": 10,
+				"usability": [],
+				"groupId": 6
+			},
+			{
+				"title": "Modellierung",
+				"identification": 110127,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 7
+			}
+		],
+		[
+			{
+				"title": "Mathematik 3",
+				"identification": 501327,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 0
+			},
+			{
+				"title": "Mathematik 5",
+				"identification": 501329,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 2
+			},
+			{
+				"title": "WPF Verstehen und Gestalten",
+				"identification": null,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 5
+			},
+			{
+				"title": "Algorithmen und Datenstrukturen",
+				"identification": 110361,
+				"credit_points": 10,
+				"usability": [],
+				"groupId": 6
+			},
+			{
+				"title": "Sichere Systeme",
+				"identification": 110115,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 13
+			}
+		],
+		[
+			{
+				"title": "Betriebliches Rechnungswesen",
+				"identification": null,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 3
+			},
+			{
+				"title": "Einführung in die VWL",
+				"identification": null,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 3
+			},
+			{
+				"title": "WPF Verstehen und Gestalten",
+				"identification": null,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 5
+			},
+			{
+				"title": "Software Engineering + IT-PM",
+				"identification": 110476,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 12
+			},
+			{
+				"title": "Datenbanken",
+				"identification": 100391,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 13
+			},
+			{
+				"title": "Schlüsselkompetenzen",
+				"identification": 110110,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 15
+			}
+		],
+		[
+			{
+				"title": "WPF Verstehen und Gestalten",
+				"identification": null,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 5
+			},
+			{
+				"title": "Informationstechnologie in Organisationen",
+				"identification": null,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 8
+			},
+			{
+				"title": "WPF Gestalten und Anwenden oder WPF Statistik",
+				"identification": null,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 12
+			},
+			{
+				"title": "WPF Gestalten und Anwenden",
+				"identification": null,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 12
+			},
+			{
+				"title": "Software Development Project",
+				"identification": null,
+				"credit_points": 10,
+				"usability": [],
+				"groupId": 14
+			}
+		],
+		[
+			{
+				"title": "WPF Verstehen und Gestalten",
+				"identification": null,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 5
+			},
+			{
+				"title": "Wissensmanagement",
+				"identification": null,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 9
+			},
+			{
+				"title": "Softwareprojekt",
+				"identification": 110316,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 11
+			},
+			{
+				"title": "WPF Gestalten und Anwenden",
+				"identification": null,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 12
+			},
+			{
+				"title": "WPF Gestalten und Anwenden",
+				"identification": null,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 12
+			},
+			{
+				"title": "WPF Recht",
+				"identification": null,
+				"credit_points": 5,
+				"usability": [],
+				"groupId": 14
+			}
+		],
+		[
+			{
+				"title": "Betriebspraktikum / Bachelorprojekt",
+				"identification": null,
+				"credit_points": 18,
+				"usability": [],
+				"groupId": null
+			},
+			{
+				"title": "Bachelorarbeit",
+				"identification": null,
+				"credit_points": 10,
+				"usability": [],
+				"groupId": null
+			},
+			{
+				"title": "Kolloquium",
+				"identification": null,
+				"credit_points": 2,
+				"usability": [],
+				"groupId": null
+			}
+		]
+	],
+	"groups": [
+		{
+			"id": 0,
+			"graded_credits": 10,
+			"weight": 0.5
+		},
+		{
+			"id": 1,
+			"graded_credits": 5,
+			"weight": 0.25
+		},
+		{
+			"id": 2,
+			"graded_credits": 5
+		},
+		{
+			"id": 3,
+			"graded_credits": 10,
+			"weight": 0.25
+		},
+		{
+			"id": 4,
+			"graded_credits": 5,
+			"weight": 0.5
+		},
+		{
+			"id": 5,
+			"graded_credits": 25,
+			"weight": 0.5
+		},
+		{
+			"id": 6,
+			"graded_credits": 20,
+			"weight": 0.5
+		},
+		{
+			"id": 7,
+			"graded_credits": 5,
+			"weight": 0.5
+		},
+		{
+			"id": 8,
+			"graded_credits": 5,
+			"weight": 0.5
+		},
+		{
+			"id": 9,
+			"graded_credits": 5
+		},
+		{
+			"id": 10,
+			"graded_credits": 5
+		},
+		{
+			"id": 11,
+			"graded_credits": 5
+		},
+		{
+			"id": 12,
+			"graded_credits": 15
+		},
+		{
+			"id": 13,
+			"graded_credits": 5
+		},
+		{
+			"id": 14,
+			"graded_credits": 15
+		},
+		{
+			"id": 15,
+			"graded_credits": 5,
+			"weight": 0.5
+		},
+		{
+			"id": 16,
+			"graded_credits": 30
+		}
+	],
+	"source": {
+		"document": "Studien- und Prüfungsordnung Bachelor, Lesefassung vom 02.04.2024",
+		"url": "https://www.fin.ovgu.de/inf_media/Studiendokumente/Studien_+und+Pr%C3%BCfungsordnung/Bachelorstudieng%C3%A4nge/SPO_Bachelor_2024_04_02_Lesefassung.pdf",
+		"page": 37,
+		"retrieved": "2026-09-17"
+	}
+}

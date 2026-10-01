@@ -1,0 +1,57 @@
+# OSCAR on a server, pulling the image instead of building it.
+#
+#   docker compose -f compose.server.yaml pull
+#   docker compose -f compose.server.yaml up -d
+#   docker compose -f compose.server.yaml logs -f
+#
+# `compose.yaml` builds from this working tree, which is right on a laptop and wrong
+# on a server: the server should run exactly the image the pipeline tested.
+#
+# Before the first start:
+#   1. cp .env.example .env   and fill in the five values
+#   2. chmod 600 .env
+#   3. docker login <forgejo host>   with a token that may read packages
+#
+# See docs/developer/forgejo.md.
+
+services:
+  oscar:
+    # Set OSCAR_IMAGE in .env, for example
+    #   OSCAR_IMAGE=git.farafin.de/farafin/oscar:latest
+    image: ${OSCAR_IMAGE:?set OSCAR_IMAGE in .env}
+    container_name: oscar
+    env_file: .env
+    volumes:
+      # The sqlite database with every student's settings, ratings and plans.
+      # It is the only thing here that cannot be rebuilt. Back this up.
+      - oscar-db:/database
+    restart: unless-stopped
+    # The bot opens outgoing connections only, to discord.com, cloud.ovgu.de and
+    # bookstack.cs.ovgu.de. It listens on nothing, so it needs no published port.
+    stop_grace_period: 20s
+    # Without a limit the log grows until the disk is full, which is what happens
+    # on a machine that runs for months rather than an afternoon.
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+    # Measured on the running bot: 94 MB and no measurable cpu while idle. The
+    # limits are generous on purpose, so a burst does not get the process killed.
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+    # A crash loop is the failure mode to expect, from a bad token or an
+    # unreachable Tables API. `restart: unless-stopped` retries forever, and the
+    # log says which of the two it was.
+    healthcheck:
+      # The bot has no http endpoint. This only proves the process is still there.
+      test: ["CMD", "sh", "-c", "pgrep -f oscar_ovgu > /dev/null"]
+      interval: 60s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  oscar-db:

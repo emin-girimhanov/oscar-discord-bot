@@ -1,0 +1,167 @@
+# based on: https://docs.gitlab.com/user/packages/package_registry/pypi_cosign_tutorial/#set-up-a-python-project
+variables:
+  # Base Python version for all jobs
+  PYTHON_VERSION: "3.14-trixie"
+  # Package names and versions
+  PACKAGE_NAME: "oscar_ovgu"
+  PYLINT_FAIL_THRESHOLD: 9.5
+  # Pip and uv cache directory for faster builds
+  PIP_CACHE_DIR: "$CI_PROJECT_DIR/.pip-cache"
+  UV_CACHE_DIR: "$CI_PROJECT_DIR/.uv-cache"
+
+
+# Template for Python-based jobs
+.python-job:
+  image:
+    name: python:${PYTHON_VERSION}
+    pull_policy: if-not-present
+  before_script:
+    # Then install Python dependencies
+    - pip install uv
+    - uv pip install --system build twine setuptools wheel
+    - uv pip install --system .[dev,docs]
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - ${PIP_CACHE_DIR}
+      - ${UV_CACHE_DIR}
+
+stages:
+  - lint
+  - test
+  - build
+  - publish
+
+
+pylint:
+  extends: .python-job
+  stage: lint
+  script:
+    # - uv pip install --system .[dev]
+    # as of october 2025, the --jobs flag produces different scores for different values
+    - pylint --recursive=y --fail-under $PYLINT_FAIL_THRESHOLD src
+    - echo "Exit Code is $?"
+  after_script:
+    - >
+      if [ $CI_JOB_STATUS == "failed" ]; then
+        echo "Pylint Score too low for build, please improve style and commit again."
+      fi
+
+commitlint:
+  stage: lint
+  image: registry.hub.docker.com/library/node:alpine
+  before_script:
+    - apk add --no-cache git
+    - npm install --save-dev @commitlint/config-conventional @commitlint/cli
+  script:
+    - |
+      if [ "$CI_COMMIT_BEFORE_SHA" = "0000000000000000000000000000000000000000" ]; then
+        npx commitlint --from HEAD~1 --to HEAD --verbose
+      else
+        npx commitlint --from $CI_COMMIT_BEFORE_SHA --to HEAD --verbose
+      fi
+  after_script:
+    - >
+      if [ "$CI_JOB_STATUS" = "failed" ]; then
+        echo "Commit messages must follow Conventional Commits, see docs/developer/workflow.md.";
+        echo "Keep the header at 120 characters or less. Long body lines only warn.";
+      fi
+
+pytest:
+  extends: .python-job
+  stage: test
+  script:
+    - pytest --cov=src --cov-report=term-missing --cov-report=html:coverage_html
+  coverage: '/TOTAL.*\s+(\d+%)/'
+  artifacts:
+    paths:
+      - coverage_html/
+    expire_in: 30 days
+
+docs-test:
+  extends: .python-job
+  stage: test
+  rules:
+    - if: $CI_COMMIT_BRANCH != $CI_DEFAULT_BRANCH
+  script:
+    - mkdocs build --strict
+
+build:
+  extends: .python-job
+  stage: build
+  script:
+    # Initialize git repo with actual content
+    # - echo $CI_COMMIT_DESCRIPTION
+
+
+    # Debug: show updated file
+    - echo "Updated pyproject.toml contents:"
+    - cat pyproject.toml
+
+    # Build package
+    - python -m build
+  artifacts:
+    paths:
+      - dist/
+      - pyproject.toml
+
+container_build_and_publish:
+  image:
+    name: quay.io/buildah/stable:latest
+    pull_policy: if-not-present
+  stage: publish
+  needs:
+    - build
+  variables:
+    STORAGE_DRIVER: vfs
+    IMAGE: 192.168.1.15:5050/studium-lehre/discord-bot
+  # The server starts the image without its own env, so the secrets are baked in (as before 3ce4726).
+  # Without them the bot crashes on login and podman auto-update silently rolls back.
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+  before_script:
+    - ls dist
+    - echo "ref protected - $CI_COMMIT_REF_PROTECTED"
+    - |
+      missing=""
+      for var in BOT_TOKEN DISCORD_SERVER_ID TABLES_URL TABLES_USERNAME TABLES_PASSWORD; do
+        eval "value=\${$var}"
+        if [ -z "$value" ]; then
+          missing="$missing $var"
+        else
+          echo "$var is set (${#value} chars)"
+        fi
+      done
+      if [ -n "$missing" ]; then
+        echo "not available in this pipeline:$missing - refusing to publish an image that can't log in"
+        exit 1
+      fi
+  script:
+    - echo "$CI_REGISTRY_PASSWORD" | buildah login 192.168.1.15:5050 -u $CI_REGISTRY_USER --password-stdin --tls-verify=false
+    - >
+      buildah build --tls-verify=false
+      --build-arg "OSCAR_REVISION=$CI_COMMIT_SHORT_SHA"
+      --build-arg "BOT_TOKEN=$BOT_TOKEN"
+      --build-arg "DISCORD_SERVER_ID=$DISCORD_SERVER_ID"
+      --build-arg "TABLES_URL=$TABLES_URL"
+      --build-arg "TABLES_USERNAME=$TABLES_USERNAME"
+      --build-arg "TABLES_PASSWORD=$TABLES_PASSWORD"
+      -t "$IMAGE:latest" -t "$IMAGE:$CI_COMMIT_SHORT_SHA" .
+    # the server auto-pulls :latest, the sha tag makes rollbacks possible
+    - buildah push --tls-verify=false $IMAGE:latest
+    - buildah push --tls-verify=false $IMAGE:$CI_COMMIT_SHORT_SHA
+
+pages:
+  extends: .python-job
+  stage: publish
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  script:
+    - ls
+    # - uv pip install --system .[docs]
+    - mkdocs build --site-dir public
+  artifacts:
+    paths:
+      - public
+

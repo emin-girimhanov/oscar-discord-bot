@@ -1,0 +1,77 @@
+{
+	"spo": 2021,
+	"study_course": 8,
+	"winter_semester": true,
+	"title": "M.Sc. Data and Knowledge Engineering - Start Wintersemester",
+	"semesters": [
+		[
+			{
+				"title": "Fundamentals of Data Science 12-18 CP · Learning Methods & Models 18-36 CP · Data Processing 18-30 CP · Applied Data Science 18-24 CP (mit Teamprojekt 6 CP)",
+				"identification": null,
+				"credit_points": 30,
+				"usability": [],
+				"groupId": null
+			}
+		],
+		[
+			{
+				"title": "Fundamentals of Data Science 12-18 CP · Learning Methods & Models 18-36 CP · Data Processing 18-30 CP · Applied Data Science 18-24 CP (mit Teamprojekt 6 CP)",
+				"identification": null,
+				"credit_points": 30,
+				"usability": [],
+				"groupId": null
+			}
+		],
+		[
+			{
+				"title": "Fundamentals of Data Science 12-18 CP · Learning Methods & Models 18-36 CP · Data Processing 18-30 CP · Applied Data Science 18-24 CP (mit Teamprojekt 6 CP)",
+				"identification": null,
+				"credit_points": 30,
+				"usability": [],
+				"groupId": null
+			}
+		],
+		[
+			{
+				"title": "Masterarbeit",
+				"identification": null,
+				"credit_points": 30,
+				"usability": [],
+				"groupId": null
+			}
+		]
+	],
+	"groups": [
+		{
+			"id": 1,
+			"graded_credits": 30
+		},
+		{
+			"id": 2,
+			"graded_credits": 10
+		},
+		{
+			"id": 3,
+			"graded_credits": 25
+		},
+		{
+			"id": 4,
+			"graded_credits": 10
+		},
+		{
+			"id": 5,
+			"graded_credits": 5
+		},
+		{
+			"id": 6,
+			"graded_credits": 30
+		}
+	],
+	"source": {
+		"document": "Studien- und Prüfungsordnung Master (englischsprachig) vom 08.04.2021, Anlage A",
+		"url": "https://www.fin.ovgu.de/inf_media/Studiendokumente/Studien_+und+Pr%C3%BCfungsordnung/Englischsprachige+Masterstudieng%C3%A4nge/SPO_Master_2021_04_08.pdf",
+		"page": 27,
+		"retrieved": "2026-09-17",
+		"note": "Der Regelstudienplan ist laut Ordnung eine Empfehlung zur Anordnung der Bereiche. Welche Module in welchem Semester belegt werden, steht den Studierenden frei. Die Ordnung nennt keine Modulnamen pro Semester, nur Bereiche mit CP-Spannen."
+	}
+}
