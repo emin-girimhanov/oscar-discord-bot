@@ -295,6 +295,31 @@ body.oscar-homepage .md-content__inner>h1 {
     flex-wrap: wrap;
 }
 
+/* Drawn here, not fetched from shields.io: the site loads nothing from other hosts. */
+.oscar-badge {
+    display: inline-flex;
+    font-family: Verdana, Geneva, sans-serif;
+    font-size: 11px;
+    line-height: 20px;
+    color: #ffffff;
+    white-space: nowrap;
+}
+
+.oscar-badge-label {
+    padding: 0 6px;
+    background: #555555;
+}
+
+.oscar-badge-value {
+    padding: 0 6px;
+}
+
+.hero-badges a,
+.hero-badges a:hover {
+    color: #ffffff;
+    text-decoration: none;
+}
+
 /* Floating animation for hero elements */
 @keyframes float {
 

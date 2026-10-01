@@ -32,7 +32,7 @@ Students often struggle to navigate the complex catalog of modules, exam regulat
 
 </div>
 
-### <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/discord.svg" width="22" style="vertical-align:middle; filter: invert(48%) sepia(88%) saturate(749%) hue-rotate(201deg);" /> **Why Discord?**
+### :simple-discord: **Why Discord?**
 
 Instead of building yet another web platform, we chose Discord because:
 

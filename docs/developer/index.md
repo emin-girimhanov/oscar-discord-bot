@@ -19,19 +19,19 @@ Welcome to the **OSCAR Bot** developer documentation. This guide helps you under
     ---
 
     Understand how the components fit together.
-    [:arrow_right: View System Architecture](core/bot.md)
+    [:octicons-arrow-right-24: View System Architecture](core/bot.md)
 
 - :material-database: **Database & Data**
     ---
 
     Learn about the SQLite schema and Data Models.
-    [:arrow_right: View Database Schema](core/database.md)
+    [:octicons-arrow-right-24: View Database Schema](core/database.md)
 
 - :material-shield-account: **Administrators**
     ---
 
     Need to deploy or maintain?
-    [:arrow_right: Admin Guide](../admin/index.md)
+    [:octicons-arrow-right-24: Admin Guide](../admin/index.md)
 
 </div>
 

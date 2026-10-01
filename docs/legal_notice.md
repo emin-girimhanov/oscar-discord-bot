@@ -12,7 +12,23 @@ For information on how we handle your data, please refer to our [Privacy Policy]
 
 ## Publisher / Operator
 
-OSCAR is a student software project developed and operated within the academic environment of:
+This instance of OSCAR, the Discord bot `OSCAR#0846`, and this copy of the documentation are operated by:
+
+<div class="author-grid">
+  <ul>
+    <li>
+      <strong>Emin Girimhanov</strong><br>
+      <em>Operator of this instance</em><br>
+      Student at the Faculty of Computer Science (FIN), Otto-von-Guericke University Magdeburg<br>
+      Germany<br>
+      <a data-email="ZW1pbi5naXJpbWhhbm92QHN0Lm92Z3UuZGU=" href="#">emin.girimhanov [at] st.ovgu.de</a>
+    </li>
+  </ul>
+</div>
+
+### Where OSCAR comes from
+
+OSCAR was developed as a student software project within the academic environment of:
 
 <div class="author-grid">
   <ul>
@@ -21,12 +37,11 @@ OSCAR is a student software project developed and operated within the academic e
       Faculty of Computer Science (FIN)<br>
       <em>Chair of Simulation</em><br>
       Universitätsplatz 2, 39106 Magdeburg, Germany<br>
-      <a href="https://www.sim.ovgu.de/">https://www.sim.ovgu.de/</a><br>
-      <strong>Phone: +49 391 67-58772 (Secretariat)</strong>
+      <a href="https://www.sim.ovgu.de/">https://www.sim.ovgu.de/</a>
     </li>
     <li>
       <strong>OSCAR Student Team</strong><br>
-      <em>Project Contact & Development</em><br>
+      <em>Development</em><br>
       <a data-email="ZW1pbi5naXJpbWhhbm92QHN0Lm92Z3UuZGU=" href="#">emin.girimhanov</a><br>
       <a data-email="Y2hyaXN0b3MubGFjaGFuYXNAc3Qub3ZndS5kZQ==" href="#">christos.lachanas</a><br>
       <a data-email="bWFsdGUuaGVkcmljaEBzdC5vdmd1LmRl" href="#">malte.hedrich</a><br>
@@ -34,6 +49,8 @@ OSCAR is a student software project developed and operated within the academic e
     </li>
   </ul>
 </div>
+
+The university, the chair and the other members of the team do not operate this instance and are not responsible for it.
 
 ---
 

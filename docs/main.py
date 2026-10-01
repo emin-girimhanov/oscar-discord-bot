@@ -118,6 +118,21 @@ def render_faq(language: str = "en") -> str:
     return "\n".join(lines)
 
 
+def _badge(label: str, value: str, color: str) -> str:
+    """ Draws one badge as plain html.
+
+        The badges used to be images from `img.shields.io`. An image from another
+        host tells that host who reads this page, and when. The privacy page says
+        the site loads nothing from elsewhere, so the badge is drawn here.
+    """
+    return (
+        '<span class="oscar-badge">'
+        f'<span class="oscar-badge-label">{label}</span>'
+        f'<span class="oscar-badge-value" style="background:#{color}">{value}</span>'
+        '</span>'
+    )
+
+
 def define_env(env):
     # mkdocs-macros hook. Registers custom macros for our templates
     # https://mkdocs-macros-plugin.readthedocs.io/
@@ -139,7 +154,7 @@ def define_env(env):
         return get_project_metadata().get("version", "unknown")
     @env.macro
     def project_badge(style: str = "inline") -> str:
-        # returns either a text badge or a nice shields.io svg
+        # returns either a text badge or two drawn badges, see `_badge`
         meta = get_project_metadata()
         version = meta.get("version", "unknown")
         is_beta = meta.get("is_beta", False)
@@ -152,11 +167,8 @@ def define_env(env):
 
         if style == "shield":
             status = "beta" if is_beta else "stable"
-            color = "orange" if is_beta else "green"
-            return (
-                f'![Version](https://img.shields.io/badge/version-{version}-{color}.svg?style=flat-square)\n'
-                f'![Status](https://img.shields.io/badge/status-{status}-orange.svg?style=flat-square)'
-            )
+            color = "d08770" if is_beta else "a3be8c"
+            return _badge("version", str(version), color) + " " + _badge("status", status, "d08770")
 
         return version
 
@@ -182,25 +194,20 @@ def define_env(env):
         status_link: str = "https://discord.com/invite/m4vQhrK",
         license_link: str = "https://github.com/emin-girimhanov/oscar-discord-bot/blob/main/LICENSE"
     ) -> str:
-        # renders the clickable shields.io badges for the top page header
+        # renders the clickable badges for the top page header, see `_badge`
         meta = get_project_metadata()
         version = meta.get("version", "unknown")
         is_beta = meta.get("is_beta", False)
         license_name = meta.get("license", "unknown")
 
-        # shields.io breaks if we don't escape double hyphens (e.g. Apache-2.0 -> Apache--2.0)
-        license_encoded = license_name.replace("-", "--")
-        version_encoded = str(version).replace("-", "--")
-
         status = "beta" if is_beta else "stable"
         status_color = "bf616a" if is_beta else "a3be8c" # we use Nord theme colors here
-        license_color = "a3be8c"
 
         return f"""
 <div class="hero-badges">
-    <a href="{version_link}"><img src="https://img.shields.io/badge/version-{version_encoded}-blue.svg?style=flat-square&color=2e3440" alt="Version"></a>
-    <a href="{status_link}"><img src="https://img.shields.io/badge/status-{status}-orange.svg?style=flat-square&color={status_color}" alt="Status"></a>
-    <a href="{license_link}"><img src="https://img.shields.io/badge/license-{license_encoded}-green.svg?style=flat-square&color={license_color}" alt="License"></a>
+    <a href="{version_link}">{_badge("version", str(version), "2e3440")}</a>
+    <a href="{status_link}">{_badge("status", status, status_color)}</a>
+    <a href="{license_link}">{_badge("license", str(license_name), "a3be8c")}</a>
 </div>
 """.strip()
 

@@ -15,6 +15,11 @@ copyright: |
 extra_css:
   - assets/stylesheets/oscar_theme.css
 extra_javascript:
+  # The theme fetches mermaid from unpkg.com the moment a page has a diagram, unless
+  # `mermaid` already exists. Serving it from here keeps every request on this host,
+  # which is what the privacy page promises. `defer` keeps it from blocking the page.
+  - path: assets/javascripts/mermaid.min.js
+    defer: true
   - assets/javascripts/scroll_header.js
   - assets/javascripts/email_protection.js
 
