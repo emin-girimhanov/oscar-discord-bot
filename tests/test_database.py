@@ -5,7 +5,7 @@ from unittest.mock import patch
 import pytest
 
 from util.database import Database, get_database, get_user_language
-from util.enums import LanguageCode, StudyCourse
+from util.enums import LanguageCode, ModuleLanguage, StudyCourse
 from util.module import Module
 
 
@@ -312,9 +312,57 @@ class TestCheckModule:
 
     def test_check_module_not_found(self, db):
         """Module not in DB and not in tables API should raise AssertionError."""
-        with patch("util.database.get_rows_from_view", return_value=[]):
+        with patch("util.database.get_rows_from_view", return_value=[]), \
+             patch("util.database.Module.from_id", side_effect=IndexError):
             with pytest.raises(AssertionError):
                 db._check_module(999, LanguageCode.DE) # pylint: disable=protected-access
+
+    def test_a_module_the_view_lacks_comes_from_the_module_table(self, db):
+        """ View 2018 holds 118 of the 292 modules. "Add to my plan" failed for the
+            other 204, although every one of them has a card in `/module`.
+        """
+        known = Module(
+            id_=120501,
+            language=ModuleLanguage.EN,
+            title="Decision Support Project",
+            title_en="Decision Support Project",
+        )
+        with patch("util.database.get_rows_from_view", return_value=[]), \
+             patch("util.database.Module.from_id", return_value=known) as from_id:
+            db.add_to_semesterplan(12345, 120501)
+
+        from_id.assert_called_once_with(120501)
+        plan = db.get_semesterplan(12345)
+        assert [module.id_ for module in plan] == [120501]
+
+    def test_the_module_table_is_not_asked_when_the_view_knows(self, db):
+        with patch("util.database.get_rows_from_view", return_value=[
+            {
+                "Identifizierung": 501,
+                "Modulsprache": LanguageCode.DE,
+                "Modultitel": "API Modul",
+                "Modultitel (englisch)": "API Module",
+            },
+        ]), patch("util.database.Module.from_id") as from_id:
+            db.add_module(501)
+
+        from_id.assert_not_called()
+
+    def test_a_module_without_an_english_title_can_be_saved(self, db):
+        """An empty english title used to fail the same assertion as an unknown id."""
+        with patch("util.database.get_rows_from_view", return_value=[
+            {
+                "Identifizierung": 502,
+                "Modulsprache": LanguageCode.DE,
+                "Modultitel": "Nur Deutsch",
+                "Modultitel (englisch)": "",
+            },
+        ]):
+            db.add_module(502)
+
+        saved = db.get_module(502, LanguageCode.DE)
+        assert saved is not None
+        assert saved.get_title(LanguageCode.EN) == "Nur Deutsch"
 
     def test_check_module_fetches_from_api(self, db):
         """Module not in DB but available from API should be added."""
@@ -381,7 +429,8 @@ class TestSemesterplan:
 
     def test_add_to_semesterplan_unknown_module_raises(self, db_with_user):
         """Adding a module that doesn't exist should raise AssertionError."""
-        with patch("util.database.get_rows_from_view", return_value=[]):
+        with patch("util.database.get_rows_from_view", return_value=[]), \
+             patch("util.database.Module.from_id", side_effect=IndexError):
             with pytest.raises(AssertionError):
                 db_with_user.add_to_semesterplan(12345, 999)
 

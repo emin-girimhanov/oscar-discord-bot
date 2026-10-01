@@ -2,6 +2,7 @@
 
 import discord
 from discord.ui import ActionRow, Button, Container, LayoutView, Separator, TextDisplay
+from loguru import logger
 
 from oscar.ui.all_info_view import AllInfoView
 from util.bookstack import has_page, module_url
@@ -11,6 +12,7 @@ from util.exams import primary_archive
 from util.lms import get_default_platform
 from util.lsf import lsf_search_url
 from util.module import Module
+from util.safe_text import plain
 from util.translations import (
     module_language_name,
     ratings_label,
@@ -83,12 +85,35 @@ class ModuleView(LayoutView):
         if len(newest) > MAX_PEEK_LENGTH:
             newest = newest[: MAX_PEEK_LENGTH - 1].rstrip() + "…"
 
-        line = "\n" + t(self.language, "latest_review", RATING_TEXTS).format(comment=newest)
+        # another student wrote this, so it must not act as markdown in OSCAR's voice
+        line = "\n" + t(self.language, "latest_review", RATING_TEXTS).format(
+            comment=plain(newest)
+        )
         if len(comments) > 1:
             line += " " + t(self.language, "more_reviews", RATING_TEXTS).format(
                 count=len(comments) - 1
             )
         return line
+
+    async def _add_to_plan(self, interaction: discord.Interaction) -> None:
+        """ Saves this module to the plan of whoever pressed the button, and says so."""
+        answer: str = "added_to_plan"
+        try:
+            get_database().add_to_semesterplan(
+                user_id=interaction.user.id, module_id=self.module.id_
+            )
+        except (AssertionError, KeyError):
+            # a button that raises shows "interaction failed" and nothing else
+            logger.exception(f"Could not add module {self.module.id_} to a plan")
+            answer = "plan_failed"
+
+        # the confirmation used to be german for everyone, including english users
+        _ = await interaction.response.send_message(
+            t(self.language, answer, MODULE_TEXTS).format(
+                title=self.module.get_title(self.language)
+            ),
+            ephemeral=True,
+        )
 
     # pylint: disable=too-many-locals
     def _build_view(self):
@@ -197,19 +222,6 @@ class ModuleView(LayoutView):
 
         rate_button.callback = rate_button_callback
 
-        async def semester_plan_button_callback(interaction: discord.Interaction):
-            db = get_database()
-            user_id = interaction.user.id
-            db.add_to_semesterplan(user_id=user_id, module_id=self.module.id_)
-
-            # the confirmation used to be german for everyone, including english users
-            _ = await interaction.response.send_message(
-                t(self.language, "added_to_plan", MODULE_TEXTS).format(
-                    title=self.module.get_title(self.language)
-                ),
-                ephemeral=True,
-            )
-
         # pylint: disable=broad-exception-caught
         async def info_button_callback(interaction: discord.Interaction):
             # Send initial (loading) response
@@ -237,7 +249,7 @@ class ModuleView(LayoutView):
                     view=AllInfoView(module=module, user_id=user_id), ephemeral=True
                 )
 
-        semester_plan_button.callback = semester_plan_button_callback
+        semester_plan_button.callback = self._add_to_plan
         info_button.callback = info_button_callback
         label1 = t(self.language, "kuerzel", MODULE_TEXTS)
         label2 = t(self.language, "sprache", MODULE_TEXTS)

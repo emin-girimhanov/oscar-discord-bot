@@ -28,6 +28,7 @@ from util.challenges import (
 )
 from util.database import get_database
 from util.enums import LanguageCode
+from util.safe_text import plain
 from util.translations import CODE_GOLF_TEXTS, t
 
 
@@ -202,12 +203,13 @@ class ChallengeView(TranslatedView):
         lines: list[str] = [title, ""]
         for entry in leaderboard:
             rank_str = medals.get(entry["rank"], f"**{entry['rank']}.**")
-            name_str = entry["name"] or f"Student {entry['user_id']}"
+            name_str = plain(entry["name"] or f"Student {entry['user_id']}")
             line = t(lang, "leaderboard_entry", CODE_GOLF_TEXTS).format(
                 rank=rank_str,
                 name=name_str,
                 length=entry["code_length"],
-                language=entry["language"],
+                # the student types the language by hand, and everybody reads this line
+                language=plain(str(entry["language"])),
             )
             lines.append(line)
 

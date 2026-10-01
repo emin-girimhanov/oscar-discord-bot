@@ -16,25 +16,37 @@ from loguru import logger
 from oscar.ui.translated_view import TranslatedView
 from util.database import Database, get_database
 from util.enums import LanguageCode
+from util.operators import DEVELOPER_IDS, is_operator
 from util.plots import create_feedback_boxplot, create_feedback_timeline
 from util.translations import FEEDBACK_REVIEW, format_duration
 from util.typed_dicts import FeedbackReviewDict
 
 
 
-DEVELOPER_IDS: list[int] = [
-    515896235081859091,     # @combifightet
-    363003829912076289,     # @malt0se
-    241687107049881602,     # @grosskahn
-    1071428951844585482,    # @_polylux_
-]
+__all__ = ["DEVELOPER_IDS", "Administration", "ReviewFeedbackView", "is_admin_or_developer"]
 
 
 
 def is_admin_or_developer(interaction: discord.Interaction) -> bool:
-    """Check if user is an admin or developer."""
+    """ Check if user is a developer, or an administrator of the home server.
+
+        An administrator of any other server is a stranger, see `util.operators`.
+    """
+    # a direct message has a plain user, and a plain user has no server permissions
+    permissions = getattr(interaction.user, "guild_permissions", None)
+    return is_operator(
+        user_id=interaction.user.id,
+        guild_id=interaction.guild_id,
+        is_administrator=bool(permissions is not None and permissions.administrator),
+    )
+
+
+async def may_review_feedback(interaction: discord.Interaction) -> bool:
+    """ The check in front of `/review_feedback`: an operator, or the owner of the app."""
+    if is_admin_or_developer(interaction):
+        return True
     # pylint: disable=C0301 # (line-too-long)
-    return interaction.user.id in DEVELOPER_IDS or (interaction.user.guild_permissions.administrator) # pyright: ignore[reportUnknownVariableType, reportUnknownMemberType, reportAttributeAccessIssue]
+    return await interaction.client.is_owner(interaction.user)  # pyright: ignore[reportAttributeAccessIssue, reportUnknownMemberType, reportUnknownVariableType]
 
 
 class Administration(commands.Cog):
@@ -58,11 +70,13 @@ class Administration(commands.Cog):
 
     @app_commands.default_permissions(administrator=True)
     @app_commands.command(description="Review the given feedback")
-    @app_commands.check(is_admin_or_developer)
+    @app_commands.check(may_review_feedback)
     async def review_feedback(self, interaction: discord.Interaction):
         """ Command to review feedback given by users."""
         # \/ important (makes the bot say it"s thinking)
-        _ = await interaction.response.defer()
+        # ephemeral: the plots are built from what students wrote, the channel has no
+        # business reading along
+        _ = await interaction.response.defer(ephemeral=True)
         db: Database = get_database()
         feedback: list[FeedbackReviewDict] = db.get_feedback()
 
@@ -76,6 +90,7 @@ class Administration(commands.Cog):
                 images=[boxplot_file, timeline_file],
             ),
             files=[boxplot_file, timeline_file],
+            ephemeral=True,
         )
 
 

@@ -15,7 +15,10 @@ def main():
     try:
         oscar: Oscar = Oscar(
             command_prefix="!",  # pyright: ignore[reportArgumentType]
-            intents=intents  # pyright: ignore[reportArgumentType]
+            intents=intents,  # pyright: ignore[reportArgumentType]
+            # OSCAR prints text students typed. Nothing it says pings anybody unless
+            # the message asks for it, the study group thread is the one that does.
+            allowed_mentions=discord.AllowedMentions.none(),  # pyright: ignore[reportArgumentType]
         )
     # pylint: disable=W0718 # (broad-exception-caught)
     except Exception:

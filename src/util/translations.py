@@ -1492,6 +1492,12 @@ MODULE_TEXTS: dict[str, dict[LanguageCode, str]] = {
         LanguageCode.DE: "{title} wurde zu deiner Semesterübersicht hinzugefügt.",
         LanguageCode.EN: "{title} was added to your semester overview.",
     },
+    "plan_failed": {
+        LanguageCode.DE: (
+            "Ich konnte {title} gerade nicht speichern. Versuch es bitte später nochmal."
+        ),
+        LanguageCode.EN: "I could not save {title} right now. Please try again later.",
+    },
     "not_found": {
         LanguageCode.DE: (
             "Ich habe kein Modul mit dem Namen **{name}** gefunden. "

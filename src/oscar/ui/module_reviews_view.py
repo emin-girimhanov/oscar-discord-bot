@@ -20,6 +20,7 @@ from discord.ui import ActionRow, Button, Container, LayoutView, Separator, Text
 from util.database import get_database, get_user_language
 from util.enums import LanguageCode
 from util.module import Module
+from util.safe_text import plain
 from util.translations import RATING_TEXTS, ratings_label, t
 
 
@@ -127,7 +128,8 @@ class ModuleReviewsView(LayoutView):
             written = format_date(int(entry["timestamp"]), self.language)
             if written:
                 head = f"{head} · {written}"
-            blocks.append(f"{head}\n> {shorten(str(entry['comment']))}")
+            # cut first, then escape, so the cut never lands inside an escape
+            blocks.append(f"{head}\n> {plain(shorten(str(entry['comment'])))}")
         return "\n\n".join(blocks)
 
     def _rate_button(self) -> Button[LayoutView]:

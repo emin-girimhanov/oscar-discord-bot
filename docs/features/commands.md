@@ -523,7 +523,8 @@ Visualizes user feedback with charts.
 
 * **Charts:** Boxplots (Metrics) & Timelines (Trends).
 * **Features:** Filter by time range (1h, 1w, All Time), Export JSON.
-* **Permission:** Admin or Developer only.
+* **Visibility:** Only you see the answer.
+* **Permission:** Operators only, see below.
 
 **Health Check**
 Checks the latency to the Discord API.
@@ -543,6 +544,17 @@ Manually synchronizes the Slash Commands with Discord.
 ```
 
 * **Use:** If new commands aren't showing up or options are outdated.
+
+**Who is an operator**
+
+`/review_feedback`, `!ping` and `!resync` answer to three kinds of people:
+
+* a developer named in `src/util/operators.py`,
+* the owner of the Discord application,
+* an administrator of the **home server**, the one `DISCORD_SERVER_ID` names.
+
+An administrator of any other server is not an operator. OSCAR is a public bot, so
+anybody can invite it to a server of their own and is the administrator there.
 
 ---
 

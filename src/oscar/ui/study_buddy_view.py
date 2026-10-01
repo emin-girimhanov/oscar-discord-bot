@@ -102,7 +102,12 @@ class CreateThreadButton(Button[LayoutView]):
                 f"Participants: {mentions}\n\n"
                 f"Use this thread to collaborate on assignments and exam preparation!"
             )
-            await thread.send(welcome_msg)
+            # the bot pings nobody by default, here the ping is the point: it is what
+            # brings the students who opted in into the thread
+            await thread.send(
+                welcome_msg,
+                allowed_mentions=discord.AllowedMentions(users=True),
+            )
 
             success_msg = (
                 f"✅ Lerngruppen-Thread {thread.mention} wurde erfolgreich erstellt!"

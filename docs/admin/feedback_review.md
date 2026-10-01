@@ -4,7 +4,7 @@ The Feedback Review system allows administrators and developers to analyze user 
 
 ## The Administration Cog
 
-This Cog handles the `/review_feedback` command, which fetches data from the database and passes it to the plotting utilities. It is protected by a permission check (`is_admin_or_developer`) ensuring only authorized personnel can access sensitive user feedback.
+This Cog handles the `/review_feedback` command, which fetches data from the database and passes it to the plotting utilities. It is protected by a permission check (`may_review_feedback`) ensuring only authorized personnel can access sensitive user feedback. Authorized are the developers, the owner of the Discord application and the administrators of the home server, the one `DISCORD_SERVER_ID` names. An administrator of any other server is refused: OSCAR is a public bot, and anybody is the administrator of a server they made themselves. The answer is ephemeral, so the channel does not see the charts.
 
 ::: src.oscar.cogs.admin.Administration
     options:

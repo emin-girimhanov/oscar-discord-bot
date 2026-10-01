@@ -14,6 +14,7 @@ from loguru import logger
 
 from util.bookstack import drop_missing_books
 from util.database import get_database
+from util.operators import is_operator
 from util.semesterplans import get_semesterplans_manager
 from util.tables import refresh_interval, warm_cache
 
@@ -182,9 +183,21 @@ class Oscar(commands.Bot):
 
         self.tree.on_error = on_app_command_error
 
+        async def operator_only(ctx: commands.context.Context[commands.Bot]) -> bool:
+            # `has_permissions(administrator=True)` let the administrator of any server
+            # in, and anybody can invite a public bot to a server of their own
+            permissions = getattr(ctx.author, "guild_permissions", None)
+            if is_operator(
+                user_id=ctx.author.id,
+                guild_id=ctx.guild.id if ctx.guild else None,
+                is_administrator=bool(permissions is not None and permissions.administrator),
+            ):
+                return True
+            return await self.is_owner(ctx.author)
+
         # Ping command to test deployment latency
         @self.command()
-        @commands.has_permissions(administrator=True)
+        @commands.check(operator_only)
         async def ping(  # pyright: ignore[reportUnusedFunction]
             ctx: commands.context.Context[commands.Bot]
         ):
@@ -193,7 +206,7 @@ class Oscar(commands.Bot):
             _ = await ctx.send(f"Latency is {latency}ms")
 
         @self.command()
-        @commands.has_permissions(administrator=True)
+        @commands.check(operator_only)
         async def resync(  # pyright: ignore[reportUnusedFunction]
             ctx: commands.context.Context[commands.Bot]
         ):

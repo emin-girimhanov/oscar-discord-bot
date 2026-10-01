@@ -17,7 +17,7 @@ hide:
   </div>
 
   <div class="hero-buttons">
-    <a href="https://discord.gg/hkzZKhnRvW" class="hero-btn btn-primary">Join Beta Server</a>
+    <a href="https://discord.com/invite/m4vQhrK" class="hero-btn btn-primary">Join FinEmporium</a>
     <a href="features/commands/" class="hero-btn btn-secondary">View Commands</a>
   </div>
 
@@ -30,10 +30,6 @@ hide:
   </div>
 
 </div>
-
-<p style="font-size: 2em; line-height: 1.5;">
-  Made by students for students.
-</p>
 
 <div class="oscar-intro" markdown>
 
@@ -104,10 +100,11 @@ OSCAR is a Discord-based assistant that helps FIN students at Otto-von-Guericke-
 
     -   🔍 **Find Modules**
         ---
-        Here you will find credit points (CP), exams, and course content; we will add LSF links soon.
+        Credit points (CP), exams and course content, with buttons to the LSF, the module handbook and the past exams. In a module channel `/here` opens the module the channel is named after.
 
         ```bash
         /module [name]
+        /here
         ```
 
         ![Search Autocomplete](assets/images/oscar_module_name.png){ width="400" .img-center }
@@ -134,7 +131,7 @@ OSCAR is a Discord-based assistant that helps FIN students at Otto-von-Guericke-
         ![Semester Overview](assets/images/oscar_semesterplan.png){ width="400" .img-center }
 
 
-    -   � **Standard Curriculum**
+    -   🗓️ **Standard Curriculum**
         ---
         View the official Regelstudienplan for your degree – see which modules are planned per semester at a glance.
 
@@ -152,6 +149,92 @@ OSCAR is a Discord-based assistant that helps FIN students at Otto-von-Guericke-
         /feedback
         ```
         ![Feedback](assets/images/oscar_feedback.png){ width="400" .img-center }
+
+    -   ⚖️ **Compare Modules**
+        ---
+        Put two or three modules side by side: credit points, exam, language and semester.
+
+        ```bash
+        /compare
+        ```
+
+    -   ⭐ **Ratings & Past Exams**
+        ---
+        Rate a module and read what other students wrote. Find the past exam archives of the student councils.
+
+        ```bash
+        /rate
+        /klausuren
+        ```
+
+    -   🏆 **Progress & Badges**
+        ---
+        See your credit points and milestones. Compare yourself with your cohort, anonymously.
+
+        ```bash
+        /progress
+        /badges
+        /cohort
+        ```
+
+    -   💡 **Suggestions**
+        ---
+        Get modules that fit your programme and your open credit points.
+
+        ```bash
+        /suggest
+        ```
+
+    -   ⏰ **Deadlines**
+        ---
+        Exam registration periods and semester milestones, with a calendar export.
+
+        ```bash
+        /fristen
+        ```
+
+    -   👥 **Study Buddies**
+        ---
+        Find other students who plan the same module. You only appear if you opt in.
+
+        ```bash
+        /studybuddy
+        ```
+
+    -   🧭 **Portals & Contacts**
+        ---
+        Which university portal is for what, and who to ask: dean's office, examination office, student council.
+
+        ```bash
+        /lms
+        /ansprechpartner
+        ```
+
+    -   ⛳ **Code Golf**
+        ---
+        A weekly programming puzzle with a leaderboard. The shortest solution wins.
+
+        ```bash
+        /codegolf
+        ```
+
+    -   🔒 **Your Data**
+        ---
+        See everything OSCAR stores about you, export it and delete it.
+
+        ```bash
+        /my_data
+        ```
+
+    -   ❓ **Help**
+        ---
+        Every command explained. You can start each one from the menu.
+
+        ```bash
+        /help
+        ```
+
+        ![Help](assets/images/oscar_help.png){ width="400" .img-center }
 
     </div>
 
@@ -188,10 +271,10 @@ OSCAR is a Discord-based assistant that helps FIN students at Otto-von-Guericke-
 
         ---
 
-        !!! warning "Test Server Required"
-            OSCAR has completed its university project phase (**v1.0.0**). Currently, the bot is hosted on a dedicated **Test Server** pending the final deployment to FinEmporium.
+        !!! success "OSCAR is on FinEmporium"
+            OSCAR runs on the FinEmporium server. Join it, type `/` in any channel and pick a command of OSCAR.
 
-            [**Click here to join the OSCAR Test Server**](https://discord.gg/hkzZKhnRvW){ .md-button .md-button--primary }
+            [**Join the FinEmporium server**](https://discord.com/invite/m4vQhrK){ .md-button .md-button--primary }
 
     === "Step 3: Start OSCAR"
         Once you are on the server, you can add your **Course of Study** and **Semester**.
@@ -212,7 +295,21 @@ OSCAR is a Discord-based assistant that helps FIN students at Otto-von-Guericke-
         ```
         /module [name]
         ```
-        🔍 Here you will find credit points (CP), exams, and course content; links to LSF will be added soon.
+        🔍 Here you will find credit points (CP), exams and course content, with buttons to the LSF and the module handbook.
+        </div>
+
+        <div class="cmd-row" markdown>
+        ```
+        /here
+        ```
+        📍 Opens the module the current channel is named after.
+        </div>
+
+        <div class="cmd-row" markdown>
+        ```
+        /compare
+        ```
+        ⚖️ Put two or three modules side by side.
         </div>
 
         <div class="cmd-row" markdown>
@@ -234,6 +331,41 @@ OSCAR is a Discord-based assistant that helps FIN students at Otto-von-Guericke-
         /standard_plan
         ```
         🗓️ View the standard curriculum for your degree and Examination Regulations.
+        </div>
+
+        <div class="cmd-row" markdown>
+        ```
+        /rate
+        ```
+        ⭐ Rate a module and read the reviews of other students.
+        </div>
+
+        <div class="cmd-row" markdown>
+        ```
+        /progress
+        ```
+        🏆 Your credit points, milestones and badges.
+        </div>
+
+        <div class="cmd-row" markdown>
+        ```
+        /fristen
+        ```
+        ⏰ Exam registration periods and semester milestones.
+        </div>
+
+        <div class="cmd-row" markdown>
+        ```
+        /my_data
+        ```
+        🔒 See, export and delete what OSCAR stores about you.
+        </div>
+
+        <div class="cmd-row" markdown>
+        ```
+        /help
+        ```
+        ❓ Every command explained, and the ones not listed here.
         </div>
 
         <div class="cmd-row" markdown>
@@ -400,10 +532,10 @@ OSCAR is a Discord-based assistant that helps FIN students at Otto-von-Guericke-
         Getting started guide for building Discord bots.
         [:octicons-arrow-right-24: Getting Started](https://docs.discord.com/developers/quick-start/getting-started)
 
-    -   :simple-discord: **Invite OSCAR (Beta)**
+    -   :simple-discord: **Invite OSCAR**
         ---
-        Add the current bot instance to your test server.
-        [:octicons-arrow-right-24: Invite Bot](https://discord.com/oauth2/authorize?client_id=1417432722581884979)
+        Add the running bot to a server of your own. It also runs on FinEmporium.
+        [:octicons-arrow-right-24: Invite Bot](https://discord.com/oauth2/authorize?client_id=1549756119033847890&permissions=2147601408&scope=bot+applications.commands)
 
     </div>
 
@@ -683,10 +815,10 @@ OSCAR is a Discord-based assistant that helps FIN students at Otto-von-Guericke-
         Getting started guide for creating a bot application.
         [:octicons-arrow-right-24: Getting Started](https://docs.discord.com/developers/quick-start/getting-started)
 
-    -   :simple-discord: **Invite OSCAR (Beta)**
+    -   :simple-discord: **Invite OSCAR**
         ---
-        Add the currently hosted beta bot to your server.
-        [:octicons-arrow-right-24: Invite Bot](https://discord.com/oauth2/authorize?client_id=1417432722581884979)
+        Add the running bot to your server. It also runs on FinEmporium.
+        [:octicons-arrow-right-24: Invite Bot](https://discord.com/oauth2/authorize?client_id=1549756119033847890&permissions=2147601408&scope=bot+applications.commands)
 
     </div>
 

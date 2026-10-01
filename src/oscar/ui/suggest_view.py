@@ -8,11 +8,13 @@
 from typing import override
 import discord
 from discord.ui import ActionRow, Container, LayoutView, Select, Separator, TextDisplay
+from loguru import logger
 
 from oscar.ui.translated_view import TranslatedView
 from util.database import get_database
 from util.enums import LanguageCode
 from util.suggestions import CATEGORY_NAMES, ModuleSuggestion, get_module_suggestions
+from util.translations import MODULE_TEXTS, t
 
 
 class SuggestView(TranslatedView):
@@ -83,7 +85,6 @@ class SuggestView(TranslatedView):
         async def callback(interaction: discord.Interaction):
             module_id = int(select.values[0])
             db = get_database()
-            db.add_to_semesterplan(self.user_id, module_id, self.language_code)
 
             saved_mod = next((s.module for s in suggestions if s.module.id_ == module_id), None)
             name = (
@@ -91,6 +92,17 @@ class SuggestView(TranslatedView):
                 if saved_mod
                 else str(module_id)
             )
+
+            try:
+                db.add_to_semesterplan(self.user_id, module_id, self.language_code)
+            except (AssertionError, KeyError):
+                # a select that raises shows "interaction failed" and nothing else
+                logger.exception(f"Could not add module {module_id} to a plan")
+                self.saved_feedback = t(
+                    self.language_code, "plan_failed", MODULE_TEXTS
+                ).format(title=name)
+                await self._update(interaction)
+                return
 
             if self.language_code == LanguageCode.DE:
                 self.saved_feedback = f"✅ **'{name}'** wurde zu deinem Semesterplan hinzugefügt!"

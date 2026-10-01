@@ -63,8 +63,9 @@ built, and that happens in a first stage that is thrown away.
 
 ## 4. Check which build is running
 
-Type `!resync` in a channel where you are an administrator, or `/version` anywhere.
-Both name the build:
+Type `!resync` on your home server, the one `DISCORD_SERVER_ID` names, or `/version`
+anywhere. `!resync` answers to the owner of the application and to the administrators
+of the home server. Both commands name the build:
 
 ```
 🔄 Build `76cb5e1` synced 9 commands to 1 server(s): /help, /module, ...

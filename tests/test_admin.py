@@ -3,26 +3,92 @@ from unittest.mock import MagicMock, AsyncMock, patch, ANY
 import discord
 from discord.ext import commands
 import pytest
-from oscar.cogs.admin import Administration, is_admin_or_developer, ReviewFeedbackView, DEVELOPER_IDS
+from oscar.cogs.admin import (
+    Administration,
+    DEVELOPER_IDS,
+    ReviewFeedbackView,
+    is_admin_or_developer,
+    may_review_feedback,
+)
 from util.enums import LanguageCode
 
+HOME_SERVER = 111
+FOREIGN_SERVER = 222
+
+
+@patch.dict("os.environ", {"DISCORD_SERVER_ID": str(HOME_SERVER)})
 class TestAdminUtils(unittest.TestCase):
+    """ OSCAR is a public bot. Anybody can invite it to a server of their own and is
+        the administrator there, so "administrator" alone must open nothing.
+    """
+
     def test_is_admin_or_developer_developer(self):
         interaction = MagicMock(spec=discord.Interaction)
         interaction.user.id = DEVELOPER_IDS[0]
+        interaction.guild_id = FOREIGN_SERVER
         self.assertTrue(is_admin_or_developer(interaction))
 
     def test_is_admin_or_developer_admin(self):
         interaction = MagicMock(spec=discord.Interaction)
         interaction.user.id = 12345
+        interaction.guild_id = HOME_SERVER
         interaction.user.guild_permissions.administrator = True
         self.assertTrue(is_admin_or_developer(interaction))
+
+    def test_an_admin_of_another_server_is_a_stranger(self):
+        """The hole: `/review_feedback` on a server the attacker made themselves."""
+        interaction = MagicMock(spec=discord.Interaction)
+        interaction.user.id = 12345
+        interaction.guild_id = FOREIGN_SERVER
+        interaction.user.guild_permissions.administrator = True
+        self.assertFalse(is_admin_or_developer(interaction))
 
     def test_is_admin_or_developer_nobody(self):
         interaction = MagicMock(spec=discord.Interaction)
         interaction.user.id = 12345
+        interaction.guild_id = HOME_SERVER
         interaction.user.guild_permissions.administrator = False
         self.assertFalse(is_admin_or_developer(interaction))
+
+    def test_a_direct_message_has_no_administrator(self):
+        """A plain user carries no `guild_permissions`, that used to raise."""
+        interaction = MagicMock(spec=discord.Interaction)
+        interaction.user = MagicMock(spec=discord.User)
+        interaction.user.id = 12345
+        interaction.guild_id = None
+        self.assertFalse(is_admin_or_developer(interaction))
+
+    def test_a_missing_home_server_closes_the_command(self):
+        interaction = MagicMock(spec=discord.Interaction)
+        interaction.user.id = 12345
+        interaction.guild_id = None
+        interaction.user.guild_permissions.administrator = True
+        with patch.dict("os.environ", {"DISCORD_SERVER_ID": ""}):
+            self.assertFalse(is_admin_or_developer(interaction))
+
+
+@patch.dict("os.environ", {"DISCORD_SERVER_ID": str(HOME_SERVER)})
+class TestMayReviewFeedback(unittest.IsolatedAsyncioTestCase):
+    async def test_the_owner_of_the_application_may(self):
+        interaction = MagicMock(spec=discord.Interaction)
+        interaction.user.id = 12345
+        interaction.guild_id = FOREIGN_SERVER
+        interaction.user.guild_permissions.administrator = False
+        interaction.client.is_owner = AsyncMock(return_value=True)
+        self.assertTrue(await may_review_feedback(interaction))
+
+    async def test_a_foreign_admin_may_not(self):
+        interaction = MagicMock(spec=discord.Interaction)
+        interaction.user.id = 12345
+        interaction.guild_id = FOREIGN_SERVER
+        interaction.user.guild_permissions.administrator = True
+        interaction.client.is_owner = AsyncMock(return_value=False)
+        self.assertFalse(await may_review_feedback(interaction))
+
+    def test_the_command_carries_the_check(self):
+        """A check that exists but is not attached protects nothing."""
+        self.assertIn(may_review_feedback, Administration.review_feedback.checks)
+
 
 class TestAdministrationCog(unittest.IsolatedAsyncioTestCase):
     async def test_review_feedback_command(self):
@@ -48,6 +114,9 @@ class TestAdministrationCog(unittest.IsolatedAsyncioTestCase):
         interaction.response.defer.assert_called_once()
         interaction.followup.send.assert_called_once()
         MockView.assert_called_once()
+        # the plots are built from what students wrote, the channel must not see them
+        self.assertTrue(interaction.response.defer.call_args.kwargs.get("ephemeral"))
+        self.assertTrue(interaction.followup.send.call_args.kwargs.get("ephemeral"))
 
     async def test_setup(self):
         from oscar.cogs.admin import setup

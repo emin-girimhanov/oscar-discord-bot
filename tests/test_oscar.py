@@ -227,3 +227,40 @@ class TestOscar(unittest.IsolatedAsyncioTestCase):
         self.assertIn("/cmd1", reply)
         # !resync is a prefix command, so its reply names the build even without a slash sync
         self.assertIn("abc1234", reply)
+
+    async def test_prefix_commands_refuse_the_admin_of_another_server(self):
+        """ OSCAR is a public bot, so anybody can be the administrator of a server it
+            is on. `!resync` from there let a stranger resync until discord throttled it.
+        """
+        with patch.dict(os.environ, {"DISCORD_SERVER_ID": "123", "BOT_TOKEN": "abc"}), \
+             patch("oscar.oscar.load_dotenv", return_value=True):
+            bot = Oscar(command_prefix="!", intents=discord.Intents.default())
+
+        captured_commands = {}
+        def command_decorator():
+            def wrapper(func):
+                captured_commands[func.__name__] = func
+                return func
+            return wrapper
+
+        bot.command = command_decorator
+        bot.setup_bot()
+        bot.is_owner = AsyncMock(return_value=False)
+
+        def context(guild_id: int) -> MagicMock:
+            ctx = MagicMock(spec=commands.Context)
+            ctx.author.id = 4711
+            ctx.author.guild_permissions.administrator = True
+            ctx.guild.id = guild_id
+            return ctx
+
+        for name in ("ping", "resync"):
+            checks = captured_commands[name].__commands_checks__
+            self.assertEqual(len(checks), 1, f"!{name} carries no check")
+            with patch.dict(os.environ, {"DISCORD_SERVER_ID": "123"}):
+                self.assertFalse(await checks[0](context(guild_id=999)))
+                self.assertTrue(await checks[0](context(guild_id=123)))
+
+        bot.is_owner = AsyncMock(return_value=True)
+        with patch.dict(os.environ, {"DISCORD_SERVER_ID": "123"}):
+            self.assertTrue(await captured_commands["resync"].__commands_checks__[0](context(999)))

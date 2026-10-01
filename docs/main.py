@@ -179,7 +179,7 @@ def define_env(env):
     @env.macro
     def project_badges_with_links(
         version_link: str = "about_oscar/",
-        status_link: str = "https://discord.gg/hkzZKhnRvW",
+        status_link: str = "https://discord.com/invite/m4vQhrK",
         license_link: str = "https://github.com/emin-girimhanov/oscar-discord-bot/blob/main/LICENSE"
     ) -> str:
         # renders the clickable shields.io badges for the top page header

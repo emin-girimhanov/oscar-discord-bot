@@ -85,7 +85,7 @@ Apache License 2.0, see [LICENSE](LICENSE).
 
 Just open this authorisation link:
 
-> <https://discord.com/oauth2/authorize?client_id=1417432722581884979>
+> <https://discord.com/oauth2/authorize?client_id=1549756119033847890&permissions=2147601408&scope=bot+applications.commands>
 
 and follow the steps
 
@@ -214,6 +214,8 @@ src
      ├─ elearning.py       # LMS & platform directory
      ├─ filter.py          # multi-select filtering and sorting
      ├─ module_ratings.py  # peer course reviews & difficulty ratings
+     ├─ operators.py       # who may use the admin commands
+     ├─ safe_text.py       # makes text a student typed safe to show to others
      ├─ study_buddy.py     # opt-in study buddy matching
      ├─ suggestions.py     # curricular recommendations & topic clusters
      └─ translations.py    # every string the bot says (DE/EN)

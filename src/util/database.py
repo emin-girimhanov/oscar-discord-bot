@@ -34,6 +34,69 @@ from util.typed_dicts import (
 
 
 
+def _from_module_table(module_id: int) -> tuple[str | None, str | None, str | None]:
+    """ Looks a module up in the module table, for the ones view 2018 does not hold.
+
+        View 2018 holds 118 rows, the module table 292. Every module the view lacks
+        ended in an assertion, so "add to my plan" failed for 204 of the 292 modules a
+        student can open. The module table is what `/module` reads, so whatever has a
+        card can be saved as well. It is kept warm, this costs no request.
+
+        Parameters:
+            module_id: The module number.
+
+        Returns:
+            The language, the german and the english title, or three times `None`
+            when the module table does not know the number either.
+    """
+    try:
+        known: Module = Module.from_id(module_id)
+    except IndexError:
+        return None, None, None
+
+    return (
+        ModuleLanguage(known.language).name,
+        known.get_title(LanguageCode.DE),
+        known.get_title(LanguageCode.EN),
+    )
+
+
+def _catalogue_entry(
+    module_id: int, language: str
+) -> tuple[str | None, str | None, str | None]:
+    """ Finds the language and the titles of a module that is only known by its number.
+
+        View 2018 is asked first. A row in the requested language wins, any other row
+        of the module is second best. `_from_module_table` covers what the view lacks.
+
+        Parameters:
+            module_id: The module number.
+            language: The language the caller would like, as a lowercase code.
+
+        Returns:
+            The language, the german and the english title. Three times `None` when
+            nobody knows the module. A module without an english title is still a
+            module, so the german title stands in for it.
+    """
+    found: tuple[str | None, str | None, str | None] = (None, None, None)
+    modules_view: list[dict[str, str | int | list[int]]] = get_rows_from_view(2018)
+    for module in modules_view:
+        if module["Identifizierung"] != module_id:
+            continue
+        found = (
+            ModuleLanguage(module.get("Modulsprache", 1)).name,
+            str(module.get("Modultitel", "")),
+            str(module.get("Modultitel (englisch)", "")),
+        )
+        if module["Modulsprache"] == ModuleLanguage.from_language_code(language):
+            break
+
+    if not (found[0] and found[1]):
+        found = _from_module_table(module_id)
+
+    return found[0], found[1], found[2] or found[1]
+
+
 # pylint: disable=too-many-public-methods
 class Database():
     """ Class for handling database operations.
@@ -619,21 +682,7 @@ class Database():
             if len(args) == 2:                   # pyright: ignore[reportUnknownArgumentType]
                 language = ModuleLanguage(args[1]).name
 
-            modules_view: list[dict[str, str | int | list[int]]] = get_rows_from_view(2018)
-            temp_language: str | None = None
-            temp_title: str | None = None
-            temp_title_en: str | None = None
-            for module in modules_view:
-                if module["Identifizierung"] == module_id and \
-                    module["Modulsprache"] == ModuleLanguage.from_language_code(language):
-                    temp_language = ModuleLanguage(module.get("Modulsprache", 1)).name
-                    temp_title = str(module.get("Modultitel", ""))
-                    temp_title_en = str(module.get("Modultitel (englisch)", ""))
-                    break
-                if module["Identifizierung"] == module_id:
-                    temp_language = ModuleLanguage(module.get("Modulsprache", 1)).name
-                    temp_title = str(module.get("Modultitel", ""))
-                    temp_title_en = str(module.get("Modultitel (englisch)", ""))
+            temp_language, temp_title, temp_title_en = _catalogue_entry(module_id, language)
 
             assert temp_language and temp_title and temp_title_en, \
                 f"Module {module_id} not found in catalogue."
