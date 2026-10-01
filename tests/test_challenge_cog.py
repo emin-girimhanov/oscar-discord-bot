@@ -164,7 +164,7 @@ class TestChallengeView:
         mock_db.get_challenge_leaderboard.return_value = [
             {"user_id": 1, "name": "Alice", "language": "python", "code_length": 25, "rank": 1},
             {"user_id": 2, "name": "Bob", "language": "c", "code_length": 30, "rank": 2},
-            {"user_id": 3, "name": None, "language": "rust", "code_length": 40, "rank": 3},
+            {"user_id": 515896235081859091, "name": None, "language": "rust", "code_length": 40, "rank": 3},
             {"user_id": 4, "name": "Dave", "language": "js", "code_length": 50, "rank": 4},
         ]
         mock_get_db.return_value = mock_db
@@ -177,7 +177,9 @@ class TestChallengeView:
         assert "25 Bytes" in text
         assert "🥈" in text
         assert "🥉" in text
-        assert "Student 3" in text
+        assert "Student" in text
+        # no name is stored, and the fallback used to print the raw discord id
+        assert "515896235081859091" not in text
 
     @pytest.mark.asyncio
     async def test_button_callbacks(self, mock_challenge):

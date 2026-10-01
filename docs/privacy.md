@@ -97,7 +97,7 @@ OSCAR supports semester planning and provides module-related information within 
 To provide its functionality, OSCAR processes the following data:
 
 **A. Transient Data (Processed but not stored permanently)**
-* **Message Content:** The bot reads messages only to identify commands (e.g., `!oscar ...`). Content not addressed to the bot is ignored.
+* **Message Content:** The bot reads messages only to identify the two operator commands `!ping` and `!resync`. Content not addressed to the bot is ignored, and no message is stored or logged.
 * **Discord Display Names:** Used for temporary interaction but not logged.
 
 **B. Persistently Stored Data (Database)**
@@ -105,6 +105,12 @@ To provide its functionality, OSCAR processes the following data:
 * **Preferences:** Settings you explicitly save (e.g., study program, language, semester).
 * **Semester Plan:** List of Module IDs you have added to your plan.
 * **Feedback:** Text entries and ratings you explicitly submit via the feedback command.
+* **Module Ratings & Reviews:** The stars, the difficulty and the optional text you submit with `/rate`. Other students see the rating and the text, without your name and without your ID.
+* **Study Buddies:** The modules you opted in for with `/studybuddy`. Students who opted in for the same module can see your Discord account. Nobody else can, and leaving removes the entry.
+* **Code Golf:** Your shortest solution per challenge and the language you named. The leaderboard shows the length and the language, not your name and not your ID.
+
+**C. Log**
+The bot writes a technical log: that it started, which commands it registered and which errors occurred. It does not record who used which command, and it does not contain your Discord User ID.
 
 **We do not intentionally store:** Real names, email addresses, IP addresses of Discord users, or general chat logs.
 
@@ -119,6 +125,8 @@ To provide its functionality, OSCAR processes the following data:
 ### 6.5 Data Retention
 * **User Preferences:** Stored until you delete your data with `/my_data`, or until the project is discontinued.
 * **Feedback:** Stored for up to **6 months** for quality evaluation, then anonymized or deleted. `/my_data` removes yours immediately, without waiting for that.
+* **Backups:** A copy of the database is made every night and kept for **14 days**, readable by the operator only. Data you delete with `/my_data` is gone from the live database at once and from the last copy after 14 days.
+* **Log:** At most 50 MB, older lines are overwritten.
 
 ---
 

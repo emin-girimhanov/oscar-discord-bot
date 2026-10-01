@@ -11,7 +11,6 @@ from datetime import datetime, timezone
 
 import discord
 from discord.ui import ActionRow, Button, Container, LayoutView, Separator, TextDisplay
-from loguru import logger
 
 from oscar.ui.owner_only import OwnerOnly
 from util.database import get_database
@@ -340,8 +339,8 @@ class DeleteConfirmView(OwnerOnly, LayoutView):
 
     async def _delete(self, interaction: discord.Interaction) -> None:
         """ Removes everything, then says so in place of the question."""
-        removed: dict[str, int] = get_database().delete_user_data(self.user_id)
-        logger.info(f"User ({self.user_id}) deleted their own data: {removed}")
+        # `delete_user_data` logs how many rows went, without naming the student
+        _ = get_database().delete_user_data(self.user_id)
 
         self._show_outcome(t(self.language, "deleted", MY_DATA_TEXTS))
         _ = await interaction.response.edit_message(view=self)

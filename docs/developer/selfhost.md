@@ -134,11 +134,15 @@ real name is `discord-bot_oscar-db`. Ask Docker rather than guessing:
 docker volume ls | grep oscar
 ```
 
-Back up the database file:
+Copy the database file once, by hand:
 
 ```bash
 docker compose cp oscar:/database/oscar.db ./oscar-backup.db
 ```
+
+That is fine while the bot is stopped. While it runs, a plain copy can catch the file
+in the middle of a write. [Backing it up every night](#backing-it-up-every-night)
+uses the SQLite backup API instead.
 
 Restoring overwrites a file SQLite may have open, so stop the bot first:
 
@@ -188,6 +192,86 @@ The stamp matters. Without it every build calls itself `selfhost` and `!resync` 
 no longer tell you which version is answering.
 
 The database volume survives this. Only the image is replaced.
+
+### Backing it up every night
+
+The database holds what students saved, and it lives in one volume. `tools/oscar-backup.sh`
+copies it with the SQLite backup API, checks that the copy opens, and deletes copies
+older than 14 days. A copy is personal data like the original: the script keeps it in
+`/var/backups/oscar`, readable by root only. The 14 days are what the
+[privacy page](../privacy.md) promises, change both together.
+
+```bash
+sudo install -m 700 tools/oscar-backup.sh /usr/local/sbin/oscar-backup
+sudo /usr/local/sbin/oscar-backup          # run it once and read what it says
+```
+
+Run it every night with a systemd timer:
+
+```ini title="/etc/systemd/system/oscar-backup.service"
+[Unit]
+Description=Copy the OSCAR database to /var/backups/oscar
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/oscar-backup
+```
+
+```ini title="/etc/systemd/system/oscar-backup.timer"
+[Unit]
+Description=Nightly copy of the OSCAR database
+
+[Timer]
+OnCalendar=*-*-* 03:30:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target
+```
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now oscar-backup.timer
+```
+
+The copies sit on the same disk as the original. They save you from a bad update and
+from a deleted volume, not from a dead disk. Copy the folder to a second machine if
+that matters to you, and keep it as closed there as it is here.
+
+### Running it without root
+
+The container needs to write to `/database` and to a scratch `/tmp`, nothing else. Give
+the volume to an unprivileged user once, while the bot is stopped:
+
+```bash
+docker compose down
+sudo chown -R 10001:10001 "$(docker volume inspect -f '{{ .Mountpoint }}' discord-bot_oscar-db)"
+```
+
+Then add this to the `oscar` service in `compose.yaml` and start it again:
+
+```yaml
+    environment:
+      LOGURU_LEVEL: INFO      # the debug lines are not worth keeping
+      HOME: /tmp
+    user: "10001:10001"
+    read_only: true
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+```
+
+A bug in the bot or in a library can then do no more than the bot itself. Check it:
+
+```bash
+docker compose exec oscar id          # uid=10001
+docker compose exec oscar touch /x    # Read-only file system
+```
 
 ### Keeping the log small
 

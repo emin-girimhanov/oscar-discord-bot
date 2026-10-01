@@ -110,7 +110,7 @@ def _get_user_context(user_id: int | None) -> UserContext:
         plan = db.get_semesterplan(user_id)
         saved_ids = {m.id_ for m in plan}
     except (KeyError, ValueError) as exc:
-        logger.debug(f"Could not read semester plan for user {user_id}: {exc}")
+        logger.debug(f"Could not read the semester plan of a user: {exc}")
 
     try:
         prefs = db.get_preferences(user_id)
@@ -118,7 +118,7 @@ def _get_user_context(user_id: int | None) -> UserContext:
             major = prefs.get("major")
             semester = prefs.get("semester")
     except (KeyError, ValueError) as exc:
-        logger.debug(f"Could not read preferences for user {user_id}: {exc}")
+        logger.debug(f"Could not read the preferences of a user: {exc}")
 
     return UserContext(saved_ids=saved_ids, major=major, semester=semester)
 

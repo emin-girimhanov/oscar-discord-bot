@@ -203,7 +203,9 @@ class ChallengeView(TranslatedView):
         lines: list[str] = [title, ""]
         for entry in leaderboard:
             rank_str = medals.get(entry["rank"], f"**{entry['rank']}.**")
-            name_str = plain(entry["name"] or f"Student {entry['user_id']}")
+            # No name is stored, so this used to print the raw discord id, which
+            # anybody can turn back into the account. The rank tells the rows apart.
+            name_str = plain(entry["name"] or "Student")
             line = t(lang, "leaderboard_entry", CODE_GOLF_TEXTS).format(
                 rank=rank_str,
                 name=name_str,

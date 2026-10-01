@@ -452,3 +452,70 @@ class TestTheHandbookButtonSaysWhereItGoes:
                 if "Modulhandbuch" in label or "Handbuch suchen" in label
             ]
             assert len(handbook) == 1, f"module {module_id} has {handbook}"
+
+
+class TestRefreshingTheMap:
+    """ The map in the image is a snapshot, and the slugs in it stop working.
+
+        On 2026-10-01 eleven of thirteen books answered 404, two weeks after the file
+        was written. Dropping them turned every handbook button into a search.
+        `refresh_books` reads the map again, so a renamed book is found.
+    """
+
+    def test_a_renamed_book_is_found_under_its_new_slug(self, page_map):
+        fresh = {"BSC_INF": {"slug": "bsc-informatik-new-Xy1", "pages": {"100391": "seite"}}}
+        with patch("util.bookstack.build_map", return_value=fresh):
+            assert bookstack.refresh_books(MagicMock()) == ["BSC_INF"]
+
+        assert page_map["BSC_INF"]["slug"] == "bsc-informatik-new-Xy1"
+        assert bookstack.module_url(100391, "x", StudyCourse.BSC_INF).endswith(
+            "/books/bsc-informatik-new-Xy1/page/seite"
+        )
+
+    def test_an_unreachable_bookstack_keeps_the_old_map(self, page_map):
+        before = {key: dict(book) for key, book in page_map.items()}
+        with patch("util.bookstack.build_map", side_effect=requests.ConnectionError("down")):
+            assert bookstack.refresh_books(MagicMock()) == []
+        assert page_map == before
+
+    def test_a_book_that_comes_back_empty_is_not_taken(self, page_map):
+        """No pages means the markup changed, not that the handbook is empty."""
+        old_slug = page_map["BSC_INF"]["slug"]
+        fresh = {"BSC_INF": {"slug": "bsc-informatik-new-Xy1", "pages": {}}}
+        with patch("util.bookstack.build_map", return_value=fresh):
+            assert bookstack.refresh_books(MagicMock()) == []
+        assert page_map["BSC_INF"]["slug"] == old_slug
+
+    def test_nothing_is_written_to_disk(self, page_map, tmp_path):
+        """The container has a read only filesystem, the fresh map lives in memory."""
+        fresh = {"BSC_INF": {"slug": "bsc-informatik-new-Xy1", "pages": {"1": "a"}}}
+        with patch("util.bookstack.build_map", return_value=fresh),              patch("util.bookstack.assets_dir", return_value=tmp_path):
+            _ = bookstack.refresh_books(MagicMock())
+        assert not list(tmp_path.iterdir())
+        assert page_map["BSC_INF"]["pages"] == {"1": "a"}
+
+
+class TestTheBotKeepsTheLinksFresh:
+    """The loop around `refresh_books`, and what happens when a round fails."""
+
+    @pytest.fixture(name="bot")
+    def bot_fixture(self):
+        # pylint: disable=import-outside-toplevel
+        from oscar.oscar import Oscar
+        bot = MagicMock(spec=Oscar)
+        bot.keep_handbook_links_fresh = Oscar.keep_handbook_links_fresh.__get__(bot)
+        return bot
+
+    async def test_a_round_refreshes_first_and_drops_what_is_still_dead(self, bot):
+        bot.is_closed.side_effect = [False, True]
+        order: list[str] = []
+        with patch("oscar.oscar.refresh_books", side_effect=lambda: order.append("refresh")),              patch("oscar.oscar.drop_missing_books", side_effect=lambda: order.append("drop")),              patch("asyncio.sleep") as sleep:
+            await bot.keep_handbook_links_fresh()
+        assert order == ["refresh", "drop"]
+        sleep.assert_awaited_once()
+
+    async def test_a_failed_round_does_not_end_the_loop(self, bot):
+        bot.is_closed.side_effect = [False, False, True]
+        with patch("oscar.oscar.refresh_books", side_effect=[OSError("down"), []]) as refresh,              patch("oscar.oscar.drop_missing_books", return_value=[]),              patch("asyncio.sleep"):
+            await bot.keep_handbook_links_fresh()
+        assert refresh.call_count == 2

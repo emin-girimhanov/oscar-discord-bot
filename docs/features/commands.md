@@ -207,6 +207,8 @@ Displays your saved modules grouped by semester.
 1. **Add:** Use `/module` search and click "Add to Plan".
 2. **View:** Run `/semesterplan` to see the overview.
 3. **Remove:** Press the `X` next to a module. `more info` opens its card again.
+   A plan with more than six modules is shown as one list. Two menus under it remove
+   a module or open its card.
 4. **Export Calendar (`.ics`):** Click the **📅 Kalender (.ics, ohne Zeiten)** button to receive a standard iCalendar file with your enrolled modules, BookStack links, and official FIN examination deadlines.
 
 ---

@@ -37,7 +37,8 @@ a draft handbook beats no handbook. Otherwise drafts are skipped.
 
 ## Rebuilding the map
 
-Run this from the repository root, inside the university network:
+The bot rebuilds the map by itself, see below. To refresh the file the image ships,
+run this from the repository root. BookStack is public, any network will do:
 
 ```bash
 python tools/generate_bookstack_map.py
@@ -66,14 +67,24 @@ A slug carries the term and a random suffix. `bsc-computervisualistik-ab-sommer-
 became `bsc-computervisualistik-ab-winter-202627-HD7`. Nothing in the slug survives a
 rollover, so nothing about it can be written down.
 
-Three things guard against a repeat:
+It happened again. On **2026-10-01**, two weeks after the map was rebuilt, eleven of
+thirteen books answered 404: every programme book had a new random suffix. Every
+handbook button opened a search.
+
+Four things guard against a repeat:
+
+* **The bot rebuilds the map.** `refresh_books()` reads `/books` and every book again,
+  at startup and every six hours, and uses the result in memory. It takes about five
+  seconds and seventeen requests on a background thread. A renamed book is found
+  under its new slug without anybody running a tool. The reading logic lives in
+  `src/util/bookstack_map.py`, the tool in `tools/` only writes the file.
 
 * **The generator discovers the books.** `BOOK_PREFIXES` holds only the part of a slug
   that never changes, such as `bsc-computervisualistik`. `pick_book()` takes the newest
   published edition. `tests/test_bookstack_generator.py` pins the rules to the real
   listing of 30 books, including the traps: `bsc-informatik` must not take
   `bsc-ingenieurinformatik`, and an archived handbook must never be picked.
-* **The bot checks at startup.** `drop_missing_books()` asks BookStack for each book
+* **The bot checks after every refresh.** `drop_missing_books()` asks BookStack for each book
   once and forgets the ones that answer 404, so a module in a gone book falls through
   to the search instead of handing a student a dead link. It only drops on 404 and
   410; a timeout or a DNS failure keeps everything, because the bot runs outside the
@@ -81,8 +92,8 @@ Three things guard against a repeat:
 * **A test refuses the slugs that are already dead**, by name, so they cannot come back
   in a bad merge.
 
-Rebuild the map at the start of each semester anyway. The startup check keeps a stale
-map harmless, it does not make it useful.
+The file in the image is only the fallback for a start without BookStack. Rebuilding
+it at the start of a semester keeps that fallback useful.
 
 ---
 

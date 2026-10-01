@@ -13,10 +13,15 @@
     books of summer 2026 answered 404 by the afternoon, replaced by a winter 2026/27
     edition. A student clicking the handbook button landed on a BookStack error page.
 
-    So `drop_missing_books` runs once at startup. It asks BookStack for each book and
-    forgets the ones it answers 404 for. A module in a forgotten book falls through to
-    the catalogue and then to the search, which always works. The bot ends up one click
-    worse instead of broken, and the log says which book to regenerate.
+    So `drop_missing_books` asks BookStack for each book and forgets the ones it
+    answers 404 for. A module in a forgotten book falls through to the catalogue and
+    then to the search, which always works. The bot ends up one click worse instead of
+    broken.
+
+    That was not enough. On 2026-10-01 eleven of thirteen books were gone again, and
+    one click worse for every module is most of what the button is for. `refresh_books`
+    therefore reads the map again from BookStack, at startup and a few times a day, so
+    a renamed book is found under its new slug. Dropping stays as the net underneath.
 """
 
 import json
@@ -27,6 +32,7 @@ from urllib.parse import quote
 import requests
 from loguru import logger
 
+from util.bookstack_map import build_map
 from util.enums import StudyCourse
 from util.paths import assets_dir
 
@@ -194,6 +200,51 @@ def has_page(module_id: int, study_course: StudyCourse | None = None) -> bool:
         books.get(key) is not None and number in books[key]["pages"]
         for key in keys
     )
+
+
+def refresh_books(session: requests.Session | None = None) -> list[str]:
+    """ Reads the page map from BookStack again and uses it from now on.
+
+        The file the image ships is a snapshot, and the slugs in it stop working
+        whenever the faculty publishes a book again. `drop_missing_books` only turns a
+        dead link into a search. This finds the book under its new slug, so the
+        handbook button opens the module page again without anybody running a tool.
+
+        Nothing is written to disk. The fresh map lives in memory, and the shipped
+        file stays the fallback for the next start.
+
+        A book is only replaced when BookStack returned pages for it. A book that
+        comes back empty means the markup changed, not that the handbook is empty,
+        and the old entry is the better guess then.
+
+        Parameters:
+            session: The session to ask with, for tests. A new one is made otherwise.
+
+        Returns:
+            The keys of the books that were replaced. Empty when BookStack could not
+            be read, the old map is kept then.
+    """
+    books = _load()
+
+    owned = session is None
+    session = session or requests.Session()
+    try:
+        fresh = build_map(session)
+    except requests.RequestException as error:
+        logger.warning(f"Could not refresh the BookStack pages ({error}), keeping the old map")
+        return []
+    finally:
+        if owned:
+            session.close()
+
+    replaced: list[str] = []
+    for key, book in fresh.items():
+        if book["pages"]:
+            books[key] = book  # pyright: ignore[reportArgumentType]
+            replaced.append(key)
+
+    logger.info(f"Refreshed the BookStack pages of {len(replaced)} books")
+    return replaced
 
 
 def drop_missing_books(session: requests.Session | None = None) -> list[str]:

@@ -23,166 +23,40 @@
     this script reads `/books`, matches each programme by the stable part of its slug,
     and picks the newest published edition.
 
-    Run it from the repository root, inside the university network:
+    The reading itself lives in `util.bookstack_map`, because the bot runs it as well.
+    This script is what writes the result to the file the image ships as a fallback.
+
+    Run it from the repository root. BookStack is public, any network will do:
 
         python tools/generate_bookstack_map.py
 
-    Nothing in the bot calls this. The generated file is read by `util.bookstack`.
+    The generated file is read by `util.bookstack` at startup. The bot then refreshes
+    it in memory, so a stale file costs a few seconds of search links, not weeks.
 """
 
-import html
 import json
-import re
 import sys
 from pathlib import Path
 
 import requests
 
+# the script is run from the repository root, without the package being installed
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-BASE: str = "https://bookstack.cs.ovgu.de"
-TIMEOUT: int = 30
-
-# How many pages of the book listing to read. It has held three, four is slack.
-LISTING_PAGES: int = 4
-
-# The stable part of the slug per book, keyed by the `StudyCourse` member name plus
-# the two fallback books. A slug matches when it starts with this after the `entwurf-`
-# prefix is stripped. The prefixes are written so that no two of them overlap:
-# `bsc-informatik` never matches `bsc-ingenieurinformatik`, which starts differently.
-BOOK_PREFIXES: dict[str, str] = {
-    "BSC_INF": "bsc-informatik",
-    "BSC_CV": "bsc-computervisualistik",
-    "BSC_INGINF": "bsc-ingenieurinformatik",
-    "BSC_WIF": "bsc-wirtschaftsinformatik",
-    "BSC_INF_BILINGUAL": "bsc-bilinguale-informatik",
-    "MSC_INF": "msc-informatik",
-    "MSC_INGINF": "msc-ingenieurinformatik",
-    "MSC_WIF": "msc-wirtschaftsinformatik",
-    "MSC_DKE": "msc-data-and-knowledge-engineering",
-    "MSC_DE": "msc-digital-engineering",
-    "MSC_VC": "msc-visual-computing",
-    # The combined catalogue, the fallback for a module its programme book omits.
-    "CATALOGUE": "modulkatalog",
-    # Modules that are not read every term. They are in no programme book.
-    "IRREGULAR": "unregelmassige-module",
-}
-
-# Books that are not the handbook of a current programme.
-IGNORED_PREFIXES: tuple[str, ...] = (
-    "archivierte-modulhandbucher",
-    "archived-module-handbooks",
-    "templates",
-    "module-catalog-courtesy-translation",
+# pylint: disable=wrong-import-position
+from util.bookstack_map import (  # noqa: E402
+    BASE,
+    BOOK_PREFIXES,
+    DRAFT_PREFIX,
+    _modules_of,
+    edition_of,
+    listed_slugs,
+    pick_book,
 )
 
-# A draft is linked only when the programme has nothing else.
-DRAFT_PREFIX: str = "entwurf-"
-
-MODULE_NUMBER = re.compile(r"(?:Modulnummer|Module-ID|Modulnr\.?)\s*:?\s*FIN-[A-Za-z]+-(\d+)")
-BOOK_LINK = re.compile(r'href="' + re.escape(f"{BASE}/books/") + r'([a-zA-Z0-9-]+)"')
-TAG = re.compile(r"<[^>]+>")
-SPACE = re.compile(r"\s+")
-
-# `winter-202627`, `sommer-2026`, `from-winter-202627`. The digits sort the editions.
-TERM = re.compile(r"(?:winter|sommer|summer)-(\d{4,6})")
-
-
-def listed_slugs(session: requests.Session) -> list[str]:
-    """ Reads every book slug the listing shows.
-
-        Parameters:
-            session: The session to fetch with.
-
-        Returns:
-            The slugs, without duplicates, in the order they were seen.
-    """
-    seen: set[str] = set()
-    slugs: list[str] = []
-    for page in range(1, LISTING_PAGES + 1):
-        response = session.get(f"{BASE}/books?page={page}", timeout=TIMEOUT)
-        response.raise_for_status()
-        for slug in BOOK_LINK.findall(response.text):
-            if slug not in seen:
-                seen.add(slug)
-                slugs.append(slug)
-    return slugs
-
-
-def edition_of(slug: str) -> int:
-    """ Turns the term in a slug into a number that sorts the editions.
-
-        Parameters:
-            slug: The book slug.
-
-        Returns:
-            A bigger number for a newer edition, `0` when the slug names no term.
-            `winter-202627` beats `sommer-2026`, because the winter term that starts
-            in 2026 comes after the summer term of the same year.
-    """
-    match = TERM.search(slug)
-    if match is None:
-        return 0
-    digits = match.group(1)
-    year = int(digits[:4])
-    return year * 10 + (1 if len(digits) > 4 else 0)
-
-
-def pick_book(slugs: list[str], prefix: str) -> str | None:
-    """ Picks the book a programme should be linked to.
-
-        Parameters:
-            slugs: Every slug the listing showed.
-            prefix: The stable part of the slug, from `BOOK_PREFIXES`.
-
-        Returns:
-            The newest published edition, or the newest draft when there is no
-            published one, or `None` when the programme has no book at all.
-    """
-    candidates: list[tuple[bool, int, str]] = []
-    for slug in slugs:
-        if slug.startswith(IGNORED_PREFIXES):
-            continue
-        bare = slug[len(DRAFT_PREFIX):] if slug.startswith(DRAFT_PREFIX) else slug
-        if not bare.startswith(prefix):
-            continue
-        # a hyphen or the end has to follow, so `msc-informatik` does not take
-        # `msc-informatikrecht` for an edition of itself
-        rest = bare[len(prefix):]
-        if rest and not rest.startswith("-"):
-            continue
-        candidates.append((slug.startswith(DRAFT_PREFIX), edition_of(slug), slug))
-
-    if not candidates:
-        return None
-    # published before draft, then the newest edition, then the name for a stable pick
-    candidates.sort(key=lambda entry: (entry[0], -entry[1], entry[2]))
-    return candidates[0][2]
-
-
-def _page_links(page_html: str, book_slug: str) -> list[tuple[str, str]]:
-    """ Returns `(page_slug, preview_text)` for every page link in a book listing."""
-    pattern = re.compile(
-        r'href="' + re.escape(f"{BASE}/books/{book_slug}/page/") + r'([^"#?]+)"[^>]*>(.*?)</a>',
-        re.DOTALL,
-    )
-    found: list[tuple[str, str]] = []
-    for match in pattern.finditer(page_html):
-        text = html.unescape(SPACE.sub(" ", TAG.sub(" ", match.group(2))).strip())
-        found.append((match.group(1), text))
-    return found
-
-
-def _modules_of(session: requests.Session, book_slug: str) -> dict[str, str]:
-    """ Maps module number to page slug for one book."""
-    response = session.get(f"{BASE}/books/{book_slug}", timeout=TIMEOUT)
-    response.raise_for_status()
-
-    modules: dict[str, str] = {}
-    for page_slug, preview in _page_links(response.text, book_slug):
-        number = MODULE_NUMBER.search(preview)
-        if number is not None:
-            modules.setdefault(number.group(1), page_slug)
-    return modules
+__all__ = [
+    "BASE", "BOOK_PREFIXES", "DRAFT_PREFIX", "edition_of", "listed_slugs", "pick_book", "main",
+]
 
 
 def main() -> int:

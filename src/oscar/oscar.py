@@ -12,13 +12,17 @@ from discord.ext import commands
 from dotenv import load_dotenv
 from loguru import logger
 
-from util.bookstack import drop_missing_books
+from util.bookstack import drop_missing_books, refresh_books
 from util.database import get_database
 from util.operators import is_operator
 from util.semesterplans import get_semesterplans_manager
 from util.tables import refresh_interval, warm_cache
 
 oscar_cogs = importlib.import_module("oscar.cogs")
+
+# How often the handbook links are read again. The slugs have changed twice within a
+# day, and the round costs seventeen small requests, so four times a day is cheap.
+HANDBOOK_REFRESH_SECONDS: int = 6 * 60 * 60
 
 
 class Oscar(commands.Bot):
@@ -128,6 +132,28 @@ class Oscar(commands.Bot):
                 logger.exception("Could not warm the module table")
             await asyncio.sleep(refresh_interval())
 
+    async def keep_handbook_links_fresh(self):
+        """ Finds the module handbooks again whenever BookStack renames them.
+
+            The page map in the image is a snapshot. Two weeks after it was written
+            eleven of its thirteen books answered 404, and every handbook button
+            opened a search instead of the module. Reading the map again takes about
+            five seconds on a thread nobody waits for.
+
+            `refresh_books` finds a renamed book under its new slug. `drop_missing_books`
+            runs after it and turns whatever is still dead into a search, so a student
+            never lands on an error page.
+        """
+        while not self.is_closed():
+            try:
+                _ = await asyncio.to_thread(refresh_books)
+                _ = await asyncio.to_thread(drop_missing_books)
+            # pylint: disable=W0718  # (broad-exception-caught)
+            except Exception:
+                # the links of the last round keep working, the next round tries again
+                logger.exception("Could not refresh the module handbook links")
+            await asyncio.sleep(HANDBOOK_REFRESH_SECONDS)
+
     def setup_bot(self):
         """Sets up (automatically loads all available cogs) and runs the bot instance"""
         self._startup_done: bool = False
@@ -154,9 +180,8 @@ class Oscar(commands.Bot):
             self._startup_done = True
 
             # The faculty renames a BookStack book whenever an edition rolls over, and
-            # the module handbook button then opens a 404. Asking once here costs two
-            # seconds off the hot path and turns a dead link into a search.
-            _ = asyncio.create_task(asyncio.to_thread(drop_missing_books))
+            # the module handbook button then opens a 404.
+            _ = asyncio.create_task(self.keep_handbook_links_fresh())
 
             # Nobody should be the one who waits for the module table.
             _ = asyncio.create_task(self.keep_tables_warm())

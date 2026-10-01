@@ -610,7 +610,8 @@ class Database():
                 )
                 prefs["major"] = major
             except ValueError:
-                logger.warning(f"User ({user_id}) has invalid major '{row['major']}'")
+                # no user id here: a log line outlives the row, and `/my_data` cannot delete it
+                logger.warning(f"A user has the invalid major '{row['major']}'")
 
             if row["semester"] is not None:
                 prefs["semester"] = int(row["semester"])  # pyright: ignore[reportAny]
@@ -1043,7 +1044,8 @@ Using '{temp_language}' instead.")
 
             conn.commit()
 
-        logger.info(f"Deleted the stored data of user ({user_id}): {removed}")
+        # the id is left out on purpose, "everything is gone" must include the log
+        logger.info(f"Deleted the stored data of one user: {removed}")
         return removed
 
 
@@ -1578,7 +1580,7 @@ def get_user_language(user_id: int) -> LanguageCode:
     prefs: PrefsDict | None = _db.get_preferences(user_id)
 
     if not prefs:
-        logger.warning(f"User ({user_id}) has no prefered language set, defaulting to EN")
+        logger.debug("A user has no prefered language set, defaulting to EN")
         return LanguageCode.EN
     return prefs["language"]
 
