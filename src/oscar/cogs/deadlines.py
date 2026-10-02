@@ -2,6 +2,7 @@
 
 import discord
 from discord import app_commands
+from discord.app_commands import locale_str
 from discord.ext import commands
 from loguru import logger
 
@@ -15,20 +16,16 @@ class Deadlines(commands.Cog):
         self.bot: commands.Bot = bot
         logger.info("Loaded Deadlines cog")
 
+    # one command, a German client sees it as `/fristen`, see `oscar.localization`
     @app_commands.command(
-        name="fristen",
-        description="Zeigt wichtige Prüfungs- und Semesterfristen der FIN & OVGU"
-    )
-    async def fristen(self, interaction: discord.Interaction):
-        """Command to display exam registration periods and semester milestones."""
-        await open_deadlines(interaction)
-
-    @app_commands.command(
-        name="deadlines",
-        description="Show examination deadlines and semester milestones"
+        name=locale_str("deadlines", de="fristen"),
+        description=locale_str(
+            "Roughly what is due when in the semester",
+            de="Was im Semester ungefähr wann ansteht",
+        ),
     )
     async def deadlines(self, interaction: discord.Interaction):
-        """English alias command to display examination deadlines and milestones."""
+        """Command to display exam registration periods and semester milestones."""
         await open_deadlines(interaction)
 
 

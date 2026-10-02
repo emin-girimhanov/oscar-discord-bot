@@ -54,7 +54,7 @@ itself is developed there.
 
 ## 3. Inside Discord
 
-Type `/lms` (or `/elearning`). It opens a dropdown with one entry per portal, each
+Type `/lms`, or `/elearning` when your Discord is not set to German. It opens a dropdown with one entry per portal, each
 with its address, what to log in with, and what it is for.
 
 The same guide is in the help menu, for anybody who does not know the command yet:

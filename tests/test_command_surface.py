@@ -31,7 +31,7 @@ UNDOCUMENTED: dict[str, str] = {
     "elearning": "the English name of /lms",
     "deadlines": "the English name of /fristen",
     "challenge": "the German name of /codegolf",
-    "recommend": "the English name of /suggest",
+    "empfehlung": "the German name of /suggest",
     "statistik": "the German name of /cohort",
     "semesterplan": "documented",
     # administrators only, hidden from students by discord itself
@@ -51,7 +51,12 @@ def all_commands() -> list[str]:
         imported = importlib.import_module(f"oscar.cogs.{module.name}")
         for value in vars(imported).values():
             if isinstance(value, type) and hasattr(value, "__cog_app_commands__"):
-                names.extend(command.name for command in value.__cog_app_commands__)
+                for command in value.__cog_app_commands__:
+                    names.append(command.name)
+                    # a command with two names: discord shows this one to a German client
+                    german = command._locale_name.extras.get("de") if command._locale_name else None
+                    if german:
+                        names.append(german)
     return sorted(set(names))
 
 

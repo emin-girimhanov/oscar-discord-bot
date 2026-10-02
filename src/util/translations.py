@@ -379,7 +379,7 @@ HELP_ANSWERS: dict[str, dict[LanguageCode, str]] = {
     },
     "lms": {
         LanguageCode.DE: (
-            "**/lms**, auch **/elearning**\n"
+            "**/lms**, in einem englischen Discord **/elearning**\n"
             "Erklärt die vier Portale der Uni und was du wo brauchst.\n\n"
             "**eLearning** (elearning.ovgu.de) hat das Kursmaterial.\n"
             "**LSF** (lsf.ovgu.de) ist die einzige Stelle, an der eine "
@@ -387,7 +387,7 @@ HELP_ANSWERS: dict[str, dict[LanguageCode, str]] = {
             "**BookStack** hat die Modulhandbücher, **FIN GitLab** den Code."
         ),
         LanguageCode.EN: (
-            "**/lms**, also **/elearning**\n"
+            "**/elearning**, in a German discord **/lms**\n"
             "Explains the four portals and what each one is for.\n\n"
             "**eLearning** (elearning.ovgu.de) holds the course material.\n"
             "**LSF** (lsf.ovgu.de) is the only place an exam registration counts.\n"
@@ -591,13 +591,15 @@ HELP_ANSWERS: dict[str, dict[LanguageCode, str]] = {
     },
     "ansprechpartner": {
         LanguageCode.DE: (
-            "`/ansprechpartner` (oder `/contacts`) zeigt die wichtigen Kontakte an der FIN.\n"
+            "`/ansprechpartner` zeigt die wichtigen Kontakte an der FIN. "
+            "In einem englischen Discord heißt der Befehl `/contacts`.\n"
             "Enthält Prüfungsamt, Dekanat, FaRaFIN, Studiengangsleitung,\n"
             "Deutschlandstipendium, BAföG, Erasmus und Beratung.\n"
             "Jeder Eintrag hat einen Knopf zur offiziellen Seite. Dort steht, was hier fehlt."
         ),
         LanguageCode.EN: (
-            "`/ansprechpartner` (or `/contacts`) lists the key contacts at the FIN.\n"
+            "`/contacts` lists the key contacts at the FIN. "
+            "In a German discord the command is called `/ansprechpartner`.\n"
             "Includes the Examination Office, the Dean's Office, FaRaFIN, programme directors,\n"
             "Germany Scholarship, BAföG, Erasmus and counselling.\n"
             "Every entry has a button to the official page, which has what is missing here."
@@ -629,14 +631,16 @@ HELP_ANSWERS: dict[str, dict[LanguageCode, str]] = {
     },
     "fristen": {
         LanguageCode.DE: (
-            "`/fristen` (oder `/deadlines`) zeigt, wann im Semester was ungefähr ansteht.\n"
+            "`/fristen` zeigt, wann im Semester was ungefähr ansteht. "
+            "In einem englischen Discord heißt der Befehl `/deadlines`.\n"
             "Enthält Prüfungsanmeldung, Rückmeldung, Prüfungszeitraum und Vorlesungszeit.\n"
             "Die Daten sind Richtwerte, keine amtlichen Termine. "
             "Die genauen Zeiträume stehen beim Prüfungsamt und im LSF.\n"
             "Dazu die Regel zur Abmeldung: bis 3 Tage vor der Prüfung."
         ),
         LanguageCode.EN: (
-            "`/fristen` (or `/deadlines`) shows roughly what is due when in the semester.\n"
+            "`/deadlines` shows roughly what is due when in the semester. "
+            "In a German discord the command is called `/fristen`.\n"
             "Includes exam registration, re-registration, exam period, and lecture dates.\n"
             "The dates are a guide, not official. "
             "The examination office and the LSF have the real periods.\n"
@@ -645,13 +649,15 @@ HELP_ANSWERS: dict[str, dict[LanguageCode, str]] = {
     },
     "suggest": {
         LanguageCode.DE: (
-            "`/suggest` (oder `/recommend`) schlägt dir passende Module für dein Studium vor.\n"
+            "`/empfehlung` schlägt dir passende Module für dein Studium vor. "
+            "In einem englischen Discord heißt der Befehl `/suggest`.\n"
             "Berücksichtigt deinen Studiengang, dein Semester und noch offene Credit Points.\n"
             "Du kannst gezielt Schwerpunkte wie KI, Software Engineering oder Games wählen\n"
             "und vorgeschlagene Module direkt per Klick in deinen Semesterplan übernehmen."
         ),
         LanguageCode.EN: (
-            "`/suggest` (or `/recommend`) proposes fitting modules for your degree.\n"
+            "`/suggest` proposes fitting modules for your degree. "
+            "In a German discord the command is called `/empfehlung`.\n"
             "Considers your study programme, current semester, and missing credits.\n"
             "Filter specifically by clusters like AI, Systems Engineering, or Games,\n"
             "and save suggested modules directly into your semester plan with one click."

@@ -21,14 +21,18 @@ Those eight are the ones `/start` names. Everything else is a command as well:
 | :--- | :--- |
 | `/standard_plan` | The official study plan of your programme, as an image |
 | `/progress` | The credit points you planned, against the 30 of a semester |
-| `/suggest` (or `/recommend`) | Modules that fit your programme and open credits |
+| `/empfehlung` / `/suggest` | Modules that fit your programme and open credits |
 | `/rate` | Rate a module, with an optional written review |
 | `/klausuren` | Past exam archives of the student councils |
-| `/fristen` (or `/deadlines`) | Examination deadlines and semester milestones |
-| `/lms` (or `/elearning`) | The four university portals and what each is for |
-| `/ansprechpartner` (or `/contacts`) | Dean's office, examination office, student council |
+| `/fristen` / `/deadlines` | Roughly what is due when in the semester |
+| `/lms` / `/elearning` | The four university portals and what each is for |
+| `/ansprechpartner` / `/contacts` | Dean's office, examination office, student council |
 | `/studybuddy` | Find other students who plan the same module |
 | `/feedback` | Tell us what you think of the bot |
+
+Four commands have **two names, a German and an English one**. Discord shows the one
+that fits the language of your Discord app, so you only ever see one of them. It is
+the language of the app that counts, not the one you picked in `/start`.
 
 Three features are switched off for now and not in the slash menu: the badges
 (`/badges`), the comparison with the cohort (`/cohort`, `/statistik`) and the weekly
@@ -369,8 +373,8 @@ record.
 Access verified faculty and university contact persons without digging through outdated university web pages.
 
 ```bash
-/ansprechpartner
-/contacts
+/ansprechpartner      # Discord in German
+/contacts             # Discord in any other language
 ```
 
 Or, if you do not know the name yet: `/help → Öffnen → Ansprechpartner`.
@@ -392,8 +396,8 @@ Or, if you do not know the name yet: `/help → Öffnen → Ansprechpartner`.
 Navigate the faculty's digital learning management systems without getting lost between university accounts and CS accounts.
 
 ```bash
-/lms
-/elearning
+/lms                  # Discord in German
+/elearning            # Discord in any other language
 ```
 
 Or, if you do not know the name yet: `/help → Öffnen → Lernplattformen`.
@@ -466,8 +470,8 @@ Or, if you do not know the name yet: `/help → Öffnen → Code Golf`.
 Never miss an exam registration or re-registration deadline again.
 
 ```bash
-/fristen
-/deadlines
+/fristen              # Discord in German
+/deadlines            # Discord in any other language
 ```
 
 Or, if you do not know the name yet: `/help → Öffnen → Fristen & Termine`.
@@ -487,8 +491,8 @@ Or, if you do not know the name yet: `/help → Öffnen → Fristen & Termine`.
 Discover fitting electives and modules tailored to your study programme and interests without endless catalog browsing.
 
 ```bash
-/suggest [category]
-/recommend
+/empfehlung [category]   # Discord in German
+/suggest [category]      # Discord in any other language
 ```
 
 Or, if you do not know the name yet: `/help → Öffnen → Modul-Empfehlungen`.

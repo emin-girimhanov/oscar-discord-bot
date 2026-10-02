@@ -58,6 +58,38 @@ HIDDEN: frozenset[str] = frozenset({
 })
 
 
+# One command, two names. Discord shows the German one to a client set to German and
+# the English one to everybody else, see `oscar.localization`. `/help` prints a name
+# without knowing the client, so it takes the one that fits the language of the help.
+#
+# The key is the name the help texts are filed under, which is the German one for
+# three of them because that is the name they started with.
+#
+#   key in COMMAND_TEXTS    German name          English name
+TWO_NAMES: dict[str, tuple[str, str]] = {
+    "fristen":             ("fristen",          "deadlines"),
+    "ansprechpartner":     ("ansprechpartner",  "contacts"),
+    "lms":                 ("lms",              "elearning"),
+    "suggest":             ("empfehlung",       "suggest"),
+}
+
+
+def shown_name(key: str, german: bool) -> str:
+    """ The name of a command as a reader of that language sees it in the picker.
+
+        Parameters:
+            key: The name the command is filed under in `COMMAND_TEXTS`.
+            german: Whether the reader reads German.
+
+        Returns:
+            The German or the English name of a command that has two, and the key
+            itself for a command with one name.
+    """
+    if key in TWO_NAMES:
+        return TWO_NAMES[key][0 if german else 1]
+    return key
+
+
 # The same eight, in the order a student meets them. `/start` and `/help` print the
 # list, and a set has no order to print.
 CORE_ORDER: tuple[str, ...] = (

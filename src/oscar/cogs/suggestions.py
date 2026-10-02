@@ -6,6 +6,7 @@
 
 import discord
 from discord import app_commands
+from discord.app_commands import locale_str
 from discord.ext import commands
 from loguru import logger
 
@@ -20,23 +21,46 @@ class ModuleSuggestions(commands.Cog):
         self.bot: commands.Bot = bot
         logger.info("Loaded ModuleSuggestions cog")
 
+    # one command, a German client sees it as `/empfehlung`, see `oscar.localization`
     @app_commands.command(
-        name="suggest",
-        description="Erhalte passende Modul-Empfehlungen für dein Studium & Schwerpunkte",
+        name=locale_str("suggest", de="empfehlung"),
+        description=locale_str(
+            "Modules that fit your programme and your focus area",
+            de="Module, die zu deinem Studiengang und Schwerpunkt passen",
+        ),
     )
     @app_commands.describe(
-        category="Wähle einen Schwerpunkt (z.B. KI, Games, Systems, Scientific Computing)",
+        category=locale_str(
+            "Choose a focus area (e.g. AI, Games, Systems, Scientific Computing)",
+            de="Wähle einen Schwerpunkt (z.B. KI, Games, Systems, Scientific Computing)",
+        ),
     )
     @app_commands.choices(
         category=[
-            app_commands.Choice(name="🎯 Passend zum Studiengang", value="ALL"),
-            app_commands.Choice(name="🤖 Künstliche Intelligenz (KI / AI)", value="AI"),
-            app_commands.Choice(name="🎮 Computergrafik & Digitale Spiele", value="ComputerGame"),
             app_commands.Choice(
-                name="💻 Software & Systems Engineering", value="SystemsEngineering"
+                name=locale_str("Fitting my study programme", de="Passend zum Studiengang"),
+                value="ALL",
             ),
             app_commands.Choice(
-                name="🔬 Wissenschaftliches Rechnen & Simulation", value="ScientificComputing"
+                name=locale_str("Artificial Intelligence (AI)", de="Künstliche Intelligenz (KI)"),
+                value="AI",
+            ),
+            app_commands.Choice(
+                name=locale_str(
+                    "Computer Graphics & Games", de="Computergrafik & Digitale Spiele"
+                ),
+                value="ComputerGame",
+            ),
+            app_commands.Choice(
+                name=locale_str("Software & Systems Engineering"),
+                value="SystemsEngineering",
+            ),
+            app_commands.Choice(
+                name=locale_str(
+                    "Scientific Computing & Simulation",
+                    de="Wissenschaftliches Rechnen & Simulation",
+                ),
+                value="ScientificComputing",
             ),
         ]
     )
@@ -57,34 +81,6 @@ class ModuleSuggestions(commands.Cog):
             ),
             ephemeral=True,
         )
-
-    @app_commands.command(
-        name="recommend",
-        description="Get tailored module proposals for your study programme & focus area",
-    )
-    @app_commands.describe(
-        category="Choose a focus area (e.g. AI, Games, Systems, Scientific Computing)",
-    )
-    @app_commands.choices(
-        category=[
-            app_commands.Choice(name="🎯 Fitting my study programme", value="ALL"),
-            app_commands.Choice(name="🤖 Artificial Intelligence (AI)", value="AI"),
-            app_commands.Choice(name="🎮 Computer Graphics & Games", value="ComputerGame"),
-            app_commands.Choice(
-                name="💻 Software & Systems Engineering", value="SystemsEngineering"
-            ),
-            app_commands.Choice(
-                name="🔬 Scientific Computing & Simulation", value="ScientificComputing"
-            ),
-        ]
-    )
-    async def recommend(
-        self,
-        interaction: discord.Interaction,
-        category: app_commands.Choice[str] | None = None,
-    ):
-        """English alias for module suggestions."""
-        await self.suggest(interaction, category)
 
 
 async def setup(bot: commands.Bot):

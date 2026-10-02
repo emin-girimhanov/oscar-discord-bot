@@ -152,7 +152,7 @@ class TestLmsCommands:
     """Tests for /lms and /elearning slash commands."""
 
     @pytest.mark.asyncio
-    async def test_lms_command_invokes_view(self):
+    async def test_the_command_invokes_the_view(self):
         bot = MagicMock()
         cog = Help(bot)
 
@@ -163,7 +163,7 @@ class TestLmsCommands:
         interaction.followup = MagicMock()
         interaction.followup.send = AsyncMock()
 
-        await cog.lms.callback(cog, interaction)
+        await cog.elearning.callback(cog, interaction)
         interaction.response.defer.assert_awaited_once_with(ephemeral=True)
         interaction.followup.send.assert_awaited_once()
         _, kwargs = interaction.followup.send.call_args

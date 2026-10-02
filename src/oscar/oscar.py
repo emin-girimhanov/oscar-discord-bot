@@ -12,6 +12,7 @@ from discord.ext import commands
 from dotenv import load_dotenv
 from loguru import logger
 
+from oscar.localization import GermanNames
 from util.bookstack import drop_missing_books, refresh_books
 from util.command_surface import HIDDEN
 from util.database import get_database
@@ -189,6 +190,9 @@ class Oscar(commands.Bot):
                     await self.load_extension(name)
                 except Exception:  # pylint: disable=broad-exception-caught
                     logger.exception(f"Couldn't load '{name}'")
+
+            # without a translator discord.py sends the names in one language only
+            await self.tree.set_translator(GermanNames())
 
             hidden = self.hide_commands()
             if hidden:

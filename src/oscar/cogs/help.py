@@ -4,6 +4,7 @@
 from typing import override
 import discord
 from discord import app_commands
+from discord.app_commands import locale_str
 from discord.ext import commands
 from discord.ui import ActionRow, Container, LayoutView, Section, Separator, TextDisplay
 from loguru import logger
@@ -15,7 +16,7 @@ from oscar.ui.help_launcher import (
     open_platforms,
 )
 from oscar.ui.translated_view import TranslatedView
-from util.command_surface import CORE, CORE_ORDER, HIDDEN
+from util.command_surface import CORE, CORE_ORDER, HIDDEN, shown_name
 from util.database import get_user_language
 from util.enums import LanguageCode
 from util.translations import (
@@ -53,37 +54,28 @@ class Help(commands.Cog):
         language: LanguageCode = get_user_language(interaction.user.id)
         await interaction.followup.send(view=HelpView(language), ephemeral=True)
 
+    # one command each, a German client sees the German name, see `oscar.localization`
     @app_commands.command(
-        name="ansprechpartner",
-        description="Zeigt wichtige Ansprechpartner der FIN & OVGU (FaRaFIN, Prüfungsamt, etc.)"
+        name=locale_str("contacts", de="ansprechpartner"),
+        description=locale_str(
+            "Key contacts at the FIN and the OVGU, with a link to their page",
+            de="Wichtige Ansprechpartner der FIN und OVGU, mit Link zur Seite",
+        ),
     )
-    async def ansprechpartner(self, interaction: discord.Interaction):
+    async def contacts(self, interaction: discord.Interaction):
         """ Command to display key contact persons at FIN and OVGU."""
         await open_contacts(interaction)
 
     @app_commands.command(
-        name="contacts",
-        description="Show key faculty and university contacts (FaRaFIN, Examination Office, etc.)"
-    )
-    async def contacts(self, interaction: discord.Interaction):
-        """ English alias command to display key contact persons at FIN and OVGU."""
-        await open_contacts(interaction)
-
-    @app_commands.command(
-        name="lms",
-        description="Lernplattformen der OVGU: eLearning, LSF, Modulhandbuch, GitLab",
-    )
-    async def lms(self, interaction: discord.Interaction):
-        """Command to display guide on faculty learning management systems."""
-        await open_platforms(interaction)
-
-    @app_commands.command(
-        name="elearning",
-        description="Guide to the OVGU portals: eLearning, LSF, module handbook, GitLab",
+        name=locale_str("elearning", de="lms"),
+        description=locale_str(
+            "The university portals: eLearning, LSF, module handbook, GitLab",
+            de="Lernplattformen der OVGU: eLearning, LSF, Modulhandbuch, GitLab",
+        ),
     )
     async def elearning(self, interaction: discord.Interaction):
-        """English alias command to display e-learning platform guide."""
-        await self.lms.callback(self, interaction)
+        """Command to display guide on faculty learning management systems."""
+        await open_platforms(interaction)
 
 
 async def setup(bot: commands.Bot):
@@ -181,7 +173,8 @@ class HelpView(TranslatedView):
             placeholder=HELP_LANGUAGES["command_placeholder"][self.language_code],
             options=[
                 discord.SelectOption(
-                    label=f"/{command}",
+                    # `/fristen` in the German help, `/deadlines` in the English one
+                    label=f"/{shown_name(command, self.language_code == LanguageCode.DE)}",
                     value=command,
                     description=shorten(COMMAND_TEXTS[command][self.language_code]),
                     default=(self.selected_command == command),
