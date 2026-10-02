@@ -146,7 +146,7 @@ body.oscar-homepage .md-content__inner>h1 {
    ========================================================================== */
 .oscar-hero {
     background: linear-gradient(rgba(0, 104, 180, 0.2), rgba(0, 69, 122, 0.3)),
-        url('../images/gebäude_fin.jpg') no-repeat center center;
+        url('../images/fin_luftbild.jpg') no-repeat center center;
     background-size: cover;
     background-attachment: fixed;
     position: relative;

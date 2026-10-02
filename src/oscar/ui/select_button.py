@@ -122,19 +122,6 @@ class InfoButton(discord.ui.Button[LayoutView]):
             ephemeral=True,
         )
 
-class InfoButton2(discord.ui.Button):
-    """ Class for an info button"""
-
-    def __init__(self,label:str,module:str):
-        super().__init__(label=label,style=discord.ButtonStyle.secondary)
-        self.module_name = module
-
-    @override
-    async def callback(self, interaction: discord.Interaction):
-        module = Module.from_name(name=self.module_name)
-        await interaction.response.send_message(view=ModuleView(module=module), ephemeral=True)
-
-
 class DeleteButton(discord.ui.Button[LayoutView]):
     """ Class for a delete button"""
 
@@ -206,15 +193,15 @@ class ExportCalendarButton(discord.ui.Button[LayoutView]):
             "Du kannst die Datei direkt in Google Calendar, Apple Kalender, Outlook "
             "oder dein Smartphone importieren.\n\n"
             "ℹ️ *Hinweis: Da die Moduldatenbank keine genauen Vorlesungszeiten und Räume enthält, "
-            "sind deine Module als ganztägige Semestereinträge mit BookStack-Links und "
-            "wichtigen FIN-Prüfungsfristen angelegt.*"
+            "sind deine Module als ganztägige Semestereinträge mit BookStack-Links angelegt. "
+            "Die Fristen darin sind Richtwerte, keine amtlichen Termine.*"
             if self.language == LanguageCode.DE else
             "📅 **Here is your semester plan as an iCalendar file (`.ics`).**\n\n"
             "You can import this file directly into Google Calendar, Apple Calendar, "
             "Outlook, or your smartphone.\n\n"
             "ℹ️ *Note: Because the module database does not contain exact lecture times and rooms, "
-            "modules are exported as all-day entries with BookStack links and "
-            "essential FIN examination deadlines.*"
+            "modules are exported as all-day entries with BookStack links. "
+            "The deadlines in it are a guide, not official dates.*"
         )
 
         await interaction.response.send_message(message, file=file, ephemeral=True)

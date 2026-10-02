@@ -19,7 +19,7 @@ class Progress(commands.Cog):
 
     @app_commands.command(
         name="badges",
-        description="Zeigt deine freigeschalteten Badges und Meilensteine"
+        description="Deine Badges und Meilensteine (your badges and milestones)"
     )
     async def badges(self, interaction: discord.Interaction):
         """Command to display user achievements and gamification badges."""
@@ -27,7 +27,7 @@ class Progress(commands.Cog):
 
     @app_commands.command(
         name="progress",
-        description="Zeigt deinen persönlichen Studienfortschritt und Credit Points"
+        description="Dein Studienfortschritt und deine Credit Points (your progress)"
     )
     async def progress(self, interaction: discord.Interaction):
         """Command to display user personal study progress and planned credit points."""

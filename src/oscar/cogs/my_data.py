@@ -27,7 +27,7 @@ class MyData(commands.Cog):
 
     @app_commands.command(
         name="my_data",
-        description="See everything OSCAR stores about you, and delete it",
+        description="Deine gespeicherten Daten ansehen und löschen (see and delete your data)",
     )
     async def my_data(self, interaction: discord.Interaction):
         """ Shows the caller their stored data and offers to delete it.

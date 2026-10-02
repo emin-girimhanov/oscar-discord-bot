@@ -4,7 +4,7 @@
   <img src="../assets/images/oscar_logo.svg" width="150" alt="OSCAR Logo">
 </div>
 
-**OSCAR** (*Organized Study Choice & Academic Roadmapper*) is a supervised software project at the *[Chair of Simulation](https://www.sim.ovgu.de/sim/en/)* within the [Faculty of Computer Science (FIN)](https://www.fin.ovgu.de/inf/en/) at [Otto von Guericke University Magdeburg](https://www.ovgu.de/unimagdeburg/en/).
+**OSCAR** (*Organized Study Choice & Academic Roadmapper*) is a supervised software project at the *[Chair of Simulation](https://www.sim.ovgu.de/)* within the [Faculty of Computer Science (FIN)](https://www.fin.ovgu.de/) at [Otto von Guericke University Magdeburg](https://www.ovgu.de/).
 
 ---
 
@@ -88,7 +88,7 @@ Instead of building yet another web platform, we chose Discord because:
 
 **Project Supervision:**
 
-[Dipl.-Ing. Jana Görs](mailto:jana.goers@ovgu.de) & Prof. Dr.-Ing. habil. Graham Horton from [Chair of Simulation](https://www.sim.ovgu.de/sim/en/).
+[Dipl.-Ing. Jana Görs](mailto:jana.goers@ovgu.de) & Prof. Dr.-Ing. habil. Graham Horton from [Chair of Simulation](https://www.sim.ovgu.de/).
 
 <div class="grid cards" markdown>
 
@@ -449,8 +449,8 @@ During the 6-month development phase, our team gained valuable insights that go 
 
 ## **Institutions**
 
-[Otto-von-Guericke-University Magdeburg](https://www.ovgu.de/unimagdeburg/en/)
+[Otto-von-Guericke-University Magdeburg](https://www.ovgu.de/)
 
-[Faculty of Computer Science (FIN)](https://www.fin.ovgu.de/inf/en/)
+[Faculty of Computer Science (FIN)](https://www.fin.ovgu.de/)
 
-[Chair of Simulation](https://www.sim.ovgu.de/sim/en/)
+[Chair of Simulation](https://www.sim.ovgu.de/)

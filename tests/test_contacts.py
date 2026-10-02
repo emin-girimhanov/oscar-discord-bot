@@ -37,15 +37,60 @@ class TestContactsData:
             assert len(cat.contacts) > 0
 
     def test_contact_person_fields_populated(self):
+        """ A room and a mail address may be empty, a link may not.
+
+            The list used to require a mail address for everybody, and so everybody got
+            one, whether it existed or not. The page a contact links to is the source,
+            and an empty field sends the student there.
+        """
         for cat in CONTACT_CATEGORIES:
             for person in cat.contacts:
                 assert person.title_de
                 assert person.title_en
-                assert person.office
-                assert "@" in person.email
-                assert person.url.startswith("http://") or person.url.startswith("https://")
+                assert person.email == "" or "@" in person.email
+                assert person.url.startswith("https://")
                 assert person.details_de
                 assert person.details_en
+
+    def test_the_made_up_addresses_stay_out(self):
+        """ None of these mailboxes exists. They were written down because they sounded
+            right, and a student who wrote to one got a bounce.
+        """
+        made_up = {
+            "pa-fin@ovgu.de", "studiendekanat@cs.ovgu.de", "farafin@ovgu.de",
+            "eet@farafin.de", "studienberatung-inf@cs.ovgu.de",
+            "studienberatung-inginf@cs.ovgu.de", "studienberatung-wif@cs.ovgu.de",
+            "studienberatung-cv@cs.ovgu.de", "dke-advisor@ovgu.de", "de-advisor@ovgu.de",
+            "praktikumsamt-fin@ovgu.de", "erasmus-fin@ovgu.de", "gleichstellung-fin@ovgu.de",
+        }
+        used = {person.email for cat in CONTACT_CATEGORIES for person in cat.contacts}
+        assert not used & made_up
+
+    def test_the_dead_links_stay_out(self):
+        """These answered 404, or did not answer, on 2026-10-02."""
+        dead = (
+            "inf.ovgu.de/Studium/Fachstudienberatung",
+            "inf.ovgu.de/Studium/Praktikumsamt",
+            "inf.ovgu.de/Fakult%C3%A4t/Studiendekanat",
+            "inf.ovgu.de/Fakult%C3%A4t/Gleichstellung",
+            "studentenwerk-magdeburg.de/beratung/psychosoziale-beratung",
+            "eet.farafin.de",
+        )
+        for cat in CONTACT_CATEGORIES:
+            for person in cat.contacts:
+                assert not any(part in person.url for part in dead), person.title_de
+
+    def test_the_student_council_is_where_it_says_it_is(self):
+        """Room, mail and phone as `farafin.de` states them."""
+        council = get_category_by_key("farafin").contacts[0]
+        assert council.office == "G29-103"
+        assert council.email == "post@farafin.de"
+        assert council.phone == "(+49) 391 67 51377"
+
+    def test_the_examination_office_is_the_official_one(self):
+        office = get_category_by_key("dekanat_pa").contacts[0]
+        assert office.url == "https://www.fin.ovgu.de/pamt.html"
+        assert office.email == "fin-pruefungsamt@ovgu.de"
 
     def test_get_category_by_key_found(self):
         cat = get_category_by_key("dekanat_pa")

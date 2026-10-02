@@ -52,7 +52,10 @@ def get_academic_term(
             winter_semester: Explicit flag (True for WiSe, False for SoSe).
 
         Returns:
-            An AcademicTerm object with official FIN calendar dates.
+            An AcademicTerm object. **Its dates are computed, not official.** The
+            semester halves are fixed by law, everything in between is the same day
+            every year here and a different one every year at the university. Nothing
+            that shows these dates may call them official.
     """
     ref: date = reference_date or date.today()
     year: int = ref.year
@@ -294,7 +297,7 @@ def generate_semester_calendar(
             "END:VEVENT",
         ])
 
-    # Add official FIN academic deadlines & milestones
+    # Add the approximate academic dates, marked as what they are
     if include_deadlines:
         deadlines: list[tuple[str, str, date, str, str]] = []
 
@@ -332,9 +335,9 @@ def generate_semester_calendar(
                 f"oscar-exam-period-{term.term_code}@fin.ovgu.de",
                 "Beginn Prüfungszeitraum FIN",
                 term.exam_period_start,
-                "Start des offiziellen Prüfungszeitraums der Fakultät für Informatik. "
-                "Hinweis: Eine Prüfungsabmeldung ist bis 3 Tage vor der Prüfung "
-                "ohne Angabe von Gründen möglich.",
+                "Start des Prüfungszeitraums der Fakultät für Informatik. "
+                "Eine Anmeldung kannst du zurücknehmen, solange bis zur Prüfung noch "
+                "mindestens 3 Tage liegen (SPO Bachelor 2024, § 17 Abs. 4).",
                 "ACADEMIC,EXAM",
             ))
             deadlines.append((
@@ -379,8 +382,8 @@ def generate_semester_calendar(
                 "Start of Examination Period FIN",
                 term.exam_period_start,
                 "Start of the examination period at FIN OVGU. "
-                "Note: Examination withdrawal is permitted up to 3 days before "
-                "the exam date.",
+                "You can take a registration back as long as at least 3 days remain "
+                "until the exam (SPO Bachelor 2024, § 17 (4)).",
                 "ACADEMIC,EXAM",
             ))
             deadlines.append((
@@ -391,7 +394,18 @@ def generate_semester_calendar(
                 "ACADEMIC,DEADLINE",
             ))
 
+        approximate = "Richtwert" if language == LanguageCode.DE else "approximate"
+        hint = (
+            "Richtwert, kein amtlicher Termin. Den genauen Termin nennt das Prüfungsamt: "
+            "https://www.fin.ovgu.de/pamt.html"
+            if language == LanguageCode.DE else
+            "A guide, not an official date. The examination office has the real one: "
+            "https://www.fin.ovgu.de/pamt.html"
+        )
         for uid, title, event_date, desc, categories in deadlines:
+            # a calendar entry outlives the message it came with, so it says it itself
+            title = f"{title} ({approximate})"
+            desc = f"{desc} {hint}"
             lines.extend([
                 "BEGIN:VEVENT",
                 f"UID:{uid}",

@@ -125,8 +125,7 @@ class Oscar(commands.Bot):
         while not self.is_closed():
             try:
                 _ = await asyncio.to_thread(warm_cache)
-            # pylint: disable=W0718  # (broad-exception-caught)
-            except Exception:
+            except Exception:  # pylint: disable=broad-exception-caught
                 # the next round tries again, and a command still works, it just pays
                 # for the cold cache itself
                 logger.exception("Could not warm the module table")
@@ -148,8 +147,7 @@ class Oscar(commands.Bot):
             try:
                 _ = await asyncio.to_thread(refresh_books)
                 _ = await asyncio.to_thread(drop_missing_books)
-            # pylint: disable=W0718  # (broad-exception-caught)
-            except Exception:
+            except Exception:  # pylint: disable=broad-exception-caught
                 # the links of the last round keep working, the next round tries again
                 logger.exception("Could not refresh the module handbook links")
             await asyncio.sleep(HANDBOOK_REFRESH_SECONDS)
@@ -172,8 +170,7 @@ class Oscar(commands.Bot):
             ):
                 try:
                     await self.load_extension(name)
-                # pylint: disable=W0718  # (broad-exception-caught)
-                except Exception:
+                except Exception:  # pylint: disable=broad-exception-caught
                     logger.exception(f"Couldn't load '{name}'")
 
             _ = await self.sync_commands()

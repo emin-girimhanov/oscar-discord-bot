@@ -109,7 +109,7 @@ class ModulSearch(commands.Cog):
         ]
         return result[:5]
 
-    @app_commands.command(name="module", description="search for a modul")
+    @app_commands.command(name="module", description="Modul suchen und ansehen (search a module)")
     @app_commands.autocomplete(modul=module_autocomplete)
     async def search_module(self, interaction: discord.Interaction, modul: str):
         """ Command for searching a single module by name
@@ -142,7 +142,7 @@ class ModulSearch(commands.Cog):
 
     @app_commands.command(
         name="compare",
-        description="put two or three modules side by side",
+        description="Zwei oder drei Module vergleichen (compare modules side by side)",
     )
     @app_commands.autocomplete(
         first=module_autocomplete,
@@ -202,7 +202,10 @@ class ModulSearch(commands.Cog):
         )
 
 
-    @app_commands.command(name="filter", description="suchmaske für module")
+    @app_commands.command(
+        name="filter",
+        description="Module filtern nach CP, Sprache, Prüfung (filter modules)",
+    )
     async def filter(self, interaction: discord.Interaction):
         """ Command to open the filter dialog for module filtering by different criteria
 
@@ -217,7 +220,7 @@ class ModulSearch(commands.Cog):
 
     @app_commands.command(
     name="standard_plan",
-    description="gibt Bild des Regelstudienplans"
+    description="Regelstudienplan deines Studiengangs (standard study plan)"
 )
     async def s_plan(self, interaction: discord.Interaction):
         """ Draws the official study plan of the student's own programme.
@@ -233,7 +236,7 @@ class ModulSearch(commands.Cog):
 
     @app_commands.command(
         name="feedback",
-        description="gib uns gerne bescheid, was du über unseren Bot denkst"
+        description="Sag uns, was du von OSCAR hältst (send feedback)"
     )
     async def feedback(self,interaction: discord.Interaction):
         """ Command to open the feedback dialog for the user
@@ -243,7 +246,10 @@ class ModulSearch(commands.Cog):
         """
         await open_feedback(interaction)
 
-    @app_commands.command(name="semesterplan", description="geradiger semesterplan")
+    @app_commands.command(
+        name="semesterplan",
+        description="Deine gemerkten Module (your semester plan)",
+    )
     async def plan(self, interaction: discord.Interaction):
         """ Command to open the semester plan dialog for the user
 
@@ -295,7 +301,7 @@ class ModulSearch(commands.Cog):
 
     @app_commands.command(
         name="start",
-        description="use this command fpr your first interaction with OSCAR",
+        description="Erste Schritte: Studiengang und Semester wählen (first steps)",
     )
     async def start(self, interaction: discord.Interaction):
         """ Command to open the start dialog for the user

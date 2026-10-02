@@ -150,93 +150,25 @@ OSCAR is a Discord-based assistant that helps FIN students at Otto-von-Guericke-
         ```
         ![Feedback](assets/images/oscar_feedback.png){ width="400" .img-center }
 
-    -   ⚖️ **Compare Modules**
-        ---
-        Put two or three modules side by side: credit points, exam, language and semester.
-
-        ```bash
-        /compare
-        ```
-
-    -   ⭐ **Ratings & Past Exams**
-        ---
-        Rate a module and read what other students wrote. Find the past exam archives of the student councils.
-
-        ```bash
-        /rate
-        /klausuren
-        ```
-
-    -   🏆 **Progress & Badges**
-        ---
-        See your credit points and milestones. Compare yourself with your cohort, anonymously.
-
-        ```bash
-        /progress
-        /badges
-        /cohort
-        ```
-
-    -   💡 **Suggestions**
-        ---
-        Get modules that fit your programme and your open credit points.
-
-        ```bash
-        /suggest
-        ```
-
-    -   ⏰ **Deadlines**
-        ---
-        Exam registration periods and semester milestones, with a calendar export.
-
-        ```bash
-        /fristen
-        ```
-
-    -   👥 **Study Buddies**
-        ---
-        Find other students who plan the same module. You only appear if you opt in.
-
-        ```bash
-        /studybuddy
-        ```
-
-    -   🧭 **Portals & Contacts**
-        ---
-        Which university portal is for what, and who to ask: dean's office, examination office, student council.
-
-        ```bash
-        /lms
-        /ansprechpartner
-        ```
-
-    -   ⛳ **Code Golf**
-        ---
-        A weekly programming puzzle with a leaderboard. The shortest solution wins.
-
-        ```bash
-        /codegolf
-        ```
-
-    -   🔒 **Your Data**
-        ---
-        See everything OSCAR stores about you, export it and delete it.
-
-        ```bash
-        /my_data
-        ```
-
-    -   ❓ **Help**
-        ---
-        Every command explained. You can start each one from the menu.
-
-        ```bash
-        /help
-        ```
-
-        ![Help](assets/images/oscar_help.png){ width="400" .img-center }
-
     </div>
+
+    ### **More commands**
+
+    | Command | What it does |
+    | :--- | :--- |
+    | `/here` | Opens the module the current channel is named after |
+    | `/compare` | Puts two or three modules side by side |
+    | `/rate`, `/klausuren` | Ratings and reviews by other students, and the past exam archives |
+    | `/progress`, `/badges`, `/cohort` | Your credit points and milestones, and an anonymous comparison |
+    | `/suggest` | Modules that fit your programme and your open credit points |
+    | `/fristen` | Roughly what is due when in the semester |
+    | `/studybuddy` | Find students who plan the same module, opt in only |
+    | `/lms`, `/ansprechpartner` | The university portals, and who to ask |
+    | `/codegolf` | A weekly programming puzzle |
+    | `/my_data` | See, export and delete what OSCAR stores about you |
+    | `/help` | Every command explained, in German and English |
+
+    [View all Commands](features/commands.md){ .md-button .md-button--primary }
 
 
     ### **Getting Started**
@@ -289,109 +221,34 @@ OSCAR is a Discord-based assistant that helps FIN students at Otto-von-Guericke-
         ![Start Interface](assets/images/oscar_start.png){ width="400" .img-center }
 
     === "Step 4: Try it out"
-        After setup, use the bot to explore and plan:
+        Three commands are enough for the first day:
 
         <div class="cmd-row" markdown>
         ```
         /module [name]
         ```
-        🔍 Here you will find credit points (CP), exams and course content, with buttons to the LSF and the module handbook.
-        </div>
-
-        <div class="cmd-row" markdown>
-        ```
-        /here
-        ```
-        📍 Opens the module the current channel is named after.
-        </div>
-
-        <div class="cmd-row" markdown>
-        ```
-        /compare
-        ```
-        ⚖️ Put two or three modules side by side.
-        </div>
-
-        <div class="cmd-row" markdown>
-        ```
-        /filter
-        ```
-        🧩 Find modules that fit your CP or SWS budget.
+        Find a module: credit points, exams and content, with buttons to the LSF and the module handbook.
         </div>
 
         <div class="cmd-row" markdown>
         ```
         /semesterplan
         ```
-        📅 View and edit your saved schedule – including automatic comparison with the standard curriculum (Regelstudienplan) and total CP sum.
-        </div>
-
-        <div class="cmd-row" markdown>
-        ```
-        /standard_plan
-        ```
-        🗓️ View the standard curriculum for your degree and Examination Regulations.
-        </div>
-
-        <div class="cmd-row" markdown>
-        ```
-        /rate
-        ```
-        ⭐ Rate a module and read the reviews of other students.
-        </div>
-
-        <div class="cmd-row" markdown>
-        ```
-        /progress
-        ```
-        🏆 Your credit points, milestones and badges.
-        </div>
-
-        <div class="cmd-row" markdown>
-        ```
-        /fristen
-        ```
-        ⏰ Exam registration periods and semester milestones.
-        </div>
-
-        <div class="cmd-row" markdown>
-        ```
-        /my_data
-        ```
-        🔒 See, export and delete what OSCAR stores about you.
+        See the modules you saved, next to the standard curriculum of your semester.
         </div>
 
         <div class="cmd-row" markdown>
         ```
         /help
         ```
-        ❓ Every command explained, and the ones not listed here.
+        Every other command explained. You can start most of them right from the menu.
         </div>
-
-        <div class="cmd-row" markdown>
-        ```
-        /feedback
-        ```
-        💬 Help us improve OSCAR.
-        </div>
-
-        [View all Commands](features/commands.md){ .md-button .md-button--primary }
 
 === "For Developers"
 
     ### **Contribute to OSCAR**
 
     OSCAR is a Python project. We welcome contributions!
-
-    {{ project_info() | indent(4)}}
-    {{ show_tech_stack() | indent(4) }}
-
-     We use `pyproject.toml` for dependency management.
-
-    ??? info "Check pyproject.toml"
-        ```toml title="pyproject.toml"
-        --8<-- "pyproject.toml"
-        ```
 
     <div class="grid cards" markdown>
 
@@ -412,106 +269,14 @@ OSCAR is a Discord-based assistant that helps FIN students at Otto-von-Guericke-
 
     </div>
 
-    === "Quick Setup"
+    The guides have every step. This page only says where to start.
 
-        See [Setup & Installation](developer/setup.md) for more details.
-
-        ```bash
-        # 1. Clone Repo
-        git clone https://github.com/emin-girimhanov/oscar-discord-bot.git discord-bot
-        cd discord-bot
-        ```
-
-        ```bash
-        # 2. Configure Environment
-        # Create a .env file with required variables:
-        cat > .env << EOF
-        BOT_TOKEN=your_discord_bot_token_here
-        DISCORD_SERVER_ID=your_discord_server_id_here
-        TABLES_URL=https://your-nextcloud.de/apps/tables/
-        TABLES_USERNAME=oscar-bot
-        TABLES_PASSWORD=your_nextcloud_app_token_here
-        EOF
-        ```
-
-        ```bash
-        # 3. Install dependencies
-        # Option A: Using uv (recommended for development)
-        # Install uv first: https://docs.astral.sh/uv/getting-started/installation/
-        uv sync
-
-        # Option B: Using pip
-        #pip install -e .
-        ```
-
-        ```bash
-        # 4. Run Bot
-        oscar_ovgu
-        ```
-
-        ✅ When you see "Logged in as OSCAR#...", you're ready!
-
-    === "Development Standards"
-
-        See [Git-Workflow](developer/workflow.md) for more details.
-
-        To ensure the CI pipeline passes:
-
-        * **Commits:** Use [Conventional Commits](https://www.conventionalcommits.org/)
-            - Examples: `feat: add new filter`, `fix: crash on startup`
-            !!! warning
-                Non-conforming commits will fail the [commitlint](https://commitlint.js.org/) check
-
-        * **Linting:** We use [pylint](https://pypi.org/project/pylint/), and [basedpyright](https://pypi.org/project/basedpyright/)
-            ```bash
-            # Check code quality before pushing
-            # (Pylint score must be >= 9.5 to pass CI/CD)
-            pylint --recursive=y src
-
-            # Type checking
-            basedpyright src
-            ```
-
-        * **Testing:** Run the test suite with pytest:
-            ```bash
-            pytest
-            # With coverage report:
-            pytest --cov=src
-            ```
-            - Contributions with additional unit tests are welcome
-            - Test your changes on a development server before pushing
-
-    === "CI/CD Pipeline"
-
-        See [Git-Workflow](developer/workflow.md) for more details.
-
-        The GitLab CI pipeline runs automatically on every push:
-
-        1. **Lint Stage:**
-            - `commitlint` - Validates commit messages
-            - `pylint` - Code quality check (must score >= 9.5)
-            - `basedpyright` - Static type checking
-
-
-        2. **Build Stage:**
-            - Creates Python package (`python -m build`)
-            - Generates wheel file in `dist/`
-
-
-        3. **Publish Stage:**
-            - Builds container image with Buildah
-            - Pushes to internal GitLab registry
-            - Publishes documentation to GitLab Pages
-
-        ??? info "Check .gitlab-ci.yml"
-            ```yaml title=".gitlab-ci.yml"
-            --8<-- ".gitlab-ci.yml"
-            ```
-
-        !!! tip "OVGU Developers: CI/CD Variables"
-            The required secrets (tokens, keys) for the pipeline are stored as GitLab CI/CD variables.
-            Access them at:
-            [:octicons-arrow-right-24: CI/CD Variable Settings](https://isggit3.cs.ovgu.de/studium-lehre/discord-bot/-/settings/ci_cd#js-cicd-variables-settings)
+    | You want to | Read |
+    | :--- | :--- |
+    | set the project up on your machine | [Setup & Install](developer/setup.md) |
+    | run the bot in a container | [Run It Yourself](developer/selfhost.md) |
+    | know how commits, branches and the pipeline work | [Git Workflow](developer/workflow.md) |
+    | run and write tests | [Testing](developer/testing_guide.md) |
 
     ### **Resources**
 
@@ -555,256 +320,20 @@ OSCAR is a Discord-based assistant that helps FIN students at Otto-von-Guericke-
         External self-hosting requires either access to the OVGU Nextcloud or setting up
         a compatible Nextcloud Tables instance with your own module data.
 
-    ### **Configuration (Required)**
+    ### **What you need**
 
-    OSCAR requires specific environment variables to function. The bot checks for these on startup and will terminate if critical variables are missing.
+    * a Discord bot token and the ID of your server
+    * access to the module data in the Nextcloud Tables of the OVGU
+    * Docker, or Python 3.12 or newer
 
-    Create a `.env` file with the following keys:
+    ### **Where it is explained**
 
-    | Variable | Example | Description | Where to Get |
-    |----------|---------|-------------|--------------|
-    | `BOT_TOKEN` | `MTk4NjIy...` | Discord Bot Token | [Discord Developer Portal](https://discord.com/developers/applications) |
-    | `DISCORD_SERVER_ID` | `987654321` | Your Discord Server ID | Right-click server → "Copy Server ID" *(requires **Developer Mode**: Settings → Advanced → Developer Mode)* |
-    | `TABLES_URL` | `https://cloud.ovgu.de/apps/tables/` | Nextcloud Tables API URL | From your Nextcloud admin |
-    | `TABLES_USERNAME` | `oscar-bot` | Nextcloud user account | Create in Nextcloud |
-    | `TABLES_PASSWORD` | `nc_app_token_...` | Nextcloud app password | Generate in Nextcloud → Settings → Security |
-
-    !!! warning ".env"
-        **Never commit `.env` to Git!** Use `.gitignore` to prevent accidents.
-        Leaked tokens and passwords can cause real breaches within seconds.
-
-
-        **⚠️ AI Coding Assistants** (Cursor, Copilot, Claude Code, ...) may read your
-        `.env` unprompted and send secrets to third-party servers — even if git-ignored.
-
-        * Add `.cursorignore` / `.aiderignore` to exclude sensitive files.
-        * Restrict workspace access in your AI tool's settings.
-
-
-    ### **Quick Start**
-
-    === "Step 1: Get Discord Bot Token"
-
-        1. Go to [Discord Developer Portal](https://discord.com/developers/applications)
-        2. Click "New Application" and give it a name
-        3. Go to "Bot" section → Click "Add Bot"
-        4. Under TOKEN section, click "Copy" to copy your bot token
-        5. Paste in `.env` as `BOT_TOKEN`
-
-    === "Step 2: Set Bot Permissions"
-        In the [Discord Developer Portal](https://discord.com/developers/applications) under the "Bot" tab:
-
-        1. Scroll down to "Privileged Gateway Intents".
-        2. Enable Message Content Intent (Required by src/oscar/main.py).
-        3. Save Changes.
-
-        Then generate the invite link:
-
-        4.  Go to "OAuth2" → "URL Generator"
-        5.  Select Scopes: `bot`, `applications.commands`
-        6.  Select Permissions: `Send Messages`, `Read Message History`, `Embed Links`, `Attach Files`
-            > **Note:** Slash commands are registered via the `applications.commands` scope (already selected above), not via a bot permission.
-        7.  Copy generated URL → Open in browser → Select your server and authorize
-    === "Step 3: Setup OSCAR"
-
-        ```bash
-        # 1. Clone the repository
-        git clone https://github.com/emin-girimhanov/oscar-discord-bot.git discord-bot
-        cd discord-bot
-        ```
-
-        ```bash
-        # 2. Create .env file with your values
-        # ⚠️ TABLES_URL must point to the App root (ending with /), not a specific table ID.
-        cat > .env << EOF
-        BOT_TOKEN=your_token_from_step_1_here
-        DISCORD_SERVER_ID=your_server_id_here
-        # OVGU Nextcloud Configuration
-        TABLES_URL=https://cloud.ovgu.de/apps/tables/
-        TABLES_USERNAME=oscar-bot
-        TABLES_PASSWORD=your_nextcloud_app_token_here
-        EOF
-        ```
-
-        ```bash
-        # 3. Install dependencies (Requires Python >= 3.12)
-        # Tip: activate a virtual environment first to avoid PEP 668 errors on modern Linux:
-        # python3 -m venv .venv && source .venv/bin/activate
-        pip install .
-        ```
-
-        ```bash
-        # 4. Run the bot
-        oscar_ovgu
-        ```
-
-        ✅ When you see `Logged in as OSCAR#...`, you're ready!
-
-    ### **Deployment Options**
-
-    We recommend using **Docker** (see Option C below) to ensure the database is persisted correctly via volumes. If you prefer running the Python application directly, follow these options.
-
-    === "Option A: Direct Installation (Virtual Environment)"
-
-        Use a virtual environment to keep dependencies and the database isolated.
-
-        ```bash
-        # 1. Create and activate venv
-        python3 -m venv .venv
-        source .venv/bin/activate
-        ```
-
-        ```bash
-        # 2. Install the package
-        pip install .
-        ```
-
-        ```bash
-        # 3. Setup Environment
-        # Ensure your .env file is present!
-        ```
-
-        ```bash
-        # 4. Run in background
-        # (Output is redirected to oscar.log)
-        nohup oscar_ovgu > oscar.log 2>&1 &
-        ```
-
-    === "Option B: systemd Service (Recommended for Linux)"
-
-        This ensures the bot auto-starts and runs under a restricted user context.
-
-        ```bash
-        # 1. Prepare Directory & User
-        # Create user and directory
-        sudo useradd -r -s /bin/false oscar
-        sudo mkdir -p /opt/oscar
-        sudo chown oscar:oscar /opt/oscar
-
-        # Switch to user oscar to install
-        # Note: use 'sudo -u oscar bash' (not -i) since the shell is /bin/false
-        sudo -u oscar bash
-        cd /opt/oscar
-
-        # Clone Repo (or copy files) and setup venv
-        git clone https://github.com/emin-girimhanov/oscar-discord-bot.git .
-        python3 -m venv .venv
-        source .venv/bin/activate
-        pip install .
-        ```
-
-        ```bash
-        # 2. Create Service File
-        sudo nano /etc/systemd/system/oscar-bot.service
-        ```
-
-        Paste this configuration (adjust paths if necessary):
-
-        ```ini
-        [Unit]
-        Description=OSCAR Discord Bot
-        After=network.target
-
-        [Service]
-        Type=simple
-        User=oscar
-        WorkingDirectory=/opt/oscar
-        # Load environment variables
-        EnvironmentFile=/opt/oscar/.env
-        # Use the executable inside the virtual environment
-        ExecStart=/opt/oscar/.venv/bin/oscar_ovgu
-        Restart=always
-        RestartSec=10
-
-        [Install]
-        WantedBy=multi-user.target
-        ```
-
-        Then enable and start:
-
-        ```bash
-        # Reload systemd
-        sudo systemctl daemon-reload
-
-        # Enable auto-start
-        sudo systemctl enable oscar-bot
-
-        # Start the bot
-        sudo systemctl start oscar-bot
-
-        # Check status
-        sudo systemctl status oscar-bot
-
-        # View logs
-        journalctl -u oscar-bot -f
-        ```
-
-    === "Option C: Docker / Podman"
-
-        Because the `Containerfile` relies on a pre-built wheel file, you must build the package first.
-
-        > **Note:** The image uses a `Containerfile` (Podman convention). Docker supports it via `-f Containerfile`, but you can rename it to `Dockerfile` for standard Docker setups.
-
-        ```bash
-        # 1. Build the Python package (requires 'build' tool)
-        pip install build
-        python -m build
-        ```
-
-        ```bash
-        # 2. Build the Docker image
-        # Replace 'latest' with the actual version tag if needed (check pyproject.toml)
-        docker build -f Containerfile -t oscar-bot:latest .
-        ```
-
-        ```bash
-        # 3. Run the container
-        # The database is stored in the /database volume inside the container.
-        docker run \
-            --env-file .env \
-            --name oscar-bot \
-            --restart unless-stopped \
-            -v oscar_data:/database \
-            oscar-bot:latest
-        ```
-
-        ```bash
-        # 4. View logs
-        docker logs -f oscar-bot
-        ```
-
-    ### Monitoring & Health
-
-    **Check if bot is online:**
-
-    In your Discord server, type (requires **Administrator** permission):
-    ```
-    !ping
-    ```
-
-    Expected response: `Latency is 0.04` (~40 ms — note: the bot reports seconds, not ms)
-
-    **View logs:**
-
-    - **Direct run:** Check terminal output
-    - **systemd:** `journalctl -u oscar-bot -f`
-    - **Docker:** `docker logs -f oscar-bot`
-
-    **Database health (Local Install):**
-
-    Since the bot is installed as a package, the database is located inside the virtual environment.
-
-    To find the exact location:
-
-    ```bash
-    # Print the actual database path used by the bot
-    # (Run this inside your active venv)
-    python -c "from util.database import get_database; print(get_database().db_path)"
-
-    # Then verify schema version using the printed path, e.g.:
-    # sqlite3 /path/to/your/venv/lib/site-packages/util/database/oscar.db "PRAGMA user_version;"
-    # Expected Output: 3 (current schema version)
-    ```
+    | You want to | Read |
+    | :--- | :--- |
+    | install and configure the bot | [Admin Guide](admin/index.md) |
+    | run it in a container at home, back it up and harden it | [Run It Yourself](developer/selfhost.md) |
+    | read the feedback students send | [Feedback Review](admin/feedback_review.md) |
+    | know what is stored about students | [Privacy Policy](privacy.md) |
 
     ### **Resources**
 

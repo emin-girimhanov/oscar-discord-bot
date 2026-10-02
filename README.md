@@ -58,7 +58,7 @@ explains every step.
 ## About this repository
 
 OSCAR is a supervised student software project at the
-[Chair of Simulation](https://www.sim.ovgu.de/sim/en/) of the FIN. The team and the
+[Chair of Simulation](https://www.sim.ovgu.de/) of the FIN. The team and the
 supervisors are named on the
 [About OSCAR](https://emin-girimhanov.github.io/oscar-discord-bot/about_oscar/) page.
 
@@ -76,88 +76,11 @@ the setup, the checks and the commit style. Report security problems as describe
 
 Apache License 2.0, see [LICENSE](LICENSE).
 
-## Bot Setup
-
-> Official Documentation:
-> <https://discordpy.readthedocs.io/en/stable/index.html>
-
-### Bot Installation
-
-Just open this authorisation link:
-
-> <https://discord.com/oauth2/authorize?client_id=1549756119033847890&permissions=2147601408&scope=bot+applications.commands>
-
-and follow the steps
-
-### Bot Execution
-
-1. Create a `.env` file and add the required variables (see below)
-1. Install all packages with `uv pip install .` (or `pip install .`)
-1. Run the bot with `oscar_ovgu`
-
-To run it in a container instead, on your own machine or a home server, see
-[`docs/developer/selfhost.md`](docs/developer/selfhost.md). It needs no university
-network: the bot only opens outgoing connections, to `discord.com` and `cloud.ovgu.de`.
-
-> **example `.env`:**
->
-> ```env
-> BOT_TOKEN="MjcyGlUMjDk3OQ..."
-> DISCORD_SERVER_ID="123456789"
-> TABLES_URL="https://your-nextcloud-instance.de/"
-> TABLES_USERNAME="your_username"
-> TABLES_PASSWORD="your_password"
-> ```
-
 > **Documentation of the faculty instance:** <http://studium-lehre.gitlabpages.cs.ovgu.de/discord-bot>
 >
 > The link is `http` on purpose. The faculty pages host refuses port 443, so the
 > `https` address does not answer at all. Changing it looks like a security fix and
 > breaks the link. Only faculty IT can put a certificate there.
-
-### Commands
-
-`/start` names the eight commands you need on day one:
-
-`/start`, `/module`, `/here`, `/filter`, `/compare`, `/semesterplan`, `/my_data`, `/help`
-
-The rest are commands too, and `/help` explains every one of them: `/standard_plan`,
-`/progress`, `/badges`, `/cohort`, `/suggest`, `/rate`, `/klausuren`, `/fristen`,
-`/lms`, `/ansprechpartner`, `/studybuddy`, `/codegolf`, `/feedback`. Most carry a
-German and an English name. `/help` also starts any of them from a menu, for the first
-weeks when you do not know the names yet.
-
-Administrators also see `/version` and `/review_feedback`, plus the prefix commands
-`!ping` and `!resync`. The short list lives in `src/util/command_surface.py`.
-
-Four portals matter at the OVGU, and all four were checked: **eLearning** (`elearning.ovgu.de`) is the Moodle and holds the course material, **LSF** (`lsf.ovgu.de`) is where an exam registration counts, **BookStack** (`bookstack.cs.ovgu.de`) holds the module handbooks, and the **FIN GitLab** (`isggit3.cs.ovgu.de`) holds the code. OSCAR reads its module data from **Nextcloud Tables** (`cloud.ovgu.de`), which students never open themselves.
-
-The guide with screenshots is in [`docs/features/commands.md`](docs/features/commands.md).
-
-![Example Help Command](assets/images/readme/help_command_example.png)
-
-## Good Practices
-
-### Conventional Commits
-
-<https://www.conventionalcommits.org/en/v1.0.0/>
-
-| type       | description | version bump |
-|------------|-------------|--------------|
-| **`fix`**      | **patched a bug in the codebase** | **PATCH** (e.g., 1.0.0 -> 1.0.1) |
-| **`feat`**     | **introduced a new feature to the codebase** | **MINOR** (e.g., 1.0.0 -> 1.1.0) |
-| **`feat!`**    | **BREAKING CHANGE (add ! after type)** | **MAJOR** (e.g., 1.0.0 -> 2.0.0) |
-| `chore`    | updating grunt tasks etc; no production code change | None |
-| `ci`       | changes to CI configuration files and scripts | None |
-| `docs`     | changes to documentation | None |
-| `style`    | formatting, missing semi colons, etc; no production code change | None |
-| `refactor` | refactoring production code, eg. renaming a variable | None |
-| `perf`     | code changes that improve performance | None |
-| `test`     | adding missing tests, refactoring tests; no production code change | None |
-| _and more_ |  | |
-
-**Example commit message:** \
-`feat: allow provided config object to extend other configs`
 
 ## Project Structure
 

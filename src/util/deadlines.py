@@ -2,6 +2,9 @@
 
     Provides deadline tracking, remaining day countdowns, and exam registration
     windows for the current and upcoming semester (Issue #50).
+
+    The dates come from `get_academic_term`, which computes them. They are a guide and
+    not what the university published, `oscar.ui.deadlines_view` says so to the student.
 """
 
 from dataclasses import dataclass
@@ -139,7 +142,7 @@ def get_semester_deadlines(reference_date: date | None = None) -> SemesterDeadli
             description_de="Regulärer Zeitraum für Vorlesungen, Übungen und Seminare.",
             description_en="Regular period for lectures, tutorials, and seminars.",
             is_critical=False,
-            url="https://www.ovgu.de/semestertermine.html",
+            url="https://www.fin.ovgu.de/pamt.html",
         ),
         DeadlineItem(
             id="exam_period",
@@ -150,7 +153,11 @@ def get_semester_deadlines(reference_date: date | None = None) -> SemesterDeadli
             description_de="Hauptprüfungszeitraum der FIN für Klausuren und Prüfungen.",
             description_en="Main FIN exam period for written and oral examinations.",
             is_critical=False,
-            url="https://www.inf.ovgu.de/Studium/Pr%C3%BCfungsamt.html",
+            # the examination plans of the examination office, checked on 2026-10-02
+            url=(
+                "https://www.fin.ovgu.de/Studium/W%C3%A4hrend+des+Studiums/"
+                "Pr%C3%BCfungsamt/Pr%C3%BCfungspl%C3%A4ne.html"
+            ),
         ),
     )
 

@@ -182,12 +182,12 @@ HELP_LANGUAGES: dict[str, dict[LanguageCode, str]] = {
     },
     "core_note": {
         LanguageCode.DE: (
-            "Das Slash-Menü führt nur die Befehle, die du beim Tippen brauchst. "
-            "Alles andere startest du oben unter **Öffnen**."
+            "Jeden Befehl kannst du auch tippen, das Slash-Menü führt sie alle. "
+            "Die häufigsten Funktionen startest du oben unter **Öffnen**, ohne den Namen zu kennen."
         ),
         LanguageCode.EN: (
-            "The slash menu only lists the commands you need while typing. "
-            "Everything else starts under **Open** above."
+            "You can type every command, the slash menu lists all of them. "
+            "The most common features also start under **Open** above, no name needed."
         ),
     },
 }
@@ -399,13 +399,15 @@ HELP_ANSWERS: dict[str, dict[LanguageCode, str]] = {
             "**/codegolf**, auch **/challenge**\n"
             "Die wöchentliche Programmier-Aufgabe. Gewertet wird die Länge deiner "
             "Lösung in Bytes, kürzer ist besser.\n\n"
-            "Dein Code wird nicht ausgeführt. Die Einsendungen schaut ein Mensch an."
+            "Dein Code wird weder ausgeführt noch geprüft. Die Rangliste läuft auf Vertrauen: "
+            "reiche nur ein, was die Aufgabe wirklich löst."
         ),
         LanguageCode.EN: (
             "**/codegolf**, also **/challenge**\n"
             "The weekly puzzle. Your solution is scored by its length in bytes, "
             "shorter is better.\n\n"
-            "Your code is never executed. A human looks at the submissions."
+            "Your code is neither executed nor checked. The leaderboard runs on trust: "
+            "only submit what really solves the puzzle."
         ),
     },
     "cohort": {
@@ -461,13 +463,15 @@ HELP_ANSWERS: dict[str, dict[LanguageCode, str]] = {
         LanguageCode.DE: (
             "`/my_data` zeigt dir alles, was wir über dich gespeichert haben.\n"
             "Die Antwort sieht nur du, und der Knopf `⤓` lädt alles als JSON-Datei herunter.\n"
-            "Der rote Knopf löscht Einstellungen, Semesterplan und dein Feedback.\n"
+            "Der rote Knopf löscht alles davon: Einstellungen, Semesterplan, Feedback, "
+            "Bewertungen, Lerngruppen und Code-Golf-Lösungen.\n"
             "Vor dem Löschen fragen wir nach, danach ist nichts davon wiederherstellbar."
         ),
         LanguageCode.EN: (
             "`/my_data` shows you everything we have stored about you.\n"
             "Only you see the answer, and the `⤓` button downloads all of it as JSON.\n"
-            "The red button deletes your preferences, your semester plan and your feedback.\n"
+            "The red button deletes all of it: preferences, semester plan, feedback, "
+            "ratings, study groups and code golf solutions.\n"
             "We ask before deleting, and afterwards none of it can be brought back."
         ),
     },
@@ -587,14 +591,16 @@ HELP_ANSWERS: dict[str, dict[LanguageCode, str]] = {
     },
     "ansprechpartner": {
         LanguageCode.DE: (
-            "`/ansprechpartner` (oder `/contacts`) zeigt alle wichtigen Kontakte an der FIN.\n"
-            "Enthält Studiendekanat, Prüfungsamt, FaRaFIN, Studiengangsleiter,\n"
-            "Deutschlandstipendium, Praktikumsamt, Erasmus und psychologische Beratung."
+            "`/ansprechpartner` (oder `/contacts`) zeigt die wichtigen Kontakte an der FIN.\n"
+            "Enthält Prüfungsamt, Dekanat, FaRaFIN, Studiengangsleitung,\n"
+            "Deutschlandstipendium, BAföG, Erasmus und Beratung.\n"
+            "Jeder Eintrag hat einen Knopf zur offiziellen Seite. Dort steht, was hier fehlt."
         ),
         LanguageCode.EN: (
-            "`/ansprechpartner` (or `/contacts`) lists key faculty and university contacts.\n"
-            "Includes Dean of Studies, Exam Office, FaRaFIN, programme advisors,\n"
-            "Germany Scholarship, Internship Office, Erasmus, and counseling."
+            "`/ansprechpartner` (or `/contacts`) lists the key contacts at the FIN.\n"
+            "Includes the Examination Office, the Dean's Office, FaRaFIN, programme directors,\n"
+            "Germany Scholarship, BAföG, Erasmus and counselling.\n"
+            "Every entry has a button to the official page, which has what is missing here."
         ),
     },
     "badges": {
@@ -623,14 +629,18 @@ HELP_ANSWERS: dict[str, dict[LanguageCode, str]] = {
     },
     "fristen": {
         LanguageCode.DE: (
-            "`/fristen` (oder `/deadlines`) zeigt die offiziellen Termine der FIN.\n"
+            "`/fristen` (oder `/deadlines`) zeigt, wann im Semester was ungefähr ansteht.\n"
             "Enthält Prüfungsanmeldung, Rückmeldung, Prüfungszeitraum und Vorlesungszeit.\n"
-            "Erinnert dich an wichtige Ausschlussfristen und die 3-Tage-Abmelderegel."
+            "Die Daten sind Richtwerte, keine amtlichen Termine. "
+            "Die genauen Zeiträume stehen beim Prüfungsamt und im LSF.\n"
+            "Dazu die Regel zur Abmeldung: bis 3 Tage vor der Prüfung."
         ),
         LanguageCode.EN: (
-            "`/fristen` (or `/deadlines`) shows official FIN academic milestones.\n"
+            "`/fristen` (or `/deadlines`) shows roughly what is due when in the semester.\n"
             "Includes exam registration, re-registration, exam period, and lecture dates.\n"
-            "Reminds you of critical deadlines and the 3-day withdrawal policy."
+            "The dates are a guide, not official. "
+            "The examination office and the LSF have the real periods.\n"
+            "Plus the withdrawal rule: up to 3 days before the exam."
         ),
     },
     "suggest": {
@@ -715,14 +725,12 @@ FAQ_ANSWERS: dict[str, dict[LanguageCode, str]] = {
         LanguageCode.DE: (
             "Discord merkt sich die Befehlsliste und aktualisiert sie träge.\n"
             "Drücke `Strg+R`, das lädt den Client neu.\n"
-            "Nach einer neuen Version kann es bis zu einer Stunde dauern.\n"
-            "`!ping` und `!resync` sind Präfixbefehle und gehen auch ohne die Liste."
+            "Nach einer neuen Version kann es bis zu einer Stunde dauern."
         ),
         LanguageCode.EN: (
             "Discord caches the command list and refreshes it lazily.\n"
             "Press `Ctrl+R`, that reloads the client.\n"
-            "After a new version it can take up to an hour.\n"
-            "`!ping` and `!resync` are prefix commands and work without the list."
+            "After a new version it can take up to an hour."
         ),
     },
     "module_not_found": {
@@ -786,12 +794,16 @@ FAQ_ANSWERS: dict[str, dict[LanguageCode, str]] = {
             "Öffne `/semesterplan`.\n"
             "Neben jedem Modul steht ein rotes **X**.\n"
             "Ein Klick darauf nimmt das Modul sofort heraus.\n"
+            "Ab sieben Modulen zeigt OSCAR eine Liste. "
+            "Dann wählst du das Modul im Menü **Modul entfernen**.\n"
             "Hinzufügen geht über den Knopf in der Modulkarte von `/module`."
         ),
         LanguageCode.EN: (
             "Open `/semesterplan`.\n"
             "Next to every module there is a red **X**.\n"
             "One click takes the module out right away.\n"
+            "From seven modules on OSCAR shows a list. "
+            "Pick the module in the menu **Remove a module** then.\n"
             "You add one with the button on the module card from `/module`."
         ),
     },
@@ -814,13 +826,18 @@ FAQ_ANSWERS: dict[str, dict[LanguageCode, str]] = {
             "Nur du.\n"
             "`/semesterplan`, `/start`, `/filter` und `/feedback` antworten dir privat.\n"
             "Andere im Kanal sehen die Nachricht nicht und können nichts anklicken.\n"
-            "`/standard_plan` ist dagegen öffentlich, zeigt aber nur den offiziellen Plan."
+            "Auch `/standard_plan`, `/progress` und `/my_data` sieht nur, wer sie aufruft.\n"
+            "Andere sehen von dir nur, was du selbst teilst: eine Bewertung ohne Namen "
+            "und deine Teilnahme an einer Lerngruppe."
         ),
         LanguageCode.EN: (
             "Only you.\n"
             "`/semesterplan`, `/start`, `/filter` and `/feedback` answer you privately.\n"
             "Others in the channel see nothing and can click nothing.\n"
-            "`/standard_plan` is public, but it only shows the official plan."
+            "`/standard_plan`, `/progress` and `/my_data` are only visible "
+            "to whoever runs them, too.\n"
+            "Others only see what you share yourself: a review without your name "
+            "and that you joined a study group."
         ),
     },
     "stored_data": {
@@ -828,6 +845,8 @@ FAQ_ANSWERS: dict[str, dict[LanguageCode, str]] = {
             "Deine Discord-ID, deine Sprache, dein Semester, deinen Studiengang "
             "und deine Prüfungsordnung.\n"
             "Dazu die Module, die du dir gemerkt hast, und dein Feedback.\n"
+            "Außerdem, was du selbst einträgst: Bewertungen, Lerngruppen und Code-Golf-Lösungen.\n"
+            "`/my_data` zeigt dir alles davon und löscht es auf Wunsch.\n"
             "Keinen Namen, keine Mailadresse, keine Auswertung deines Verhaltens.\n"
             "Mehr steht in der Datenschutzerklärung auf der Doku-Seite."
         ),
@@ -835,6 +854,8 @@ FAQ_ANSWERS: dict[str, dict[LanguageCode, str]] = {
             "Your discord id, your language, your semester, your programme "
             "and your examination regulations.\n"
             "Plus the modules you saved and any feedback you sent.\n"
+            "And what you enter yourself: ratings, study groups and code golf solutions.\n"
+            "`/my_data` shows you all of it and deletes it if you want.\n"
             "No name, no mail address, no tracking of what you do.\n"
             "The privacy policy on the documentation site has the details."
         ),

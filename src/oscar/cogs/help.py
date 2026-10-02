@@ -16,6 +16,7 @@ from oscar.ui.help_launcher import (
 )
 from oscar.ui.translated_view import TranslatedView
 from util.command_surface import CORE, CORE_ORDER
+from util.database import get_user_language
 from util.enums import LanguageCode
 from util.translations import (
     COMMAND_TEXTS,
@@ -40,7 +41,7 @@ class Help(commands.Cog):
         self.bot: commands.Bot = bot
         logger.info("Loaded Help cog")
 
-    @app_commands.command(description="Open the help dialog")
+    @app_commands.command(description="Hilfe zu allen Befehlen (help for every command)")
     async def help(self, interaction: discord.Interaction):
         """ Command to open the help dialog."""
         # \/ important (makes the bot say its thinking)
@@ -48,7 +49,9 @@ class Help(commands.Cog):
             ephemeral=True
         )
 
-        await interaction.followup.send(view=HelpView(), ephemeral=True)
+        # the help opened in english for everybody, whatever they had picked in /start
+        language: LanguageCode = get_user_language(interaction.user.id)
+        await interaction.followup.send(view=HelpView(language), ephemeral=True)
 
     @app_commands.command(
         name="ansprechpartner",

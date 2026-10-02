@@ -373,12 +373,13 @@ Access verified faculty and university contact persons without digging through o
 
 Or, if you do not know the name yet: `/help → Öffnen → Ansprechpartner`.
 
-* **Studiendekanat & Prüfungsamt (PA):** Exam registration, grade recording, medical notes, and study regulations.
-* **Student Council (FaRaFIN) & E-Wochen Portal:** Student representation, past exam archives, and the official Freshman Orientation Weeks portal ([eet.farafin.de](https://eet.farafin.de)) with schedule workshops and campus rally.
-* **Programme Directors (Fachberatung):** Academic counseling for B.Sc./M.Sc. INF, IngInf, WIF, CV/VC, DKE, and DE.
-* **Germany Scholarship & BAföG:** Application deadlines, €300/month scholarship guidance, and Studentenwerk social counseling.
-* **Internship, Exchange & Support Internationals:** FIN Internship Office, Erasmus study abroad, and **Support Internationals / DAAD FIT** (career pathways, integration, and International Buddy Programme at the International Office).
-* **Counseling & Diversity:** Psychosocial Student Counseling (PSB) for exam stress/mental health and the Equal Opportunity Officer.
+* **Examination Office & Dean's Office:** Exam registration, grades, withdrawal due to illness, and the faculty management.
+* **Student Council (FaRaFIN) & Orientation Week:** Student representation, past exams, and the orientation week for new students ([farafin.de/erstsemester/e-woche](https://farafin.de/erstsemester/e-woche/)).
+* **Programme Directors:** One link to the faculty page that names the director and deputy of every programme.
+* **Germany Scholarship & BAföG:** The €300/month scholarship of the university and the BAföG office of the Studentenwerk.
+* **Study Abroad & International:** The Erasmus coordinator of the FIN, Support Internationals at FIN, and the International Office.
+* **Counselling & Equal Opportunity:** Psychosocial counselling of the Studentenwerk and the Equal Opportunity Officer of the FIN.
+* **Only what the official page says:** A room, a mail address or a phone number is shown when the linked page states it, and left out otherwise. Every entry has a button to that page.
 * **Interactive UI:** Switch categories dynamically via a dropdown menu, visit faculty portals via direct link buttons, and toggle between German and English.
 
 ---
@@ -459,12 +460,12 @@ Never miss an exam registration or re-registration deadline again.
 
 Or, if you do not know the name yet: `/help → Öffnen → Fristen & Termine`.
 
-* **Active Countdown:** Highlights the next impending deadline (e.g. `🚨 Last day today!` or `🟡 In 5 days`).
-* **Official FIN Dates:**
-    * **Prüfungsanmeldung (Exam Registration LSF):** 15.11.–30.11. (WiSe) / 15.05.–31.05. (SoSe).
-    * **Rückmeldung (Re-registration):** 15.01.–15.02. (WiSe) / 15.06.–15.07. (SoSe).
-    * **Lecture & Exam Periods:** Complete dates for course blocks and exam weeks.
-* **3-Day Withdrawal Policy:** Reminder that exams can be deregistered in LSF up to 3 days prior without stating reasons.
+* **A guide, not official dates:** OSCAR computes these dates, the same days every year. The examination board sets the real periods anew every semester, and the view says so above the list. For a deadline, rely on the examination office and the LSF.
+    * **Prüfungsanmeldung (Exam Registration LSF):** about 15.11.–30.11. (WiSe) / 15.05.–31.05. (SoSe).
+    * **Rückmeldung (Re-registration):** about 15.01.–15.02. (WiSe) / 15.06.–15.07. (SoSe).
+    * **Lecture & Exam Periods:** Approximate dates for lectures and exam weeks.
+* **Countdown:** Highlights what comes next, counted from those approximate dates.
+* **3-Day Withdrawal Rule:** A registration can be taken back in the LSF as long as at least 3 days remain until the exam (SPO Bachelor 2024, § 17 (4)).
 * **Quick Links:** One-click navigation to the LSF exam portal and the FIN Examination Office.
 
 ---

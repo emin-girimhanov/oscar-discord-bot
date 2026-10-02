@@ -1,16 +1,32 @@
 """ This module holds structured contact information for students at FIN OVGU.
 
-    Covers official university and faculty contact points such as the Dean of Studies,
-    Examination Office, Student Council (FaRaFIN), Programme Directors, Germany Scholarship
-    (Deutschlandstipendium), Internship Office, Erasmus, and Counseling Services.
+    **Every fact in here was read on the page its entry links to, on 2026-10-02.**
+
+    The first version of this list looked official and was not. It named mailboxes that
+    do not exist (`pa-fin@ovgu.de`, `studienberatung-inf@cs.ovgu.de`, an own address
+    per study programme), put the student council into room 019 with office hours
+    "almost daily", and five of its links answered 404. A student who wrote to one of
+    those addresses got a bounce, or worse, nothing.
+
+    So the rule for this file is: a room, a mail address or a phone number is only
+    written down when the linked page states it. Where the page states none, the field
+    stays empty and the entry sends the student to the page. An empty field is honest,
+    a plausible looking one is not. `tests/test_contacts.py` holds the addresses that
+    were made up, so they cannot come back.
+
+    When a link dies, look the office up again rather than guessing the new address.
 """
 
 from dataclasses import dataclass
 
 
+# pylint: disable=too-many-instance-attributes
 @dataclass(frozen=True)
 class ContactPerson:
-    """Represents a single contact person or office."""
+    """ Represents a single contact person or office.
+
+        `office`, `email` and `phone` may be empty. The view leaves an empty one out.
+    """
     title_de: str
     title_en: str
     office: str
@@ -18,6 +34,7 @@ class ContactPerson:
     url: str
     details_de: str
     details_en: str
+    phone: str = ""
 
 
 @dataclass(frozen=True)
@@ -36,52 +53,49 @@ CONTACT_CATEGORIES: tuple[ContactCategory, ...] = (
     ContactCategory(
         key="dekanat_pa",
         emoji="🏛️",
-        title_de="Studiendekanat & Prüfungsamt",
-        title_en="Dean of Studies & Examination Office",
-        description_de=(
-            "Zuständig für Studienorganisation, Prüfungsordnungen, Notenverbuchung und Atteste."
-        ),
-        description_en=(
-            "Responsible for study organization, exam regulations, grades, and certificates."
-        ),
+        title_de="Dekanat & Prüfungsamt",
+        title_en="Dean's Office & Examination Office",
+        description_de="Prüfungen, Noten, Atteste und die Leitung der Fakultät.",
+        description_en="Exams, grades, medical certificates and the faculty management.",
         contacts=(
             ContactPerson(
-                title_de="Prüfungsamt FIN (PA)",
+                title_de="Prüfungsamt FIN",
                 title_en="Examination Office FIN",
-                office="Gebäude 40, Raum 209 (oder G29)",
-                email="pa-fin@ovgu.de",
-                url="https://www.inf.ovgu.de/Studium/Pr%C3%BCfungsamt.html",
+                office="Gebäude 29, Raum 101/102",
+                email="fin-pruefungsamt@ovgu.de",
+                url="https://www.fin.ovgu.de/pamt.html",
                 details_de=(
-                    "Anlaufstelle für Notenverbuchung, Prüfungsanmeldungen, Krankmeldungen "
-                    "(Atteste), Anerkennungen und Abschlussarbeiten. Wichtig: "
-                    "Prüfungsabmeldung ist bis 3 Tage vor der Klausur ohne Grund möglich."
+                    "Anlaufstelle für Noten, Prüfungsan- und -abmeldung, Rücktritt wegen "
+                    "Krankheit, Anerkennungen und Abschlussarbeiten. "
+                    "Sprechzeiten nur mit Termin. "
+                    "Die Zeiten und alle Formulare stehen auf der Seite."
                 ),
                 details_en=(
-                    "Contact for grade records, exam registrations, sick notes, credit "
-                    "transfers, and theses. Note: Exam deregistration is possible up to 3 days "
-                    "prior to the exam without giving reasons."
+                    "Contact for grades, exam registration and deregistration, withdrawal "
+                    "due to illness, credit transfers and theses. "
+                    "Office hours by appointment only. The page lists the hours and all forms."
                 ),
             ),
             ContactPerson(
-                title_de="Studiendekanat FIN",
-                title_en="Dean of Studies Office FIN",
-                office="Gebäude 29 (FIN), Raum 102/103",
-                email="studiendekanat@cs.ovgu.de",
-                url="https://www.inf.ovgu.de/Fakult%C3%A4t/Studiendekanat.html",
+                title_de="Dekanat FIN",
+                title_en="Dean's Office FIN",
+                office="Gebäude 29 (FIN)",
+                email="fin-dekan@ovgu.de",
+                url="https://www.fin.ovgu.de/Fakult%C3%A4t/Organisationsstruktur/Dekanat.html",
                 details_de=(
-                    "Zuständig für Studien- und Prüfungsordnungen (SPO), Lehrangebot, "
-                    "Modulhandbücher (BookStack) und Qualität der Lehre."
+                    "Dekan, Studiendekan und Sekretariat der Fakultät. "
+                    "Die Seite nennt jede Person mit Mailadresse und Telefon."
                 ),
                 details_en=(
-                    "Responsible for examination regulations (SPO), course planning, "
-                    "module handbooks (BookStack), and teaching quality."
+                    "Dean, Dean of Studies and the secretariat of the faculty. "
+                    "The page names every person with mail address and phone."
                 ),
             ),
         ),
     ),
     ContactCategory(
         key="farafin",
-        emoji="🦊",
+        emoji="🐘",
         title_de="Fachschaftsrat (FaRaFIN)",
         title_en="Student Council (FaRaFIN)",
         description_de="Studentische Selbstverwaltung – von Studierenden für Studierende.",
@@ -90,33 +104,40 @@ CONTACT_CATEGORIES: tuple[ContactCategory, ...] = (
             ContactPerson(
                 title_de="Fachschaftsrat Informatik (FaRaFIN)",
                 title_en="Computer Science Student Council (FaRaFIN)",
-                office="Gebäude 29 (FIN), Raum 019 (Erdgeschoss)",
-                email="farafin@ovgu.de",
+                office="G29-103",
+                email="post@farafin.de",
+                phone="(+49) 391 67 51377",
                 url="https://farafin.de",
                 details_de=(
-                    "Erste Anlaufstelle bei allen Fragen rund ums Studium, Probleme mit "
-                    "Modulen oder Dozierenden, Altklausuren, Erstsemestertage (EET) und Events. "
-                    "Sprechzeiten in der Vorlesungszeit fast täglich!"
+                    "Erste Anlaufstelle bei Fragen rund ums Studium, bei Problemen mit "
+                    "Modulen oder Dozierenden, für Altklausuren und Events. "
+                    "Feste Sprechzeiten gibt es gerade nicht. Schau einfach im Büro vorbei "
+                    "oder schreib eine Mail."
                 ),
                 details_en=(
-                    "Your primary contact for study questions, feedback on modules or "
-                    "lecturers, past exam archives, orientation days (EET), and events. "
-                    "Office hours almost daily during lecture periods!"
+                    "Your first contact for questions about your studies, for trouble with "
+                    "modules or lecturers, for past exams and events. "
+                    "There are no fixed office hours at the moment. Drop by the office or "
+                    "write a mail."
                 ),
             ),
             ContactPerson(
-                title_de="E-Wochen & Erstsemester-Portal (FaRaFIN EET)",
-                title_en="Freshman Orientation Weeks (FaRaFIN EET)",
-                office="Gebäude 29 (FIN), Raum 019",
-                email="eet@farafin.de",
-                url="https://eet.farafin.de",
+                title_de="Einführungswoche (E-Woche) für Erstsemester",
+                title_en="Orientation Week (E-Woche) for New Students",
+                office="G29-103 (FaRaFIN), die Woche findet im Gebäude 29 statt",
+                email="post@farafin.de",
+                url="https://farafin.de/erstsemester/e-woche/",
                 details_de=(
-                    "Offizielles Webportal der Einführungswochen (EET): Stundenplanbau-Hilfe, "
-                    "Campus-Rallye, Mathe-Vorkurs, Mentoring und Events für Erstis!"
+                    "Der FaRaFIN organisiert die E-Woche zum Semesterstart, für alle neuen "
+                    "Bachelor- und Masterstudierenden der FIN, auf Deutsch und Englisch. "
+                    "Mit Stundenplanbau, Campusrallye, Stadtrallye und Spieleabend. "
+                    "Das Wochenprogramm, die Vorkurse und das Mentoring stehen auf der Seite."
                 ),
                 details_en=(
-                    "Official portal for FIN introduction weeks: timetable scheduling workshops, "
-                    "campus rally, math prep course, mentoring, and freshman events!"
+                    "FaRaFIN runs the orientation week at the start of the semester, for all "
+                    "new Bachelor and Master students of the FIN, in German and English. "
+                    "With timetable building, a campus rally, a city rally and a games night. "
+                    "The page has the programme of the week, the prep courses and the mentoring."
                 ),
             ),
         ),
@@ -124,64 +145,28 @@ CONTACT_CATEGORIES: tuple[ContactCategory, ...] = (
     ContactCategory(
         key="studiengangsleiter",
         emoji="🎓",
-        title_de="Studiengangsleiter & Fachberatung",
-        title_en="Programme Directors & Academic Advisors",
-        description_de="Fachliche Beratung zu Modulwahl, Vertiefungen und Anerkennungen.",
-        description_en="Academic advising on module choices, tracks, and recognition.",
+        title_de="Studiengangsleitung",
+        title_en="Programme Directors",
+        description_de="Fachliche Fragen zu Modulwahl, Vertiefungen und Anerkennungen.",
+        description_en="Academic questions on module choices, tracks and recognition.",
         contacts=(
             ContactPerson(
-                title_de="B.Sc. & M.Sc. Informatik (INF)",
-                title_en="B.Sc. & M.Sc. Computer Science",
+                title_de="Studiengangsleiter aller Studiengänge",
+                title_en="Programme Directors of All Programmes",
                 office="Gebäude 29 (FIN)",
-                email="studienberatung-inf@cs.ovgu.de",
-                url="https://www.inf.ovgu.de/Studium/Fachstudienberatung.html",
-                details_de="Fachberatung für Informatik (inkl. bilingualer Zweig).",
-                details_en="Academic advisor for Bachelor and Master Computer Science.",
-            ),
-            ContactPerson(
-                title_de="B.Sc. & M.Sc. Ingenieurinformatik (IngInf)",
-                title_en="B.Sc. & M.Sc. Engineering Informatics",
-                office="Gebäude 29 (FIN)",
-                email="studienberatung-inginf@cs.ovgu.de",
-                url="https://www.inf.ovgu.de/Studium/Fachstudienberatung.html",
-                details_de="Fachberatung für die ingenieurwissenschaftliche Informatik.",
-                details_en="Academic advisor for Engineering Informatics.",
-            ),
-            ContactPerson(
-                title_de="B.Sc. & M.Sc. Wirtschaftsinformatik (WIF)",
-                title_en="B.Sc. & M.Sc. Business Informatics",
-                office="Gebäude 29 (FIN)",
-                email="studienberatung-wif@cs.ovgu.de",
-                url="https://www.inf.ovgu.de/Studium/Fachstudienberatung.html",
-                details_de="Fachberatung an der Schnittstelle von IT und Wirtschaft.",
-                details_en="Academic advisor for Business Informatics.",
-            ),
-            ContactPerson(
-                title_de="B.Sc. Computervisualistik & M.Sc. Visual Computing (CV/VC)",
-                title_en="B.Sc. Computer Visualistics & M.Sc. Visual Computing",
-                office="Gebäude 29 (FIN)",
-                email="studienberatung-cv@cs.ovgu.de",
-                url="https://www.inf.ovgu.de/Studium/Fachstudienberatung.html",
-                details_de="Fachberatung für Computergraphik, Bildverarbeitung und VC.",
-                details_en="Academic advisor for Visual Computing and Computer Graphics.",
-            ),
-            ContactPerson(
-                title_de="M.Sc. Data and Knowledge Engineering (DKE)",
-                title_en="M.Sc. Data and Knowledge Engineering (DKE)",
-                office="Gebäude 29 (FIN)",
-                email="dke-advisor@ovgu.de",
-                url="https://www.inf.ovgu.de/Studium/Fachstudienberatung.html",
-                details_de="Internationale Fachberatung für Data Science, KI und Machine Learning.",
-                details_en="Academic advisor for Data Science, AI, and Machine Learning.",
-            ),
-            ContactPerson(
-                title_de="M.Sc. Digital Engineering (DE)",
-                title_en="M.Sc. Digital Engineering (DE)",
-                office="Gebäude 29 (FIN)",
-                email="de-advisor@ovgu.de",
-                url="https://www.inf.ovgu.de/Studium/Fachstudienberatung.html",
-                details_de="Interdisziplinäre Beratung für digitale Prozessentwicklung.",
-                details_en="Interdisciplinary advisor for digital process and system development.",
+                email="",
+                url="https://www.fin.ovgu.de/Studium/Vor+dem+Studium/Studiengangsleiter.html",
+                details_de=(
+                    "Jeder Studiengang der FIN hat eine Leitung und eine Stellvertretung. "
+                    "Die Seite nennt beide für jeden Studiengang. "
+                    "Eine eigene Mailadresse pro Studiengang gibt es nicht, "
+                    "schreib der Person direkt."
+                ),
+                details_en=(
+                    "Every programme of the FIN has a director and a deputy. "
+                    "The page names both for each programme. "
+                    "There is no mailbox per programme, write to the person directly."
+                ),
             ),
         ),
     ),
@@ -189,40 +174,38 @@ CONTACT_CATEGORIES: tuple[ContactCategory, ...] = (
         key="stipendien",
         emoji="💶",
         title_de="Deutschlandstipendium & Finanzen",
-        title_en="Germany Scholarship & Financial Aid",
-        description_de="Informationen zu Stipendien, finanzieller Förderung und BAföG.",
-        description_en="Information regarding scholarships, funding, and BAföG financial support.",
+        title_en="Germany Scholarship & Finances",
+        description_de="Deutschlandstipendium, BAföG und Beratung zur Finanzierung.",
+        description_en="Germany Scholarship, BAföG and advice on financing your studies.",
         contacts=(
             ContactPerson(
                 title_de="Deutschlandstipendium an der OVGU",
                 title_en="Germany Scholarship (Deutschlandstipendium)",
-                office="Rektorat / Transfer- und Gründerzentrum (TGZ)",
-                email="deutschlandstipendium@ovgu.de",
+                office="Gebäude 18, Raum 133",
+                email="",
                 url="https://www.ovgu.de/deutschlandstipendium.html",
                 details_de=(
-                    "300 € monatlich (150 € Bund + 150 € Förderer), einkommensunabhängig. "
-                    "Bewerbung jährlich im SoSe (meist Juni bis Juli) für das nächste Studienjahr. "
-                    "Berücksichtigt Studienleistungen und ehrenamtliches Engagement."
+                    "300 € im Monat, unabhängig vom Einkommen. "
+                    "Voraussetzungen, Bewerbungszeitraum und Förderdauer stehen auf der Seite."
                 ),
                 details_en=(
-                    "300 € per month (independent of income and BAföG). Application phase "
-                    "annually in summer semester (June/July) for next academic year. "
-                    "Evaluates academic achievements and social engagement."
+                    "300 € per month, independent of income. "
+                    "The page has the requirements, the application period and the duration."
                 ),
             ),
             ContactPerson(
-                title_de="BAföG-Amt & Sozialberatung (Studentenwerk)",
-                title_en="BAföG Office & Social Counseling",
-                office="Wohnheim 7 / Mensa UniCampus, untere Ebene",
-                email="bafoeg@studentenwerk-magdeburg.de",
-                url="https://www.studentenwerk-magdeburg.de/finanzierung/",
+                title_de="BAföG (Studentenwerk Magdeburg)",
+                title_en="BAföG (Studentenwerk Magdeburg)",
+                office="",
+                email="",
+                url="https://www.studentenwerk-magdeburg.de/bafoeg/",
                 details_de=(
-                    "Zuständig für Ausbildungsförderung (BAföG), Studienkredite, "
-                    "Härtefallfonds und allgemeine Sozialberatung bei finanziellen Engpässen."
+                    "Antrag, Sprechstunden und die zuständigen Ansprechpersonen für BAföG. "
+                    "Daneben berät das Studentenwerk zu Krediten und zur Studienfinanzierung."
                 ),
                 details_en=(
-                    "Responsible for student loans/grants (BAföG), emergency funds, "
-                    "and social counseling for financial matters."
+                    "Application, consultation hours and the responsible contacts for BAföG. "
+                    "The Studentenwerk also advises on loans and on financing your studies."
                 ),
             ),
         ),
@@ -230,56 +213,54 @@ CONTACT_CATEGORIES: tuple[ContactCategory, ...] = (
     ContactCategory(
         key="ausland_praktikum",
         emoji="🌍",
-        title_de="Praktikumsamt & Auslandsstudium",
-        title_en="Internship Office & Study Abroad",
-        description_de="Ansprechpartner für Pflichtpraktika, Erasmus+ und Partnerschaften.",
-        description_en="Contacts for mandatory internships, Erasmus+, and exchange programmes.",
+        title_de="Ausland & Internationales",
+        title_en="Study Abroad & International",
+        description_de="Erasmus, Auslandssemester und Hilfe für internationale Studierende.",
+        description_en="Erasmus, semesters abroad and support for international students.",
         contacts=(
             ContactPerson(
-                title_de="Praktikumsamt FIN",
-                title_en="Internship Office FIN",
-                office="Gebäude 29 (FIN)",
-                email="praktikumsamt-fin@ovgu.de",
-                url="https://www.inf.ovgu.de/Studium/Praktikumsamt.html",
+                title_de="Erasmus-Koordination FIN",
+                title_en="Erasmus Coordinator FIN",
+                office="G29-214",
+                email="claudia.krull@ovgu.de",
+                url="https://www.fin.ovgu.de/Studium/W%C3%A4hrend+des+Studiums/Outgoing.html",
                 details_de=(
-                    "Vorab-Genehmigung des Betriebspraktikums, Prüfung der Verträge "
-                    "und Anerkennung des Praktikumsberichts nach Abschluss."
+                    "Beratung zu Auslandssemestern, Partneruniversitäten und Learning Agreements."
                 ),
                 details_en=(
-                    "Pre-approval of industrial internships, review of contracts, "
-                    "and credit recognition of internship reports."
+                    "Guidance on semesters abroad, partner universities and Learning Agreements."
                 ),
             ),
             ContactPerson(
-                title_de="Erasmus- & Auslandsbeauftragte FIN",
-                title_en="Erasmus & Study Abroad FIN",
+                title_de="Support Internationals at FIN",
+                title_en="Support Internationals at FIN",
                 office="Gebäude 29 (FIN)",
-                email="erasmus-fin@ovgu.de",
-                url="https://www.inf.ovgu.de/International.html",
+                email="",
+                url=(
+                    "https://www.fin.ovgu.de/inf/en/Study/Being+a+student/Incoming/"
+                    "Support+Internationals+at+FIN.html"
+                ),
                 details_de=(
-                    "Beratung zu Auslandssemestern, Partneruniversitäten weltweit, "
-                    "Learning Agreements und Anerkennung ausländischer Studienleistungen."
+                    "Hilfe der Fakultät für internationale Studierende. "
+                    "Die Seite ist auf Englisch und nennt das Team."
                 ),
                 details_en=(
-                    "Guidance on exchange semesters, partner universities worldwide, "
-                    "Learning Agreements, and transfer of credits earned abroad."
+                    "The faculty's support for international students. The page names the team."
                 ),
             ),
             ContactPerson(
-                title_de="Support Internationals & DAAD FIT (Akademisches Auslandsamt)",
-                title_en="Support Internationals & DAAD FIT (International Office)",
-                office="Gebäude 18 (Campus Service Center)",
-                email="international@ovgu.de",
+                title_de="International Office der OVGU",
+                title_en="International Office of the OVGU",
+                office="",
+                email="",
                 url="https://www.ovgu.de/international.html",
                 details_de=(
-                    "Begleitung internationaler Studierender, DAAD FIT Initiative "
-                    "(Förderung internationaler Talente für Studium und Beruf), "
-                    "Internationales Buddy-Programm und Sprachkurse."
+                    "Die zentrale Anlaufstelle der Universität für internationale Studierende "
+                    "und für Wege ins Ausland."
                 ),
                 details_en=(
-                    "Comprehensive support for international students, DAAD FIT initiative "
-                    "(career preparation and academic integration), International Buddy "
-                    "Programme, and integration courses."
+                    "The university's central office for international students "
+                    "and for going abroad."
                 ),
             ),
         ),
@@ -287,39 +268,40 @@ CONTACT_CATEGORIES: tuple[ContactCategory, ...] = (
     ContactCategory(
         key="support",
         emoji="🤝",
-        title_de="Beratung & Psychosozialer Support",
-        title_en="Counseling & Psychological Support",
+        title_de="Beratung & Gleichstellung",
+        title_en="Counselling & Equal Opportunity",
         description_de="Vertrauliche Unterstützung bei Stress, Krisen und Familie.",
-        description_en="Confidential support for mental health, exam anxiety, and family care.",
+        description_en="Confidential support with stress, crises and family matters.",
         contacts=(
             ContactPerson(
-                title_de="Psychosoziale Studierendenberatung (PSB)",
-                title_en="Psychosocial Student Counseling (PSB)",
-                office="Wohnheim 7, J.-G.-Nathusius-Ring 5",
-                email="psb@studentenwerk-magdeburg.de",
-                url="https://www.studentenwerk-magdeburg.de/beratung/psychosoziale-beratung/",
+                title_de="Psychosoziale Beratung (Studentenwerk)",
+                title_en="Psychosocial Counselling (Studentenwerk)",
+                office="",
+                email="",
+                url="https://www.studentenwerk-magdeburg.de/soziales/psb/",
                 details_de=(
-                    "Kostenlose, neutrale und vertrauliche psychologische Beratung bei "
-                    "Prüfungsangst, Schreibblockaden, Überlastung und Krisen."
+                    "Beratung bei Prüfungsangst, Überlastung und Krisen. "
+                    "Termine und Ansprechpersonen stehen auf der Seite."
                 ),
                 details_en=(
-                    "Free, confidential psychological counseling for exam anxiety, stress, "
-                    "writer's block, motivational crises, and personal challenges."
+                    "Counselling for exam anxiety, overload and crises. "
+                    "The page has the appointments and the counsellors."
                 ),
             ),
             ContactPerson(
                 title_de="Gleichstellungsbeauftragte der FIN",
                 title_en="Equal Opportunity Officer FIN",
-                office="Gebäude 29 (FIN)",
-                email="gleichstellung-fin@ovgu.de",
-                url="https://www.inf.ovgu.de/Fakult%C3%A4t/Gleichstellung.html",
+                office="G29-214",
+                email="claudia@isg.cs.uni-magdeburg.de",
+                url="https://www.fin.ovgu.de/GuF.html",
                 details_de=(
-                    "Förderung von Chancengleichheit, Unterstützung von Studentinnen "
-                    "in MINT-Fächern sowie Vereinbarkeit von Studium und Familie."
+                    "Chancengleichheit an der Fakultät sowie Vereinbarkeit von Studium "
+                    "und Familie. "
+                    "Die Seite nennt auch die Stellvertretungen und den Familienbeauftragten."
                 ),
                 details_en=(
-                    "Promotion of equal opportunities, support for women in STEM, "
-                    "and family/study balance."
+                    "Equal opportunities at the faculty, and combining studies and family. "
+                    "The page also names the deputies and the family officer."
                 ),
             ),
         ),

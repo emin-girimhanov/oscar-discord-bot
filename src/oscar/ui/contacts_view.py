@@ -1,8 +1,9 @@
 """ Interactive view for displaying faculty and university contact persons.
 
-    Presents verified contact details for FIN OVGU, including the Dean of Studies,
-    Examination Office, FaRaFIN, Programme Advisors, Germany Scholarship,
-    Internship Office, Erasmus, and Counseling services. Supports language switching.
+    Presents the contact details from `util.contacts`: the Dean's Office, the
+    Examination Office, FaRaFIN, the programme directors, scholarships, Erasmus and
+    counselling. A field the official page does not state is left out, and every card
+    has a button to that page. Supports language switching.
 """
 
 from typing import override
@@ -61,11 +62,16 @@ class ContactsView(TranslatedView):
         """Renders contact card markdown for one person or office."""
         title = person.title_de if lang == LanguageCode.DE else person.title_en
         details = person.details_de if lang == LanguageCode.DE else person.details_en
-        lines = [
-            f"### {title}",
-            f"🏢 **Raum / Office:** {person.office}",
-            f"✉️ **E-Mail:** `{person.email}`",
-        ]
+        german = lang == LanguageCode.DE
+        lines = [f"### {title}"]
+        # A field the official page does not state is empty, and is left out here.
+        # The link button under the card leads to the page that has the rest.
+        if person.office:
+            lines.append(f"**{'Raum' if german else 'Office'}:** {person.office}")
+        if person.email:
+            lines.append(f"**E-Mail:** `{person.email}`")
+        if person.phone:
+            lines.append(f"**{'Telefon' if german else 'Phone'}:** {person.phone}")
         if details:
             lines.append(f"\n{details}")
         return TextDisplay("\n".join(lines))
@@ -80,9 +86,9 @@ class ContactsView(TranslatedView):
 
         container = Container[LayoutView]()
         header = (
-            "# 🏛️ Wichtige Ansprechpartner der FIN & OVGU"
+            "# Wichtige Ansprechpartner der FIN & OVGU"
             if lang == LanguageCode.DE else
-            "# 🏛️ Key Contacts at FIN & OVGU"
+            "# Key Contacts at FIN & OVGU"
         )
         _ = container.add_item(TextDisplay(header))
         _ = container.add_item(Separator())
@@ -99,9 +105,8 @@ class ContactsView(TranslatedView):
             _ = container.add_item(self._render_person(person, lang))
             if person.url:
                 title = person.title_de if lang == LanguageCode.DE else person.title_en
-                btn_label = f"🔗 {title[:20]}" if len(title) > 20 else f"🔗 {title}"
                 link_buttons.append(
-                    Button(label=btn_label[:80], style=discord.ButtonStyle.link, url=person.url)
+                    Button(label=title[:80], style=discord.ButtonStyle.link, url=person.url)
                 )
             _ = container.add_item(Separator())
 

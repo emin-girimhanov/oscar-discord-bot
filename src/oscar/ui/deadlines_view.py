@@ -1,7 +1,15 @@
 """ Interactive view displaying semester deadlines and exam registration periods.
 
-    Presents verified FIN OVGU deadlines, countdowns to critical dates (e.g. exam
-    registration, re-registration), withdrawal rules, and quick links.
+    **The dates are not official.** `util.calendar_export.get_academic_term` computes
+    them from the calendar: lectures from 7 October, exam registration from 15 to 30
+    November, and so on, the same days every year. The real periods are set by the
+    examination board each semester (SPO Bachelor 2024, § 17 (2)) and published by the
+    examination office. The view used to call its dates "official" and counted down to
+    "last day today". A student who trusted that could miss the real period.
+
+    So the view says what the dates are, a guide, and sends the student to the
+    examination office for the real ones. The withdrawal rule below the list is real,
+    it is § 17 (4) of the same regulations.
 """
 
 from datetime import date
@@ -15,7 +23,7 @@ from util.enums import LanguageCode
 
 
 class DeadlinesView(TranslatedView):
-    """View displaying verified academic dates and examination deadlines."""
+    """View displaying approximate academic dates, and where the real ones are."""
 
     def __init__(
         self,
@@ -37,7 +45,7 @@ class DeadlinesView(TranslatedView):
 
         lines = [
             f"### {title}",
-            f"📅 **Zeitraum / Dates:** `{date_str}` | {status}",
+            f"**{'Etwa' if lang == LanguageCode.DE else 'About'}:** `{date_str}` | {status}",
             f"> {desc}",
         ]
         return TextDisplay("\n".join(lines))
@@ -53,7 +61,7 @@ class DeadlinesView(TranslatedView):
         end_fmt = next_dl.end_date.strftime('%d.%m.%Y')
         date_range = f"{start_fmt} – {end_fmt}"
 
-        prefix = "### 🔔 Aktueller Fokus:" if lang == LanguageCode.DE else "### 🔔 Next Focus:"
+        prefix = "### Als Nächstes:" if lang == LanguageCode.DE else "### Next:"
         return TextDisplay(f"{prefix} **{title}**\nStatus: **{status}** ({date_range})")
 
     @override
@@ -65,11 +73,21 @@ class DeadlinesView(TranslatedView):
 
         container = Container[LayoutView]()
         header = (
-            f"# ⏰ Termine & Prüfungsfristen ({term_name})"
+            f"# Termine & Prüfungsfristen ({term_name})"
             if lang == LanguageCode.DE else
-            f"# ⏰ Academic & Exam Deadlines ({term_name})"
+            f"# Academic & Exam Deadlines ({term_name})"
         )
         _ = container.add_item(TextDisplay(header))
+        approximate_note = (
+            "**Das sind Richtwerte, keine amtlichen Termine.** "
+            "Die genauen Zeiträume legt der Prüfungsausschuss jedes Semester neu fest. "
+            "Verlass dich bei Fristen auf das Prüfungsamt und das LSF, nicht auf diese Liste."
+            if lang == LanguageCode.DE else
+            "**These dates are a guide, not official.** "
+            "The examination board sets the real periods anew every semester. "
+            "For a deadline, rely on the examination office and the LSF, not on this list."
+        )
+        _ = container.add_item(TextDisplay(approximate_note))
         _ = container.add_item(Separator())
 
         next_dl = deadlines.next_deadline(self.reference_date)
@@ -82,23 +100,25 @@ class DeadlinesView(TranslatedView):
             _ = container.add_item(Separator())
 
         withdrawal_note = (
-            "ℹ️ **Wichtig zur Prüfungsabmeldung:**\n"
-            "Bis zu **3 Tage** vor einer Klausur kannst du dich im LSF "
-            "ohne Angabe von Gründen wieder abmelden."
+            "**Prüfungsabmeldung:**\n"
+            "Du kannst eine Anmeldung zurücknehmen, solange bis zur Prüfung noch "
+            "mindestens **3 Tage** liegen. Das geht im LSF "
+            "(SPO Bachelor 2024, § 17 Abs. 4). Für andere Ordnungen frag das Prüfungsamt."
             if lang == LanguageCode.DE else
-            "ℹ️ **Exam Deregistration Policy:**\n"
-            "You can withdraw from any exam in LSF up to **3 days** prior "
-            "to the exam date without giving reasons."
+            "**Exam withdrawal:**\n"
+            "You can take a registration back as long as at least **3 days** remain "
+            "until the exam. You do it in the LSF "
+            "(SPO Bachelor 2024, § 17 (4)). For other regulations ask the examination office."
         )
         _ = container.add_item(TextDisplay(withdrawal_note))
         _ = container.add_item(Separator())
 
         link_buttons = [
-            Button(label="🔗 LSF Portal", style=discord.ButtonStyle.link, url="https://lsf.ovgu.de"),
+            Button(label="LSF", style=discord.ButtonStyle.link, url="https://lsf.ovgu.de"),
             Button(
-                label="🔗 Prüfungsamt FIN",
+                label="Prüfungsamt FIN",
                 style=discord.ButtonStyle.link,
-                url="https://www.inf.ovgu.de/Studium/Pr%C3%BCfungsamt.html",
+                url="https://www.fin.ovgu.de/pamt.html",
             ),
         ]
         _ = container.add_item(ActionRow[LayoutView](*link_buttons))

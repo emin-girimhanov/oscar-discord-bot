@@ -31,7 +31,7 @@ oscar_ovgu = "oscar.main:main"
 
 [project]
 name = "oscar_ovgu"
-version = "0.2.0"
+version = "1.0.0"
 authors = [
   { name="ISG", email="jana.goers@ovgu.de" },
 ]
