@@ -247,8 +247,14 @@ the volume to an unprivileged user once, while the bot is stopped:
 
 ```bash
 docker compose down
-sudo chown -R 10001:10001 "$(docker volume inspect -f '{{ .Mountpoint }}' discord-bot_oscar-db)"
+docker run --rm --user 0 -v discord-bot_oscar-db:/database     --entrypoint chown oscar-ovgu:selfhost -R 10001:10001 /database
 ```
+
+!!! warning "Start the bot once before you do this"
+    The step only holds for a volume that already has the database in it. Docker copies
+    the owner of `/database` from the image into an **empty** volume every time a
+    container mounts it, which would undo the change. So run the bot once the normal
+    way, let it create `oscar.db`, and harden it afterwards.
 
 Then add this to the `oscar` service in `compose.yaml` and start it again:
 
