@@ -19,7 +19,7 @@ import pytest
 import oscar.cogs as cogs
 from oscar.cogs.help import command_order
 from oscar.ui.help_launcher import HELP_ENTRIES
-from util.command_surface import ADMIN, CORE, CORE_ORDER
+from util.command_surface import ADMIN, CORE, CORE_ORDER, HIDDEN
 from util.translations import COMMAND_TEXTS, HELP_ANSWERS
 
 
@@ -120,7 +120,8 @@ class TestNothingIsHidden:
         assert listed[: len(CORE_ORDER)] == list(CORE_ORDER)
 
     def test_help_lists_every_documented_command(self):
-        assert set(command_order()) == set(COMMAND_TEXTS)
+        """Every one that can be typed. A command that is switched off is left out."""
+        assert set(command_order()) == set(COMMAND_TEXTS) - HIDDEN
 
     def test_the_menu_fits_a_discord_select(self):
         """Discord shows twenty five options and silently drops the rest."""

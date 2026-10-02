@@ -159,12 +159,11 @@ OSCAR is a Discord-based assistant that helps FIN students at Otto-von-Guericke-
     | `/here` | Opens the module the current channel is named after |
     | `/compare` | Puts two or three modules side by side |
     | `/rate`, `/klausuren` | Ratings and reviews by other students, and the past exam archives |
-    | `/progress`, `/badges`, `/cohort` | Your credit points and milestones, and an anonymous comparison |
+    | `/progress` | The credit points you planned, against the 30 of a semester |
     | `/suggest` | Modules that fit your programme and your open credit points |
     | `/fristen` | Roughly what is due when in the semester |
     | `/studybuddy` | Find students who plan the same module, opt in only |
     | `/lms`, `/ansprechpartner` | The university portals, and who to ask |
-    | `/codegolf` | A weekly programming puzzle |
     | `/my_data` | See, export and delete what OSCAR stores about you |
     | `/help` | Every command explained, in German and English |
 

@@ -41,6 +41,23 @@ ADMIN: frozenset[str] = frozenset({
 })
 
 
+# Features that are switched off for now. OSCAR had grown to twenty nine commands, and
+# the game around the plan (a weekly puzzle, badges, a comparison with the cohort) was
+# what a new student had to read past to find the plan. The code, the tables and the
+# tests stay. To switch a feature back on, take its names out of this set.
+#
+# A name in here is not registered with discord, not listed in `/help`, and the view
+# of `/progress` leaves its part out. Both names of a command go in, the German and
+# the English one.
+HIDDEN: frozenset[str] = frozenset({
+    "codegolf",       # the weekly puzzle
+    "challenge",      # its second name
+    "badges",         # achievements, also the badge list inside `/progress`
+    "cohort",         # the comparison with other students, also its button in `/progress`
+    "statistik",      # its second name
+})
+
+
 # The same eight, in the order a student meets them. `/start` and `/help` print the
 # list, and a set has no order to print.
 CORE_ORDER: tuple[str, ...] = (

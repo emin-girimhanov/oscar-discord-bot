@@ -1,5 +1,10 @@
 # Cohort Statistics & Comparative Analytics
 
+!!! note "Switched off for now"
+    This feature is not in the slash menu at the moment. OSCAR had grown to twenty nine
+    commands, and the ones around the semester plan come first. The code is kept, and
+    `HIDDEN` in `src/util/command_surface.py` switches it back on.
+
 Tracking personal study progress is motivating, but students frequently want to know how their semester workload compares to their peers in the same degree programme and semester (*"Am I planning too many or too few modules?", "Which electives are my classmates taking this term?"*).
 
 This document details OSCAR's privacy-preserving cohort analytics system ([Issue #48](https://isggit3.cs.ovgu.de/studium-lehre/discord-bot/-/issues/48)).

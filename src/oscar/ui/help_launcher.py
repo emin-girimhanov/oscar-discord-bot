@@ -23,6 +23,7 @@ from dataclasses import dataclass
 
 import discord
 
+from util.command_surface import HIDDEN
 from util.database import get_user_language
 from util.enums import LanguageCode
 
@@ -198,13 +199,13 @@ async def open_feedback(interaction: discord.Interaction) -> None:
 
 # The order is the order a student reads them in: studying first, then the campus,
 # then the things that are nice rather than necessary.
-HELP_ENTRIES: tuple[HelpEntry, ...] = (
+ALL_ENTRIES: tuple[HelpEntry, ...] = (
     HelpEntry(
         "standard_plan", "🗺️", "Regelstudienplan", "Official study plan",
         open_standard_plan,
     ),
     HelpEntry(
-        "progress", "📊", "Fortschritt & Badges", "Progress & badges", open_progress,
+        "progress", "📊", "Studienfortschritt", "Study progress", open_progress,
     ),
     HelpEntry(
         "suggest", "💡", "Modul-Empfehlungen", "Module suggestions", open_suggestions,
@@ -215,6 +216,12 @@ HELP_ENTRIES: tuple[HelpEntry, ...] = (
     HelpEntry("contacts", "📞", "Ansprechpartner", "Contacts", open_contacts),
     HelpEntry("codegolf", "🏌️", "Code Golf", "Code golf", open_code_golf),
     HelpEntry("feedback", "✉️", "Feedback zum Bot", "Feedback on the bot", open_feedback),
+)
+
+
+# What the menu shows: everything that is not switched off.
+HELP_ENTRIES: tuple[HelpEntry, ...] = tuple(
+    entry for entry in ALL_ENTRIES if entry.key not in HIDDEN
 )
 
 

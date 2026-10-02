@@ -20,8 +20,7 @@ Those eight are the ones `/start` names. Everything else is a command as well:
 | Command | Purpose |
 | :--- | :--- |
 | `/standard_plan` | The official study plan of your programme, as an image |
-| `/progress`, `/badges` | Your credit points, milestones and achievements |
-| `/cohort` (or `/statistik`) | Anonymous comparison with your cohort |
+| `/progress` | The credit points you planned, against the 30 of a semester |
 | `/suggest` (or `/recommend`) | Modules that fit your programme and open credits |
 | `/rate` | Rate a module, with an optional written review |
 | `/klausuren` | Past exam archives of the student councils |
@@ -29,8 +28,11 @@ Those eight are the ones `/start` names. Everything else is a command as well:
 | `/lms` (or `/elearning`) | The four university portals and what each is for |
 | `/ansprechpartner` (or `/contacts`) | Dean's office, examination office, student council |
 | `/studybuddy` | Find other students who plan the same module |
-| `/codegolf` (or `/challenge`) | The weekly programming puzzle and its leaderboard |
 | `/feedback` | Tell us what you think of the bot |
+
+Three features are switched off for now and not in the slash menu: the badges
+(`/badges`), the comparison with the cohort (`/cohort`, `/statistik`) and the weekly
+puzzle (`/codegolf`, `/challenge`). Their sections below say so.
 
 Two more exist for administrators and are hidden from everybody else:
 `/version` and `/review_feedback`. `!ping` and `!resync` are prefix commands.
@@ -380,6 +382,7 @@ Or, if you do not know the name yet: `/help → Öffnen → Ansprechpartner`.
 * **Study Abroad & International:** The Erasmus coordinator of the FIN, Support Internationals at FIN, and the International Office.
 * **Counselling & Equal Opportunity:** Psychosocial counselling of the Studentenwerk and the Equal Opportunity Officer of the FIN.
 * **Only what the official page says:** A room, a mail address or a phone number is shown when the linked page states it, and left out otherwise. Every entry has a button to that page.
+* **English pages:** In English, a button opens the English page of the office. Where an office has none, such as the dean's office, it opens the German page.
 * **Interactive UI:** Switch categories dynamically via a dropdown menu, visit faculty portals via direct link buttons, and toggle between German and English.
 
 ---
@@ -403,6 +406,10 @@ Or, if you do not know the name yet: `/help → Öffnen → Lernplattformen`.
 ---
 
 ## **Personal Progress & Badges**
+
+!!! note "Badges are switched off for now"
+    `/progress` shows your planned credit points. The badge list in it and the
+    command `/badges` are switched off, see `HIDDEN` in `src/util/command_surface.py`.
 
 Track your academic journey and celebrate semester milestones with privacy-first gamification.
 
@@ -431,6 +438,11 @@ Or, if you do not know the name yet: `/help → Öffnen → Fortschritt & Badges
 ---
 
 ## **Weekly Code Golf Challenge**
+
+!!! note "Switched off for now"
+    This feature is not in the slash menu at the moment. OSCAR had grown to twenty nine
+    commands, and the ones around the semester plan come first. The code is kept, and
+    `HIDDEN` in `src/util/command_surface.py` switches it back on.
 
 Test your programming and code-minification skills in weekly algorithmic challenges.
 
@@ -492,6 +504,11 @@ Or, if you do not know the name yet: `/help → Öffnen → Modul-Empfehlungen`.
 * **Explainable Proposals:** Every proposal explains *why* it was suggested (e.g. `Eligible in B.Sc. Informatik • Recommended for semester 4`).
 
 ### **Progress & Cohort Analytics**
+
+!!! note "Switched off for now"
+    This feature is not in the slash menu at the moment. OSCAR had grown to twenty nine
+    commands, and the ones around the semester plan come first. The code is kept, and
+    `HIDDEN` in `src/util/command_surface.py` switches it back on.
 
 Track personal study progress, earn gamification badges, and benchmark your workload with fellow students:
 

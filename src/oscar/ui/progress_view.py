@@ -10,6 +10,7 @@ from discord.ui import ActionRow, Button, Container, LayoutView, Separator, Text
 
 from oscar.ui.translated_view import TranslatedView
 from util.badges import Badge, UserProgress, compute_user_progress
+from util.command_surface import HIDDEN
 from util.database import get_database
 from util.enums import LanguageCode, StudyCourse
 from util.translations import COHORT_TEXTS, t
@@ -71,9 +72,12 @@ class ProgressView(TranslatedView):
             f"📚 **{cp_label}:** {progress.planned_cp} / {progress.target_cp} CP "
             f"({progress.planned_modules_count} {mod_label})",
             f"📊 `{progress.progress_bar(12)}`",
-            f"🎖️ **{badg_label}:** {progress.unlocked_badges_count} / "
-            f"{progress.total_badges_count} {status_suffix}",
         ]
+        if "badges" not in HIDDEN:
+            stats_lines.append(
+                f"🎖️ **{badg_label}:** {progress.unlocked_badges_count} / "
+                f"{progress.total_badges_count} {status_suffix}"
+            )
         return TextDisplay("\n".join(stats_lines))
 
     def _render_badges_list(
@@ -163,8 +167,20 @@ class ProgressView(TranslatedView):
         progress: UserProgress = compute_user_progress(self.user_id)
         container = Container[LayoutView]()
 
-        if self.view_mode == "cohort":
+        show_badges = "badges" not in HIDDEN
+        show_cohort = "cohort" not in HIDDEN
+
+        if self.view_mode == "cohort" and show_cohort:
             self._render_cohort_content(progress, lang, container)
+        elif not show_badges:
+            header = (
+                "# Dein Studienfortschritt" if lang == LanguageCode.DE
+                else "# Your Study Progress"
+            )
+            _ = container.add_item(TextDisplay(header))
+            _ = container.add_item(Separator())
+            _ = container.add_item(self._render_stats_section(progress, lang))
+            _ = container.add_item(Separator())
         else:
             header = (
                 "# 🏆 Deine Erfolge & Studienfortschritt"
@@ -221,10 +237,8 @@ class ProgressView(TranslatedView):
 
         cohort_toggle_btn.callback = cohort_toggle_callback
 
-        _ = container.add_item(
-            ActionRow[LayoutView](
-                self._create_language_toggle(),
-                cohort_toggle_btn,
-            )
-        )
+        buttons: list[Button[LayoutView]] = [self._create_language_toggle()]
+        if show_cohort:
+            buttons.append(cohort_toggle_btn)
+        _ = container.add_item(ActionRow[LayoutView](*buttons))
         _ = self.add_item(container)

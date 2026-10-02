@@ -264,15 +264,14 @@ For detailed technical specifications, please [view full Developer Guide](develo
     | `/compare` | Two or three modules side by side. | :material-check: Ready |
     | `/rate` | Rate a module and read the reviews of other students. | :material-check: Ready |
     | `/klausuren` | Past exam archives of the student councils. | :material-check: Ready |
-    | `/progress`, `/badges` | Credit points, milestones and achievements. | :material-check: Ready |
-    | `/cohort` | Anonymous comparison with your cohort. | :material-check: Ready |
+    | `/progress` | The credit points you planned, against the 30 of a semester. | :material-check: Ready |
     | `/suggest` | Modules that fit your programme and open credits. | :material-check: Ready |
     | `/fristen` | Exam registration periods and semester milestones. | :material-check: Ready |
     | `/lms` | The university portals and what each one is for. | :material-check: Ready |
     | `/ansprechpartner` | Dean's office, examination office, student council. | :material-check: Ready |
     | `/studybuddy` | Find students who plan the same module, opt in only. | :material-check: Ready |
-    | `/codegolf` | The weekly programming puzzle and its leaderboard. | :material-check: Ready |
     | `/my_data` | See, export and delete what is stored about you. | :material-check: Ready |
+    | `/badges`, `/cohort`, `/codegolf` | Achievements, a comparison with the cohort and a weekly puzzle. | :material-pause: Switched off for now |
 
 === "Key Features"
 

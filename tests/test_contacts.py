@@ -112,6 +112,49 @@ class TestContactsData:
         assert cat is None
 
 
+class TestEnglishReadersGetEnglishPages:
+    """ Every button led to a German page, whatever language the student had picked."""
+
+    @staticmethod
+    def _link_urls(view: ContactsView) -> list[str]:
+        return [
+            item.url for item in view.walk_children()
+            if isinstance(item, discord.ui.Button) and item.url
+        ]
+
+    def test_an_english_page_is_a_secure_link(self):
+        for cat in CONTACT_CATEGORIES:
+            for person in cat.contacts:
+                assert person.url_en == "" or person.url_en.startswith("https://")
+
+    def test_the_link_follows_the_language(self):
+        office = get_category_by_key("dekanat_pa").contacts[0]
+        assert office.link(english=False) == "https://www.fin.ovgu.de/pamt.html"
+        assert office.link(english=True).endswith("/inf/en/Study/Being+a+student/Examination+Office.html")
+
+    def test_an_office_without_an_english_page_keeps_the_german_one(self):
+        """The dean's office has none, a dead guess would be worse than German."""
+        dean = get_category_by_key("dekanat_pa").contacts[1]
+        assert dean.url_en == ""
+        assert dean.link(english=True) == dean.url
+
+    @pytest.mark.asyncio
+    async def test_the_english_view_uses_the_english_pages(self):
+        view = ContactsView(default_language=LanguageCode.EN, initial_category_key="farafin")
+        assert self._link_urls(view) == [
+            "https://farafin.de/en/",
+            "https://farafin.de/en/freshmen/intro-week/",
+        ]
+
+    @pytest.mark.asyncio
+    async def test_the_german_view_keeps_the_german_pages(self):
+        view = ContactsView(default_language=LanguageCode.DE, initial_category_key="farafin")
+        assert self._link_urls(view) == [
+            "https://farafin.de",
+            "https://farafin.de/erstsemester/e-woche/",
+        ]
+
+
 class TestContactsView:
     """Tests covering the interactive ContactsView."""
 

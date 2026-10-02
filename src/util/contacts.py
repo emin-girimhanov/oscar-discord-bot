@@ -26,6 +26,10 @@ class ContactPerson:
     """ Represents a single contact person or office.
 
         `office`, `email` and `phone` may be empty. The view leaves an empty one out.
+
+        `url_en` is the English page of the same office. A student who reads OSCAR in
+        English got a German page behind every button. It is empty where the office
+        has no English page, the German one is used then, see `link`.
     """
     title_de: str
     title_en: str
@@ -35,6 +39,19 @@ class ContactPerson:
     details_de: str
     details_en: str
     phone: str = ""
+    url_en: str = ""
+
+    def link(self, english: bool) -> str:
+        """ The page to send a reader to.
+
+            Parameters:
+                english: Whether the reader uses OSCAR in English.
+
+            Returns:
+                The English page when the reader wants one and the office has one,
+                the German page otherwise.
+        """
+        return self.url_en if english and self.url_en else self.url
 
 
 @dataclass(frozen=True)
@@ -61,6 +78,10 @@ CONTACT_CATEGORIES: tuple[ContactCategory, ...] = (
             ContactPerson(
                 title_de="Prüfungsamt FIN",
                 title_en="Examination Office FIN",
+                url_en=(
+                    "https://www.fin.ovgu.de/inf/en/Study/Being+a+student/"
+                    "Examination+Office.html"
+                ),
                 office="Gebäude 29, Raum 101/102",
                 email="fin-pruefungsamt@ovgu.de",
                 url="https://www.fin.ovgu.de/pamt.html",
@@ -104,6 +125,7 @@ CONTACT_CATEGORIES: tuple[ContactCategory, ...] = (
             ContactPerson(
                 title_de="Fachschaftsrat Informatik (FaRaFIN)",
                 title_en="Computer Science Student Council (FaRaFIN)",
+                url_en="https://farafin.de/en/",
                 office="G29-103",
                 email="post@farafin.de",
                 phone="(+49) 391 67 51377",
@@ -124,6 +146,7 @@ CONTACT_CATEGORIES: tuple[ContactCategory, ...] = (
             ContactPerson(
                 title_de="Einführungswoche (E-Woche) für Erstsemester",
                 title_en="Orientation Week (E-Woche) for New Students",
+                url_en="https://farafin.de/en/freshmen/intro-week/",
                 office="G29-103 (FaRaFIN), die Woche findet im Gebäude 29 statt",
                 email="post@farafin.de",
                 url="https://farafin.de/erstsemester/e-woche/",
@@ -153,6 +176,10 @@ CONTACT_CATEGORIES: tuple[ContactCategory, ...] = (
             ContactPerson(
                 title_de="Studiengangsleiter aller Studiengänge",
                 title_en="Programme Directors of All Programmes",
+                url_en=(
+                    "https://www.fin.ovgu.de/inf/en/Study/Before+you+start+your+studies/"
+                    "Degree+Advisors.html"
+                ),
                 office="Gebäude 29 (FIN)",
                 email="",
                 url="https://www.fin.ovgu.de/Studium/Vor+dem+Studium/Studiengangsleiter.html",
@@ -181,6 +208,7 @@ CONTACT_CATEGORIES: tuple[ContactCategory, ...] = (
             ContactPerson(
                 title_de="Deutschlandstipendium an der OVGU",
                 title_en="Germany Scholarship (Deutschlandstipendium)",
+                url_en="https://www.ovgu.de/unimagdeburg/en/germanyscholarship.html",
                 office="Gebäude 18, Raum 133",
                 email="",
                 url="https://www.ovgu.de/deutschlandstipendium.html",
@@ -196,6 +224,7 @@ CONTACT_CATEGORIES: tuple[ContactCategory, ...] = (
             ContactPerson(
                 title_de="BAföG (Studentenwerk Magdeburg)",
                 title_en="BAföG (Studentenwerk Magdeburg)",
+                url_en="https://www.studentenwerk-magdeburg.de/en/finances/",
                 office="",
                 email="",
                 url="https://www.studentenwerk-magdeburg.de/bafoeg/",
@@ -221,6 +250,7 @@ CONTACT_CATEGORIES: tuple[ContactCategory, ...] = (
             ContactPerson(
                 title_de="Erasmus-Koordination FIN",
                 title_en="Erasmus Coordinator FIN",
+                url_en="https://www.fin.ovgu.de/inf/en/Study/Being+a+student/Outgoing.html",
                 office="G29-214",
                 email="claudia.krull@ovgu.de",
                 url="https://www.fin.ovgu.de/Studium/W%C3%A4hrend+des+Studiums/Outgoing.html",
@@ -251,6 +281,7 @@ CONTACT_CATEGORIES: tuple[ContactCategory, ...] = (
             ContactPerson(
                 title_de="International Office der OVGU",
                 title_en="International Office of the OVGU",
+                url_en="https://www.ovgu.de/unimagdeburg/en/international-p-5.html",
                 office="",
                 email="",
                 url="https://www.ovgu.de/international.html",
@@ -276,6 +307,7 @@ CONTACT_CATEGORIES: tuple[ContactCategory, ...] = (
             ContactPerson(
                 title_de="Psychosoziale Beratung (Studentenwerk)",
                 title_en="Psychosocial Counselling (Studentenwerk)",
+                url_en="https://www.studentenwerk-magdeburg.de/en/social-affairs/psb/",
                 office="",
                 email="",
                 url="https://www.studentenwerk-magdeburg.de/soziales/psb/",
@@ -291,6 +323,7 @@ CONTACT_CATEGORIES: tuple[ContactCategory, ...] = (
             ContactPerson(
                 title_de="Gleichstellungsbeauftragte der FIN",
                 title_en="Equal Opportunity Officer FIN",
+                url_en="https://www.fin.ovgu.de/inf/en/GuF.html",
                 office="G29-214",
                 email="claudia@isg.cs.uni-magdeburg.de",
                 url="https://www.fin.ovgu.de/GuF.html",

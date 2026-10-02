@@ -106,7 +106,11 @@ class ContactsView(TranslatedView):
             if person.url:
                 title = person.title_de if lang == LanguageCode.DE else person.title_en
                 link_buttons.append(
-                    Button(label=title[:80], style=discord.ButtonStyle.link, url=person.url)
+                    Button(
+                        label=title[:80],
+                        style=discord.ButtonStyle.link,
+                        url=person.link(english=lang == LanguageCode.EN),
+                    )
                 )
             _ = container.add_item(Separator())
 

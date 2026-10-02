@@ -110,7 +110,9 @@ class TestProgressViewCohortIntegration:
 
     @pytest.mark.asyncio
     async def test_toggle_between_progress_and_cohort(self, db):
-        with patch("oscar.ui.progress_view.get_database", return_value=db):
+        # the cohort screen is switched off for now, this test is about the screen itself
+        with patch("oscar.ui.progress_view.get_database", return_value=db), \
+             patch("oscar.ui.progress_view.HIDDEN", frozenset()):
             view = ProgressView(user_id=123, default_language=LanguageCode.DE)
             assert view.view_mode == "progress"
 

@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 from loguru import logger
 
 from util.bookstack import drop_missing_books, refresh_books
+from util.command_surface import HIDDEN
 from util.database import get_database
 from util.operators import is_operator
 from util.semesterplans import get_semesterplans_manager
@@ -110,6 +111,22 @@ class Oscar(commands.Bot):
         )
         return synced
 
+    def hide_commands(self) -> list[str]:
+        """ Takes the commands that are switched off out of the tree before it syncs.
+
+            The cogs still define them, so nothing else has to know. A command that is
+            not in the tree is not sent to discord, and discord drops it from the
+            picker on the next sync.
+
+            Returns:
+                The names that were taken out, for the log.
+        """
+        removed: list[str] = []
+        for name in sorted(HIDDEN):
+            if self.tree.remove_command(name) is not None:
+                removed.append(name)
+        return removed
+
     async def keep_tables_warm(self):
         """ Fills the module table cache before anybody asks for it, and keeps it full.
 
@@ -172,6 +189,10 @@ class Oscar(commands.Bot):
                     await self.load_extension(name)
                 except Exception:  # pylint: disable=broad-exception-caught
                     logger.exception(f"Couldn't load '{name}'")
+
+            hidden = self.hide_commands()
+            if hidden:
+                logger.info(f"Switched off, see util.command_surface.HIDDEN: {hidden}")
 
             _ = await self.sync_commands()
             self._startup_done = True

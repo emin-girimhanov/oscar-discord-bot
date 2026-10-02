@@ -15,7 +15,7 @@ from oscar.ui.help_launcher import (
     open_platforms,
 )
 from oscar.ui.translated_view import TranslatedView
-from util.command_surface import CORE, CORE_ORDER
+from util.command_surface import CORE, CORE_ORDER, HIDDEN
 from util.database import get_user_language
 from util.enums import LanguageCode
 from util.translations import (
@@ -103,7 +103,8 @@ def command_order() -> list[str]:
             were written down.
     """
     core = [name for name in CORE_ORDER if name in COMMAND_TEXTS]
-    rest = [name for name in COMMAND_TEXTS if name not in CORE]
+    # a command that is switched off cannot be typed, so explaining it would mislead
+    rest = [name for name in COMMAND_TEXTS if name not in CORE and name not in HIDDEN]
     return core + rest
 
 

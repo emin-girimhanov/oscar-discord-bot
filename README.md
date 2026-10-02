@@ -23,7 +23,7 @@ with planning the first semesters.
 - **Compare modules.** `/compare` puts two or three modules side by side.
 - **Plan semesters.** `/semesterplan` keeps your personal plan and exports it as a
   calendar. `/standard_plan` shows the standard study plan of a programme.
-- **Keep track.** `/progress` and `/badges` show how far you are. `/fristen` lists
+- **Keep track.** `/progress` shows how far you are. `/fristen` lists
   the exam registration periods.
 - **Learn from others.** `/rate` collects module ratings. `/klausuren` links the past
   exam archives. `/studybuddy` finds a study partner, opt in only.

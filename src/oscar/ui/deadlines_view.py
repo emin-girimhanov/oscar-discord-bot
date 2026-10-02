@@ -116,9 +116,12 @@ class DeadlinesView(TranslatedView):
         link_buttons = [
             Button(label="LSF", style=discord.ButtonStyle.link, url="https://lsf.ovgu.de"),
             Button(
-                label="Prüfungsamt FIN",
+                label="Prüfungsamt FIN" if lang == LanguageCode.DE else "Examination Office FIN",
                 style=discord.ButtonStyle.link,
-                url="https://www.fin.ovgu.de/pamt.html",
+                url=(
+                    "https://www.fin.ovgu.de/pamt.html" if lang == LanguageCode.DE else
+                    "https://www.fin.ovgu.de/inf/en/Study/Being+a+student/Examination+Office.html"
+                ),
             ),
         ]
         _ = container.add_item(ActionRow[LayoutView](*link_buttons))

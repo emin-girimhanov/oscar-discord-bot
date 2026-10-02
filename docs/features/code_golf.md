@@ -1,5 +1,10 @@
 # Weekly Code Golf Challenge
 
+!!! note "Switched off for now"
+    This feature is not in the slash menu at the moment. OSCAR had grown to twenty nine
+    commands, and the ones around the semester plan come first. The code is kept, and
+    `HIDDEN` in `src/util/command_surface.py` switches it back on.
+
 The **Weekly Code Golf Challenge** ([#53](https://isggit3.cs.ovgu.de/studium-lehre/discord-bot/-/issues/53)) brings competitive programming and code-minification fun directly into the FIN Discord community.
 
 Every calendar week, OSCAR presents an algorithmic puzzle. The objective is classic code golf: **solve the problem using the fewest bytes of source code possible**.
